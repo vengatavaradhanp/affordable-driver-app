@@ -1,13 +1,10 @@
-
-       /* Full Calendar External styles */
-
-.custom-calendar .fc-toolbar-title {
-  color: #bd1515 !important;
+/* .custom-calendar .fc-toolbar-title {
+  color: #2b9348 !important;
 }
 
 .custom-calendar .fc-button {
   border: none;
-  background-color: #bd1515 !important;
+  background-color: #2b9348 !important;
   color: white !important;
 }
 
@@ -19,7 +16,6 @@
 
 .custom-calendar .fc-daygrid-day-number {
   color: black !important;
-  /* White day numbers */
   font-size: large;
   border: none;
   font-family: sans-serif;
@@ -36,7 +32,7 @@
 
 .fc-col-header-cell {
   background-color: #ffffff;
-  color: #ffffff; 
+  color: #ffffff;
   font-weight: bold;
   padding: 10px;
   text-decoration: none;
@@ -58,30 +54,30 @@
 }
 
 .fc-day-today {
-  background-color: #f9f9f9 !important; 
+  background-color: #f9f9f9 !important;
   font-weight: bold;
 }
 
 .fc-scrollgrid a {
   text-decoration: none;
-  color: #bd1515;
+  color: #2b9348;
 }
 
-.fc-daygrid-event-dot{
+.fc-daygrid-event-dot {
   margin: 0px;
-  border-top: 30px solid #bd1515 !important;
-  border: calc(var(--fc-daygrid-event-dot-width) / 2) solid #bd1515;
+  border-top: 30px solid #2b9348 !important;
+  border: calc(var(--fc-daygrid-event-dot-width) / 2) solid #2b9348;
   border-radius: unset !important;
 }
 
-.fc-event{
+.fc-event {
   border-radius: 10px;
   overflow: hidden;
   border: unset;
   align-items: center;
 }
 
-.fc-event .fc-event-main{
+.fc-event .fc-event-main {
   background-color: rgb(236 175 175 / 95%);
 }
 
@@ -91,13 +87,13 @@
   background-color: rgb(236 175 175 / 95%);
 }
 
-.fc-daygrid-event{
+.fc-daygrid-event {
   border-radius: 10px !important;
   padding: 0px;
   overflow: hidden;
 }
 
-.fc-event-time{
+.fc-event-time {
   justify-content: center;
   margin-left: 15px;
   color: black;
@@ -105,67 +101,65 @@
   font-weight: 400;
 }
 
-.fc-event-title{
+.fc-event-title {
   align-items: center;
   color: black;
   margin-left: 15px;
   font-weight: 400;
 }
 
-.fc-daygrid-dot-event .fc-event-title{
+.fc-daygrid-dot-event .fc-event-title {
   font-weight: 500;
 }
 
 .fc-event-main-frame:before {
   content: "";
   width: 10px;
-  background: #bd1515;
+  background: #2b9348;
   z-index: 5;
   display: block;
   position: absolute;
   height: 100%;
 }
-.fc-event-main-frame{
+.fc-event-main-frame {
   border-radius: 20px;
 }
 
-.fc-day-today .fc-daygrid-day-frame.fc-scrollgrid-sync-inner{
+.fc-day-today .fc-daygrid-day-frame.fc-scrollgrid-sync-inner {
   background-color: white;
-  border: 2px solid#bd1515;
+  border: 2px solid#2b9348;
 }
+ 
 
-        /* Bootstrap external overwrite styles */
-
-.form-control:focus{
-  border-color: #bd1515 !important; /* Bootstrap 'danger' color */
+.form-control:focus {
+  border-color: #2b9348 !important; 
   box-shadow: 0 0 0 0.25rem rgba(214, 69, 84, 0.473) !important;
 }
 
 .form-select:focus {
-  border-color: #bd1515 !important; /* Bootstrap 'danger' color */
+  border-color: #2b9348 !important; 
   box-shadow: 0 0 0 0.25rem rgba(214, 69, 84, 0.473) !important;
 }
+ 
 
-       /* Datepicker external style Css */
-
-.react-datepicker__day--selected, 
-.react-datepicker__day--in-selecting-range, 
-.react-datepicker__day--in-range, 
-.react-datepicker__month-text--selected, 
-.react-datepicker__month-text--in-selecting-range, 
-.react-datepicker__month-text--in-range, 
-.react-datepicker__quarter-text--selected, 
-.react-datepicker__quarter-text--in-selecting-range, 
-.react-datepicker__quarter-text--in-range, 
-.react-datepicker__year-text--selected, 
-.react-datepicker__year-text--in-selecting-range, 
+.react-datepicker__day--selected,
+.react-datepicker__day--in-selecting-range,
+.react-datepicker__day--in-range,
+.react-datepicker__month-text--selected,
+.react-datepicker__month-text--in-selecting-range,
+.react-datepicker__month-text--in-range,
+.react-datepicker__quarter-text--selected,
+.react-datepicker__quarter-text--in-selecting-range,
+.react-datepicker__quarter-text--in-range,
+.react-datepicker__year-text--selected,
+.react-datepicker__year-text--in-selecting-range,
 .react-datepicker__year-text--in-range {
-  background-color: #bd1515 !important;
+  background-color: #2b9348 !important;
 }
 
-.react-datepicker__day--keyboard-selected, 
-.react-datepicker__month-text--keyboard-selected, 
-.react-datepicker__quarter-text--keyboard-selected, 
+.react-datepicker__day--keyboard-selected,
+.react-datepicker__month-text--keyboard-selected,
+.react-datepicker__quarter-text--keyboard-selected,
 .react-datepicker__year-text--keyboard-selected {
   background-color: rgb(233 164 150) !important;
-}
+} */

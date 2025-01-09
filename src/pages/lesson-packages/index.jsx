@@ -1,26 +1,43 @@
 import React from "react";
 import PaypalDialog from "../../components/paypal-dialog/PaypalDialog";
+import { LessonsList } from "../../utils/constant";
 
 export default function LessonPackages() {
   const paypalDialogRef = React.useRef(null);
   return (
     <>
       <div
-        className="container-fluid page-header py-6 my-6 mt-0 wow fadeIn"
+        className="container-fluid page-header py-6 my-5 mt-0 wow fadeIn"
         data-wow-delay="0.1s"
       >
-        <div className="container text-center"></div>
+        <div
+          className="container"
+          style={{
+            display: "flex",
+            height: "100%",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <div className="row justify-content-center">
+            <div className="col-lg-12">
+              <h3 className="display-5 text-light mb-0">Lesson Packages</h3>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="container-xxl">
         <div className="container">
-          <div
-            className="text-center mx-auto mb-5 wow fadeInUp"
-            data-wow-delay="0.1s"
-          >
-            <h1 className="display-6 mb-4">Lesson Packages</h1>
-          </div>
           <div className="row g-4 justify-content-center">
+            <div
+              className="text-center mx-auto mb-0 wow fadeInUp"
+              data-wow-delay="0.1s"
+            >
+              <h1 className="display-6 mb-4">
+                Driver education course bundles...
+              </h1>
+            </div>
             <p>
               Our 50-minute lesson packages are available for online purchase.
               After registering your account during checkout, you can
@@ -40,7 +57,48 @@ export default function LessonPackages() {
               Lesson Packages make great gifts! You can buy our digital gift
               cards and set your amount to cover any of our services.
             </p>
-            <div
+
+            {LessonsList.map((item, index) => (
+              <div
+                className="col-lg-5 col-md-6 wow fadeInUp"
+                data-wow-delay="0.1s"
+                key={index}
+              >
+                <div className="courses-item d-flex flex-column bg-light overflow-hidden h-100">
+                  <div className="text-center p-4 pt-0">
+                    {item.is_popular === 1 ? (
+                      <div className="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">
+                        Most Popular
+                      </div>
+                    ) : (
+                      <div className="d-inline-block text-white fs-5 py-3 px-4 mb-4"></div>
+                    )}
+                    <p>
+                      {item.count} x {item.time_per_lesson} Minute Lesson
+                    </p>
+                    <h1 className="mb-3">
+                      {item.count * item.time_per_lesson}
+                    </h1>
+                    <p>{item.title}</p>
+                    <small>Valid for one year</small>
+                    <div
+                      className="mt-4"
+                      data-toggle="modal"
+                      data-target="#exampleModalCenter"
+                      onClick={() =>
+                        paypalDialogRef.current.dialogHandler(item)
+                      }
+                    >
+                      <span className="btn btn-primary border-2 w-100">
+                        Select
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            {/* <div
               className="col-lg-5 col-md-6 wow fadeInUp"
               data-wow-delay="0.1s"
             >
@@ -122,7 +180,7 @@ export default function LessonPackages() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
             <p>
               Lesson Packages, once commenced, are non-refundable and
               non-transferable and must be used within 1 year of the purchase

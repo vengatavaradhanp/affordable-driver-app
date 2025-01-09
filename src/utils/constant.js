@@ -32,3 +32,38 @@ export const TimeData = [
   { value: "23:00", label: "11:00 PM" },
   { value: "24:00", label: "12:00 PM" },
 ];
+
+export const LessonsList = [
+  {
+    is_popular: 1,
+    count: "3",
+    time_per_lesson: "60",
+    title: "An Affordable and Practical Start",
+    validity_end: "01/01/2026",
+    is_active: true,
+  },
+  {
+    is_popular: 1,
+    count: "5",
+    time_per_lesson: "30",
+    title: "An Affordable and Practical Start",
+    validity_end: "01/01/2026",
+    is_active: true,
+  },
+  {
+    is_popular: 0,
+    count: "7",
+    time_per_lesson: "25",
+    title: "Big Savings & Our Most Requested Package",
+    validity_end: "01/06/2025",
+    is_active: true,
+  },
+  {
+    is_popular: 0,
+    count: "10",
+    time_per_lesson: "60",
+    title: "This is the Ultimate Lesson Package",
+    validity_end: "01/01/2026",
+    is_active: true,
+  },
+];

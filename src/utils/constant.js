@@ -67,3 +67,41 @@ export const LessonsList = [
     is_active: true,
   },
 ];
+
+export const EventsList = [
+  {
+    id: 1,
+    title: "Driving Class 1",
+    description: "Test",
+    start: "2025-01-01T10:00:00",
+    end: "2025-01-01T12:00:00",
+  },
+  {
+    id: 2,
+    title: "Driving Class 2",
+    description: "Test",
+    start: "2025-01-03T14:00:00",
+    end: "2025-01-03T16:00:00",
+  },
+  {
+    id: 3,
+    title: "Driving Class 3",
+    description: "Test",
+    start: "2025-01-08T09:30:00",
+    end: "2025-01-08T11:00:00",
+  },
+  {
+    id: 4,
+    title: "Driving Class 4",
+    description: "Test",
+    start: "2025-01-10T16:00:00",
+    end: "2025-01-10T17:30:00",
+  },
+  {
+    id: 5,
+    title: "Driving Class 5",
+    description: "Test",
+    start: "2025-01-12T09:00:00",
+    end: "2025-01-12T15:00:00",
+  },
+];

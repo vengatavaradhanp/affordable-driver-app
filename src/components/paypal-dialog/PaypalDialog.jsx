@@ -83,13 +83,11 @@ const PaypalDialog = React.forwardRef((props, ref) => {
       const result = await response.json();
       debugger;
       paypalResponseDialog.current.dialogHandler();
-
+      props.paymentHandler();
       return orderApprove;
     } catch (error) {
       return error;
     }
-
-    return;
   };
 
   return (

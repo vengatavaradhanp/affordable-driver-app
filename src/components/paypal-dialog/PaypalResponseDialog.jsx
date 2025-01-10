@@ -27,13 +27,13 @@ const PaypalResponseDialog = React.forwardRef((props, ref) => {
         centered
         style={{ borderRadius: "10px" }}
       >
-        <Modal.Body style={{ padding: "40px 0px" }}>
+        <Modal.Body style={{ height: "500px" }}>
           {isRunning && <Confetti width={420} height={420} />}
-          <div>
-            <div style={{ textAlign: "center", padding: "10px 0px" }}>
+          <div style={{ padding: "25px" }}>
+            <div style={{ textAlign: "center" }}>
               <i
                 class="bi bi-check-circle-fill"
-                style={{ fontSize: "60px", color: "#00b069" }}
+                style={{ fontSize: "80px", color: "#00b069" }}
               ></i>
             </div>
             <div
@@ -41,6 +41,7 @@ const PaypalResponseDialog = React.forwardRef((props, ref) => {
                 color: "#797777",
                 fontSize: "22px",
                 textAlign: "center",
+                padding: "10px 0px",
               }}
             >
               Congratulation! Your looks great <br />
@@ -51,18 +52,23 @@ const PaypalResponseDialog = React.forwardRef((props, ref) => {
                 textAlign: "center",
                 color: "#00b069",
                 fontSize: "30px",
-                padding: "20px 0px",
                 fontWeight: 600,
+                padding: "0px 0px",
               }}
             >
               $ 8.99
-              <div style={{ fontSize: "12px" }}>Three Months Validity</div>
+              <div style={{ fontSize: "12px" }}>One Year Validity</div>
             </div>
-            <div style={{ textAlign: "center", padding: "20px 0px" }}>
+            <div style={{ textAlign: "center", marginTop: "80px" }}>
               <button
                 type="button"
                 class="btn btn-primary"
-                style={{ padding: "10px 40px", borderRadius: "25px" }}
+                style={{
+                  width: "100%",
+                  borderRadius: "25px",
+                  padding: "10px",
+                  fontWeight: 600,
+                }}
                 onClick={() => navigate("/calendar")}
               >
                 Go to Calendar

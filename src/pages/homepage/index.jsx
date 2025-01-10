@@ -28,7 +28,7 @@ export default function HomePage() {
   React.useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-    }, 200);
+    }, 1000);
   }, []);
 
   const onLoad = React.useCallback(function callback(map) {

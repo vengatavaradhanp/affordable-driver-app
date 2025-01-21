@@ -8,6 +8,7 @@ import ContactUs from "../pages/contact-us";
 import Calendar from "../pages/calendar";
 import AppLoader from "../components/app-layout/AppLoader";
 import { LoaderProvider } from "../context/LoaderContext";
+import Instructors from "../pages/instructors";
 
 // const HomepageComponent = React.lazy(() => import("../pages/homepage"));
 // const LessonPackagesComponent = React.lazy(() =>
@@ -26,6 +27,7 @@ export default function AppRoute() {
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/lessons" element={<LessonPackages />} />
+            <Route path="/instructors" element={<Instructors />} />
             <Route path="/booking" element={<BookOnline />} />
             <Route path="/gift-card" element={<GiftCard />} />
             <Route path="/contact-us" element={<ContactUs />} />

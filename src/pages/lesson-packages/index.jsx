@@ -2,10 +2,12 @@ import React from "react";
 import PaypalDialog from "../../components/paypal-dialog/PaypalDialog";
 import { LessonsList } from "../../utils/constant";
 import AppLoader from "../../components/app-layout/AppLoader";
+import { useNavigate } from "react-router-dom";
 
 export default function LessonPackages() {
   const paypalDialogRef = React.useRef(null);
   const [isLoading, setIsLoading] = React.useState(true);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -105,7 +107,7 @@ export default function LessonPackages() {
                           data-toggle="modal"
                           data-target="#exampleModalCenter"
                           onClick={() =>
-                            paypalDialogRef.current.dialogHandler(item)
+                            navigate("/instructors")
                           }
                         >
                           <span className="btn btn-primary border-2 w-100">

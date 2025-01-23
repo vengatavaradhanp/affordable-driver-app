@@ -9,6 +9,7 @@ import Calendar from "../pages/calendar";
 import AppLoader from "../components/app-layout/AppLoader";
 import { LoaderProvider } from "../context/LoaderContext";
 import Instructors from "../pages/instructors";
+import PurchaseSteps from "../pages/purchase-steps";
 
 // const HomepageComponent = React.lazy(() => import("../pages/homepage"));
 // const LessonPackagesComponent = React.lazy(() =>
@@ -32,6 +33,7 @@ export default function AppRoute() {
             <Route path="/gift-card" element={<GiftCard />} />
             <Route path="/contact-us" element={<ContactUs />} />
             <Route path="/calendar" element={<Calendar />} />
+            <Route path="/purchase-steps" element={<PurchaseSteps />} />
           </Routes>
         </BrowserRouter>
       </LoaderProvider>

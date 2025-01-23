@@ -105,3 +105,39 @@ export const EventsList = [
     end: "2025-01-12T15:00:00",
   },
 ];
+
+export const InstructorList = [
+  {
+    id: 1,
+    name: "Micheal Lawson",
+    image: "https://reqres.in/img/faces/7-image.jpg",
+    min_price_per_hour: "63",
+    max_price_per_hour: "70",
+    rating: "21",
+    lessons_completed: "205",
+    availability: 1,
+    is_verified: 0,
+  },
+  {
+    id: 2,
+    name: "Lindsay Ferguson",
+    image: "https://reqres.in/img/faces/8-image.jpg",
+    min_price_per_hour: "72",
+    max_price_per_hour: "80",
+    rating: "35",
+    lessons_completed: "158",
+    availability: 1,
+    is_verified: 1,
+  },
+  {
+    id: 3,
+    name: "Byron Fields",
+    image: "https://reqres.in/img/faces/10-image.jpg",
+    min_price_per_hour: "65",
+    max_price_per_hour: "75",
+    rating: "17",
+    lessons_completed: "93",
+    availability: 0,
+    is_verified: 1,
+  },
+];

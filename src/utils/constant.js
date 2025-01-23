@@ -141,3 +141,12 @@ export const InstructorList = [
     is_verified: 1,
   },
 ];
+
+export const DateList = [
+  { id: 1, date: "2025-01-21" },
+  { id: 2, date: "2025-01-22" },
+  { id: 3, date: "2025-01-23" },
+];
+
+export const API_URL =
+  "http://206.189.141.1/expert-driver/public/index.php/api";

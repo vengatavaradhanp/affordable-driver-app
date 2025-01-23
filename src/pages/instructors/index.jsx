@@ -11,7 +11,7 @@ export default function Instructor() {
   const navigate = useNavigate();
   return (
     <div>
-      <Container style={{ background: "#f2f4f7" }} fluid>
+      {/* <Container style={{ background: "#f2f4f7" }} fluid>
         <Container class="container">
           <div
             style={{
@@ -24,7 +24,7 @@ export default function Instructor() {
             <h3 className="display-6 mb-0">Filter Options</h3>
           </div>
         </Container>
-      </Container>
+      </Container> */}
       <Container class="container" style={{ width: "70%" }}>
         <div className="pt-5">
           <h3>3 Auto instructors available in the next 7 days</h3>

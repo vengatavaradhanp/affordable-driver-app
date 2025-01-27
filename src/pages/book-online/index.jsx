@@ -5,10 +5,24 @@ export default function BookOnline() {
   return (
     <>
       <div
-        className="container-fluid page-header py-6 my-6 mt-0 wow fadeIn"
+        className="container-fluid page-header py-6 my-5 mt-0 wow fadeIn"
         data-wow-delay="0.1s"
       >
-        <div className="container text-center"></div>
+        <div
+          className="container"
+          style={{
+            display: "flex",
+            height: "100%",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <div className="row justify-content-center">
+            <div className="col-lg-12">
+              <h3 className="display-5 text-light mb-0">Book Online</h3>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Testimonial Start */}

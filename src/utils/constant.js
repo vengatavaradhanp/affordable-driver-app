@@ -32,3 +32,121 @@ export const TimeData = [
   { value: "23:00", label: "11:00 PM" },
   { value: "24:00", label: "12:00 PM" },
 ];
+
+export const LessonsList = [
+  {
+    is_popular: 1,
+    count: "3",
+    time_per_lesson: "60",
+    title: "An Affordable and Practical Start",
+    validity_end: "01/01/2026",
+    is_active: true,
+  },
+  {
+    is_popular: 1,
+    count: "5",
+    time_per_lesson: "30",
+    title: "An Affordable and Practical Start",
+    validity_end: "01/01/2026",
+    is_active: true,
+  },
+  {
+    is_popular: 0,
+    count: "7",
+    time_per_lesson: "25",
+    title: "Big Savings & Our Most Requested Package",
+    validity_end: "01/06/2025",
+    is_active: true,
+  },
+  {
+    is_popular: 0,
+    count: "10",
+    time_per_lesson: "60",
+    title: "This is the Ultimate Lesson Package",
+    validity_end: "01/01/2026",
+    is_active: true,
+  },
+];
+
+export const EventsList = [
+  {
+    id: 1,
+    title: "Driving Class 1",
+    description: "Test",
+    start: "2025-01-01T10:00:00",
+    end: "2025-01-01T12:00:00",
+  },
+  {
+    id: 2,
+    title: "Driving Class 2",
+    description: "Test",
+    start: "2025-01-03T14:00:00",
+    end: "2025-01-03T16:00:00",
+  },
+  {
+    id: 3,
+    title: "Driving Class 3",
+    description: "Test",
+    start: "2025-01-08T09:30:00",
+    end: "2025-01-08T11:00:00",
+  },
+  {
+    id: 4,
+    title: "Driving Class 4",
+    description: "Test",
+    start: "2025-01-10T16:00:00",
+    end: "2025-01-10T17:30:00",
+  },
+  {
+    id: 5,
+    title: "Driving Class 5",
+    description: "Test",
+    start: "2025-01-12T09:00:00",
+    end: "2025-01-12T15:00:00",
+  },
+];
+
+export const InstructorList = [
+  {
+    id: 1,
+    name: "Micheal Lawson",
+    image: "https://reqres.in/img/faces/7-image.jpg",
+    min_price_per_hour: "63",
+    max_price_per_hour: "70",
+    rating: "21",
+    lessons_completed: "205",
+    availability: 1,
+    is_verified: 0,
+  },
+  {
+    id: 2,
+    name: "Lindsay Ferguson",
+    image: "https://reqres.in/img/faces/8-image.jpg",
+    min_price_per_hour: "72",
+    max_price_per_hour: "80",
+    rating: "35",
+    lessons_completed: "158",
+    availability: 1,
+    is_verified: 1,
+  },
+  {
+    id: 3,
+    name: "Byron Fields",
+    image: "https://reqres.in/img/faces/10-image.jpg",
+    min_price_per_hour: "65",
+    max_price_per_hour: "75",
+    rating: "17",
+    lessons_completed: "93",
+    availability: 0,
+    is_verified: 1,
+  },
+];
+
+export const DateList = [
+  { id: 1, date: "2025-01-21" },
+  { id: 2, date: "2025-01-22" },
+  { id: 3, date: "2025-01-23" },
+];
+
+export const API_URL =
+  "http://206.189.141.1/expert-driver/public/index.php/api";

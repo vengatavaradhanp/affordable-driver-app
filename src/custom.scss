@@ -1,7 +1,7 @@
 :root {
-  --primary: #bd1515;
+  --primary: #2b9348;
   --secondary: #757575;
-  --light: #f3f6f8;
+  --light: #f9f7f7;
   --dark: #181818;
 }
 
@@ -180,7 +180,7 @@
 
 .page-header {
   background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
-    url(./assets/images/bgHome.jpeg) center center no-repeat;
+    url(./assets/images/bgHome.jpg) center center no-repeat;
   background-size: cover;
   height: 400px;
 }
@@ -208,7 +208,7 @@
       rgba(255, 255, 255, 0.9),
       rgba(255, 255, 255, 0.9)
     ),
-    url(./assets/images/bgHome.jpeg) center center no-repeat;
+    url(./assets/images/bgHome.jpg) center center no-repeat;
   background-attachment: fixed;
   background-size: cover;
 }
@@ -395,4 +395,26 @@ span.rating-star-5 {
 .modal-title {
   font-weight: 600;
   font-size: 22px;
+}
+// .modal.show .modal-dialog {
+//   width: 400px !important;
+// }
+.fc .fc-daygrid-day.fc-day-today {
+  background-color: #d0f4da;
+}
+
+.fc-daygrid-dot-event.fc-event-mirror,
+.fc-daygrid-dot-event:hover {
+  background-color: #d0f4da;
+  color: #fff !important;
+}
+
+.fc-direction-ltr .fc-daygrid-event.fc-event-end,
+.fc-direction-rtl .fc-daygrid-event.fc-event-start {
+  background-color: #2b9348;
+  color: #fff !important;
+}
+
+.fc-daygrid-event-dot {
+  border: calc(var(--fc-daygrid-event-dot-width) / 2) solid #fff;
 }

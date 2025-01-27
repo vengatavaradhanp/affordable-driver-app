@@ -4,23 +4,21 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import DatePicker from "react-datepicker";
-import { TimeData } from "../../utils/constant";
+import { EventsList, TimeData } from "../../utils/constant";
+import LessonPlan from "../../components/lesson-plan/LessonPlanDialog";
+import LessonPlanDialog from "../../components/lesson-plan/LessonPlanDialog";
+
+// {
+//   id: 1,
+//   title: "Meeting",
+//   start: "2024-01-01T10:00:00",
+//   end: "2024-01-01T12:00:00",
+// },
 
 export default function Calendar() {
-  const [events, setEvents] = React.useState([
-    {
-      id: 1,
-      title: "Meeting",
-      start: "2024-01-01T10:00:00",
-      end: "2024-01-01T12:00:00",
-    },
-    {
-      id: 2,
-      title: "Workshop",
-      start: "2024-01-03T14:00:00",
-      end: "2024-01-03T16:00:00",
-    },
-  ]);
+  const [eventsList, setEventsList] = React.useState(EventsList);
+
+  const lessonPlanDialogRef = React.useRef(null);
 
   const [modal, setModal] = React.useState({
     isOpen: false,
@@ -50,24 +48,21 @@ export default function Calendar() {
     });
   };
 
-  const handleEventClick = (clickInfo) => {
-    const startDate = clickInfo.event.startStr.split("T")[0];
-    const startTime = clickInfo.event.startStr.split("T")[1].substring(0, 5);
-    const endDate = clickInfo.event.endStr.split("T")[0];
-    const endTime = clickInfo.event.endStr.split("T")[1].substring(0, 5);
+  const handleDateClick = (info) => {
+    lessonPlanDialogRef.current.dialogHandler();
+  };
 
-    setModal({
-      isOpen: true,
-      mode: "edit",
-      event: {
-        id: clickInfo.event.id,
-        title: clickInfo.event.title,
-        startDate,
-        startTime,
-        endDate,
-        endTime,
-      },
-    });
+  const handleEventClick = (info) => {
+    const id = info.event._def.publicId;
+    const { title, start, end, extendedProps } = info.event;
+    const data = {
+      id: id,
+      title: title,
+      description: extendedProps.description,
+      start: start,
+      end: end,
+    };
+    lessonPlanDialogRef.current.dialogHandler(data);
   };
 
   const handleCloseModal = () => {
@@ -86,7 +81,7 @@ export default function Calendar() {
   };
 
   const deleteEventById = (id) => {
-    setEvents((prevEvents) =>
+    setEventsList((prevEvents) =>
       prevEvents.filter((event) => modal.event.id !== id)
     );
   };
@@ -101,7 +96,7 @@ export default function Calendar() {
 
       if (modal.mode === "add") {
         // Add a new event
-        setEvents((prevEvents) => [
+        setEventsList((prevEvents) => [
           ...prevEvents,
           {
             id: Date.now(),
@@ -114,7 +109,7 @@ export default function Calendar() {
         ]);
       } else {
         // Update an existing event
-        setEvents((prevEvents) =>
+        setEventsList((prevEvents) =>
           prevEvents.map((event) =>
             event.id === modal.event.id ? { ...modal.event, start, end } : event
           )
@@ -130,232 +125,55 @@ export default function Calendar() {
 
   const isTimeDisabled = (time, date) => {
     const dateTime = `${date}T${time}`;
-    return events.some(
+    return eventsList.some(
       (event) =>
         new Date(event.start) <= new Date(dateTime) &&
         new Date(dateTime) < new Date(event.end)
     );
   };
 
+  const handleAddEvents = (data) => {
+    const list = [...eventsList];
+    list.push({
+      title: data.title,
+      description: data.description,
+      start: data.start,
+      end: data.end,
+    });
+    setEventsList(list);
+  };
+
   return (
-    <div className="container-fluid my-4 custom-calendar">
-      <div style={{ margin: "0px 50px" }}>
-        <FullCalendar
-          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          headerToolbar={{
-            left: "prev,next today",
-            center: "title",
-            right: "dayGridMonth,timeGridWeek,timeGridDay",
-          }}
-          buttonText={{
-            today: "Today",
-            month: "Month",
-            week: "Week",
-            day: "Day",
-            // prev: 'Prev',
-            // next: 'Next',
-          }}
-          initialView="dayGridMonth"
-          selectable={true}
-          editable={true}
-          events={events}
-          select={handleDateSelect}
-          eventClick={handleEventClick}
-          height={"90vh"}
-          dayHeaderFormat={{ weekday: "long" }}
-        />
-      </div>
-
-      {modal.isOpen && (
-        <div
-          className="modal show d-block"
-          style={{ background: "rgba(0, 0, 0, 0.4)" }}
-          tabIndex="-1"
-        >
-          <div className="modal-dialog" style={{ marginTop: "5em" }}>
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">
-                  {modal.mode === "add" ? "Add Event" : "Edit Event"}
-                </h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  aria-label="Close"
-                  onClick={handleCloseModal}
-                ></button>
-              </div>
-              <div className="modal-body">
-                <div className="mb-3">
-                  <label htmlFor="eventTitle" className="form-label">
-                    Event Title
-                  </label>
-                  <input
-                    type="text"
-                    id="eventTitle"
-                    className="form-control"
-                    value={modal.event.title}
-                    onChange={(e) =>
-                      setModal({
-                        ...modal,
-                        event: { ...modal.event, title: e.target.value },
-                      })
-                    }
-                  />
-                </div>
-
-                <div className="row">
-                  <div className="col-12 col-md-6">
-                    {/* Start Date and Time Inputs */}
-                    <div className="mb-3">
-                      <label htmlFor="startDate" className="form-label">
-                        Start Date
-                      </label>
-                      <DatePicker
-                        selected={
-                          modal.event.startDate
-                            ? new Date(modal.event.startDate)
-                            : null
-                        }
-                        onChange={(date) =>
-                          setModal({
-                            ...modal,
-                            event: {
-                              ...modal.event,
-                              startDate: date
-                                ? date.toISOString().split("T")[0]
-                                : "",
-                            },
-                          })
-                        }
-                        minDate={new Date()}
-                        dateFormat="dd-MM-yyyy"
-                        className="form-control"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-12 col-md-6">
-                    <div className="mb-3">
-                      <label htmlFor="startTime" className="form-label">
-                        Start Time
-                      </label>
-                      <select
-                        id="startTime"
-                        className="form-select"
-                        value={modal.event.startTime}
-                        onChange={(e) =>
-                          setModal({
-                            ...modal,
-                            event: {
-                              ...modal.event,
-                              startTime: e.target.value,
-                            },
-                          })
-                        }
-                      >
-                        {TimeData.map((time) => (
-                          <option
-                            key={time.value}
-                            value={time.value}
-                            disabled={isTimeDisabled(
-                              time.value,
-                              modal.event.startDate
-                            )}
-                          >
-                            {time.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="row">
-                  <div className="col-12 col-md-6">
-                    {/* End Date and Time Inputs */}
-                    <div className="mb-3">
-                      <label htmlFor="endDate" className="form-label">
-                        End Date
-                      </label>
-                      <DatePicker
-                        selected={
-                          modal.event.endDate >= modal.event.startDate
-                            ? new Date(modal.event.endDate)
-                            : null
-                        }
-                        onChange={(date) =>
-                          setModal({
-                            ...modal,
-                            event: {
-                              ...modal.event,
-                              endDate: date
-                                ? date.toISOString().split("T")[0]
-                                : "",
-                            },
-                          })
-                        }
-                        minDate={new Date(modal.event.startDate || new Date())}
-                        dateFormat="dd-MM-yyyy"
-                        className="form-control"
-                        // disabled={modal.event.startDate && modal.event.endDate < modal.event.startDate}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-12 col-md-6">
-                    <div className="mb-3">
-                      <label htmlFor="endTime" className="form-label">
-                        End Time
-                      </label>
-                      <select
-                        id="endTime"
-                        className="form-select"
-                        value={modal.event.endTime}
-                        onChange={(e) =>
-                          setModal({
-                            ...modal,
-                            event: { ...modal.event, endTime: e.target.value },
-                          })
-                        }
-                      >
-                        {TimeData.map((time) => (
-                          <option
-                            key={time.value}
-                            value={time.value}
-                            disabled={isTimeDisabled(
-                              time.value,
-                              modal.event.endDate || modal.event.startDate
-                            )}
-                          >
-                            {time.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-danger"
-                  onClick={handleDeleteEvent}
-                >
-                  {modal.mode === "add" ? "Add Event" : "Delete Event"}
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={handleCloseModal}
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </div>
+    <>
+      <div className="container-fluid my-4 custom-calendar">
+        <div style={{ margin: "0px 50px" }}>
+          <FullCalendar
+            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+            headerToolbar={{
+              left: "prev,next today",
+              center: "title",
+              right: "dayGridMonth,timeGridWeek,timeGridDay",
+            }}
+            buttonText={{
+              today: "Today",
+              month: "Month",
+              week: "Week",
+              day: "Day",
+              // prev: 'Prev',
+              // next: 'Next',
+            }}
+            initialView="dayGridMonth"
+            selectable={true}
+            editable={true}
+            events={eventsList}
+            select={handleDateClick}
+            eventClick={handleEventClick}
+            height={"90vh"}
+            dayHeaderFormat={{ weekday: "long" }}
+          />
         </div>
-      )}
-    </div>
+      </div>
+      <LessonPlanDialog ref={lessonPlanDialogRef} addEvents={handleAddEvents} />
+    </>
   );
 }

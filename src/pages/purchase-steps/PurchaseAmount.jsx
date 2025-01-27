@@ -145,6 +145,40 @@ export default function PurchaseAmount() {
                         </span>
                       </div>
                     </div>
+                    <div
+                      className="d-flex"
+                      style={{
+                        alignItems: "center",
+                        padding: "15px 20px",
+                        border: "1px solid #ddd",
+                        borderRadius: "10px",
+                        margin: "10px 0px",
+                      }}
+                    >
+                      <div>
+                        <Form.Check
+                          type="radio"
+                          aria-label="radio 2"
+                          name="hours"
+                        />
+                      </div>
+                      <div style={{ flex: 2 }}>
+                        <div style={{ marginLeft: "30px" }}>
+                          <select
+                            className="w-100 border-0"
+                            style={{
+                              outline: "none",
+                              fontSize: "14px",
+                              background: "transparent",
+                            }}
+                          >
+                            <option value="">Select Custom Hours</option>
+                            <option value="10">10 hours</option>
+                            <option value="20">20 hours</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
                     {/* <label
                     className="d-flex justify-content-between align-items-center"
                     style={{

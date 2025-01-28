@@ -43,7 +43,7 @@ const PurchaseSteps = () => {
 
   const handleBack = () => {
     if (step === 1) {
-      navigate("/instructors");
+      navigate("/lessons");
     } else {
       if (step > 1) setStep(step - 1);
     }
@@ -63,7 +63,7 @@ const PurchaseSteps = () => {
       // case 3:
       //   return <PurchaseRegistration />;
       case 1:
-        return <PurchaseBookingCalendar />;
+        return <PurchaseBookingCalendar handleNext={handleNext} />;
       case 2:
         return <PurchaseRegistration />;
       default:
@@ -79,11 +79,26 @@ const PurchaseSteps = () => {
 
   return (
     <Container class="container" style={{ width: "80%", marginTop: "30px" }}>
-      <h2 style={{ padding: "10px 0px" }}>Learner Purchase Steps</h2>
+      <h2 style={{ color: "#2b9348" }}> Purchase Steps {step}</h2>
+      {step == 1 && (
+        <div style={{ fontSize: "20px", fontWeight: 900, color: "#012a41" }}>
+          {" "}
+          Select your preferred time slot
+        </div>
+      )}
+      {step == 2 && (
+        <>
+          <div style={{ fontSize: "20px", fontWeight: 900, color: "#012a41" }}>
+            {" "}
+            Learner Registration
+          </div>
+          <span>Existing learner? Log in</span>
+        </>
+      )}
       <ProgressBar
         now={progress}
         label={`${Math.round(progress)}%`}
-        className="mb-4"
+        className="my-4"
       />
       <div className="step-content mb-4" style={{ minHeight: "400px" }}>
         {renderStepContent()}

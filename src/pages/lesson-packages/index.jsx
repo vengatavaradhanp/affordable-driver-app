@@ -106,7 +106,9 @@ export default function LessonPackages() {
                           className="mt-4"
                           data-toggle="modal"
                           data-target="#exampleModalCenter"
-                          onClick={() => navigate("/purchase-steps")}
+                          onClick={() =>
+                            navigate("/purchase-steps", { state: { ...item } })
+                          }
                         >
                           <span className="btn btn-primary border-2 w-100">
                             Select

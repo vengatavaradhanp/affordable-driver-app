@@ -9,9 +9,11 @@ import "react-datepicker/dist/react-datepicker.css"; // Import styles for DatePi
 import "../../App.css";
 import SlotsBookingDialog from "../../components/lesson-plan/SlotsBookingDialog";
 import { EventsList } from "../../utils/constant";
+import { useLocation } from "react-router-dom";
 
-export default function PurchaseBookingCalendar() {
+export default function PurchaseBookingCalendar(props) {
   const [eventsList, setEventsList] = React.useState([]);
+  const location = useLocation();
 
   const lessonPlanDialogRef = React.useRef(null);
 
@@ -29,14 +31,14 @@ export default function PurchaseBookingCalendar() {
   });
 
   const handleAddEvents = (data) => {
-    const list = [...eventsList];
-    list.push({
-      title: data.title,
-      description: data.description,
-      start: data.start,
-      end: data.end,
-    });
-    setEventsList(list);
+    // const list = [...eventsList];
+    // list.push({
+    //   title: data.title,
+    //   description: data.description,
+    //   start: data.start,
+    //   end: data.end,
+    // });
+    // setEventsList(list);
   };
   const handleDateClick = (info) => {
     lessonPlanDialogRef.current.dialogHandler();
@@ -53,6 +55,34 @@ export default function PurchaseBookingCalendar() {
       end: end,
     };
     lessonPlanDialogRef.current.dialogHandler(data);
+  };
+
+  // Custom render function for day cells
+  const renderDayCellContent = (dayCellInfo, q) => {
+    console.log(dayCellInfo);
+    console.log(q);
+    return (
+      <div style={{ textAlign: "right" }}>
+        <div>{dayCellInfo.dayNumberText}</div> {/* Default date number */}
+        <div
+          style={{
+            fontSize: "14px",
+            position: "relative",
+            top: "70px",
+            fontSize: "12px",
+            right: "5px",
+            fontWeight: 900,
+            color: "rgb(228 84 78)",
+          }}
+        >
+          {Math.floor(Math.random() * 10)} Slots Available
+        </div>{" "}
+      </div>
+    );
+  };
+
+  const handleSlotSubmit = () => {
+    props.handleNext();
   };
 
   return (
@@ -80,14 +110,15 @@ export default function PurchaseBookingCalendar() {
             events={eventsList}
             select={handleDateClick}
             eventClick={handleEventClick}
-            height={"100vh"}
             dayHeaderFormat={{ weekday: "long" }}
+            dayCellContent={renderDayCellContent}
           />
         </div>
       </div>
       <SlotsBookingDialog
         ref={lessonPlanDialogRef}
-        addEvents={handleAddEvents}
+        handleSlotSubmit={handleSlotSubmit}
+        slotLimit={location.state?.count}
       />
     </>
   );

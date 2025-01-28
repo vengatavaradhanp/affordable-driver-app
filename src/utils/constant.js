@@ -150,3 +150,55 @@ export const DateList = [
 
 export const API_URL =
   "http://206.189.141.1/expert-driver/public/index.php/api";
+
+export const AvailableSlots = [
+  {
+    id: 1,
+    start_hour: "08:00 AM",
+    end_hour: "09:00 AM",
+    date: "2025-01-28",
+    active: false,
+  },
+  {
+    id: 2,
+    start_hour: "09:15 AM",
+    end_hour: "10:15 AM",
+    date: "2025-01-28",
+    active: false,
+  },
+  {
+    id: 3,
+    start_hour: "10:30 AM",
+    end_hour: "11:30 AM",
+    date: "2025-01-28",
+    active: false,
+  },
+  {
+    id: 5,
+    start_hour: "12:45 PM",
+    end_hour: "01:45 PM",
+    date: "2025-01-28",
+    active: false,
+  },
+  {
+    id: 6,
+    start_hour: "02:00 PM",
+    end_hour: "03:00 PM",
+    date: "2025-01-28",
+    active: false,
+  },
+  {
+    id: 7,
+    start_hour: "03:15 PM",
+    end_hour: "04:15 PM",
+    date: "2025-01-28",
+    active: false,
+  },
+  {
+    id: 8,
+    start_hour: "04:30 PM",
+    end_hour: "05:30 PM",
+    date: "2025-01-28",
+    active: false,
+  },
+];

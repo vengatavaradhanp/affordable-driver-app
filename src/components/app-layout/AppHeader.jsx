@@ -1,11 +1,12 @@
 import React from "react";
 import { NavLink, useLocation, useMatch } from "react-router-dom";
 import logo from "../../assets/images/logos.svg";
+import user from "../../assets/images/team-4.jpg";
 
 export default function AppHeader() {
   const location = window.location.pathname;
   return (
-    <nav className="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">
+    <nav className="navbar navbar-expand-lg bg-white navbar-light sticky-top p-2">
       <div className="container p-0">
         <a
           href="/"
@@ -73,13 +74,14 @@ export default function AppHeader() {
             >
               CONTACT US
             </a>
+            <a
+              href="my-profile"
+              className="nav-item nav-link"
+              style={{ color: "rgb(1 42 65)", fontWeight: 600 }}
+            >
+              My Profile &nbsp;&nbsp;<i class="bi bi-arrow-right"></i>
+            </a>
           </div>
-          <a
-            href="/"
-            className="btn btn-primary py-4 px-lg-5 d-none d-lg-block"
-          >
-            <i className="fa fa-user-circle" /> Log In
-          </a>
         </div>
       </div>
     </nav>

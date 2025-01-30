@@ -10,6 +10,7 @@ import "../../App.css";
 import SlotsBookingDialog from "../../components/lesson-plan/SlotsBookingDialog";
 import { EventsList } from "../../utils/constant";
 import { useLocation } from "react-router-dom";
+import slotBookingService from "../../services/slotBookingService";
 
 export default function PurchaseBookingCalendar(props) {
   const [eventsList, setEventsList] = React.useState([]);
@@ -29,6 +30,23 @@ export default function PurchaseBookingCalendar(props) {
       endTime: "",
     },
   });
+
+  React.useEffect(() => {
+    const fetchAvailableSlots = async () => {
+      try {
+        const payload = {
+          year: 2025,
+          month: 1,
+        };
+        const data = await slotBookingService.getAvailableMonthlySlots(payload);
+        // setSlotList(data);
+      } catch (error) {
+        console.error("Error fetching available slots", error);
+      }
+    };
+
+    fetchAvailableSlots();
+  }, []);
 
   const handleAddEvents = (data) => {
     // const list = [...eventsList];

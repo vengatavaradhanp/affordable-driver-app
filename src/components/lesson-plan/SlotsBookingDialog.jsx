@@ -8,6 +8,7 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import ListGroup from "react-bootstrap/ListGroup";
 import { AvailableSlots } from "../../utils/constant";
+import slotBookingService from "../../services/slotBookingService";
 
 const SlotsBookingDialog = React.forwardRef((props, ref) => {
   const [availableSlotsList, setAvailableSlotsList] =
@@ -22,6 +23,7 @@ const SlotsBookingDialog = React.forwardRef((props, ref) => {
     end: null,
   });
   const navigate = useNavigate();
+  const [slotList, setSlotList] = React.useState(null);
 
   React.useImperativeHandle(ref, () => ({
     dialogHandler: (info) => {
@@ -75,9 +77,10 @@ const SlotsBookingDialog = React.forwardRef((props, ref) => {
   return (
     <Modal show={show} onHide={handleClose} centered backdrop="static">
       <Modal.Header style={{ justifyContent: "center" }}>
-        <Modal.Title>Select your preferred time slot now!</Modal.Title>
+        <Modal.Title>Select your preferred time slot</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        {/* {JSON.stringify(slotList)} */}
         <div
           style={{
             textAlign: "center",

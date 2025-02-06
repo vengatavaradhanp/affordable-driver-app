@@ -9,36 +9,40 @@ import Form from "react-bootstrap/Form";
 import ListGroup from "react-bootstrap/ListGroup";
 import { AvailableSlots } from "../../utils/constant";
 import slotBookingService from "../../services/slotBookingService";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setSelectedSlots } from "../../features/slotBookingSlice";
 
 const SlotsBookingDialog = React.forwardRef((props, ref) => {
-  const [availableSlotsList, setAvailableSlotsList] =
-    React.useState(AvailableSlots);
   const [activeSlotsList, setActiveSlotsList] = React.useState([]);
   const [show, setShow] = React.useState(false);
   const [eventExist, setEventExist] = React.useState(false);
-  const [fields, setFields] = React.useState({
-    title: "",
-    description: "",
-    start: null,
-    end: null,
-  });
+  const [slots, setSlots] = React.useState([]);
   const navigate = useNavigate();
   const [slotList, setSlotList] = React.useState(null);
+  const [selectedDate, setSelectedDate] = React.useState(null)
+  const dispatch = useDispatch();
 
   React.useImperativeHandle(ref, () => ({
-    dialogHandler: (info) => {
-      if (info) {
-        const data = { ...fields };
-        data["id"] = info.id;
-        data["title"] = info.title;
-        data["description"] = info.description;
-        data["start"] = new Date(info.start).toISOString();
-        data["end"] = info.end;
-        debugger;
+    dialogHandler: (data, date) => {
+      if (data[date]) {
+        const list = [];
+        data[date].forEach((element) => {
+          list.push({
+            start_hour: element.start_hour,
+            end_hour: element.end_hour,
+            date: date,
+            active: element.active,
+          })
+        })
         setEventExist(true);
-        setFields(data);
+        setSlots(list);
+        setShow(true);
+        setSelectedDate(date)
+      } else {
+        setShow(false);
       }
-      setShow(true);
+      
     },
   }));
 
@@ -48,30 +52,35 @@ const SlotsBookingDialog = React.forwardRef((props, ref) => {
   };
 
   const clearFields = () => {
-    setAvailableSlotsList(AvailableSlots);
-  };
-
-  const handleInputChange = (event) => {
-    const data = { ...fields };
-    data[event.target.name] = event.target.value;
-    setFields(data);
+    setSlots(AvailableSlots);
   };
 
   const handleSlotSubmit = (event) => {
     event.preventDefault();
     setShow(false);
     clearFields();
-    props.handleSlotSubmit(fields);
+    props.handleSlotSubmit(slots, selectedDate);
   };
 
   const handleSlotSelect = (index) => {
-    let selectedSlot = [...availableSlotsList];
-    const activeSlot = availableSlotsList.filter(
+    // activeSlotsList.length < props.slotLimit -1
+    let selectedSlot = [...slots];
+    const activeSlot = slots.filter(
       (item) => item.active === true
     );
-    selectedSlot[index].active = !selectedSlot[index].active;
-    setAvailableSlotsList(selectedSlot);
+    if (selectedSlot[index].active === true) {
+      selectedSlot[index].active = !selectedSlot[index].active;
+    } else {
+      if (activeSlot.length < props.slotLimit) {
+        selectedSlot[index].active = !selectedSlot[index].active;
+      } else {
+        toast.warn('Slot limit reached !')
+      }
+    }
+    dispatch(setSelectedSlots({...selectedSlot[index]}))
+    setSlots(selectedSlot);
     setActiveSlotsList(activeSlot);
+
   };
 
   return (
@@ -90,7 +99,7 @@ const SlotsBookingDialog = React.forwardRef((props, ref) => {
             color: "#2b9348",
           }}
         >
-          {props.slotLimit - activeSlotsList.length} Slots Available
+          You have {props.slotLimit - slots.filter((item) => item.active == true).length} Slots Remaining
         </div>
         <div style={{ padding: "10px 20px" }}>
           {/* <div
@@ -106,10 +115,10 @@ const SlotsBookingDialog = React.forwardRef((props, ref) => {
             4 Slots Available
           </div> */}
           <ListGroup as="ol">
-            {availableSlotsList.map((item, index) => (
+            {slots.map((item, index) => (
               <ListGroup.Item
                 as="li"
-                active={item.active}
+                active={item.active === true}
                 onClick={() => handleSlotSelect(index)}
                 style={{
                   cursor: "pointer",
@@ -159,7 +168,7 @@ const SlotsBookingDialog = React.forwardRef((props, ref) => {
             onClick={handleSlotSubmit}
             style={{ width: "100px" }}
             disabled={
-              availableSlotsList.filter((item) => item.active === true)
+              slots.filter((item) => item.active === true)
                 .length === 0
             }
           >

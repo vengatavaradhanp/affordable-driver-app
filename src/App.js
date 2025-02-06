@@ -6,26 +6,29 @@ import AppFooter from "./components/app-layout/AppFooter";
 import HomePage from "./pages/homepage";
 import AppRoute from "./routes";
 import { ToastContainer } from "react-toastify";
+import { Provider } from "react-redux";
+import { store } from "./reducers/store";
 
 function App() {
-  console.log("##", process.env);
   return (
-    <div>
-      <AppHeader />
-      <AppRoute />
-      <AppFooter />
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-    </div>
+    <Provider store={store}>
+      <div>
+        <AppHeader />
+        <AppRoute />
+        <AppFooter />
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+      </div>
+    </Provider>
   );
 }
 

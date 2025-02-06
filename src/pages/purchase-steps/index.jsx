@@ -81,14 +81,14 @@ const PurchaseSteps = () => {
     <Container class="container" style={{ width: "80%", marginTop: "30px" }}>
       <h2 style={{ color: "#2b9348" }}> Purchase Steps {step}</h2>
       {step == 1 && (
-        <div style={{ fontSize: "20px", fontWeight: 900, color: "#012a41" }}>
+        <div style={{ fontSize: "20px", fontWeight: 600, color: "#012a41" }}>
           {" "}
           Select your preferred time slot
         </div>
       )}
       {step == 2 && (
         <>
-          <div style={{ fontSize: "20px", fontWeight: 900, color: "#012a41" }}>
+          <div style={{ fontSize: "20px", fontWeight: 600, color: "#012a41" }}>
             {" "}
             Learner Registration
           </div>

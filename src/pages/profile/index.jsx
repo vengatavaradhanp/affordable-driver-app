@@ -65,7 +65,7 @@ export default function MyProfile() {
                                 <div
                                   style={{
                                     fontSize: "26px",
-                                    fontWeight: 900,
+                                    fontWeight: 600,
                                     color: "#012a41",
                                   }}
                                 >
@@ -210,7 +210,7 @@ export default function MyProfile() {
                                 <div
                                   style={{
                                     fontSize: "26px",
-                                    fontWeight: 900,
+                                    fontWeight: 600,
                                     color: "#012a41",
                                   }}
                                 >

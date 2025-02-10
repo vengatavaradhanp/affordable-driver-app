@@ -17,8 +17,6 @@ export default function PurchaseBookingCalendar(props) {
   const slotsBookingDialogRef = useRef(null);
   const slotsSelector = useSelector(state => state.slots);
 
-  console.log('####', slotsSelector)
-
   // Function to fetch available slots for the current month
   const fetchAvailableSlots = useCallback(async (year, month) => {
     try {

@@ -11,6 +11,10 @@ import { LoaderProvider } from "../context/LoaderContext";
 import Instructors from "../pages/instructors";
 import PurchaseSteps from "../pages/purchase-steps";
 import MyProfile from "../pages/profile";
+import Loginpage from "../pages/auth/Loginpage";
+import { AuthProvider } from "../context/AuthContext";
+import ProtectedRoute from "./ProtectedRoute";
+import HomePage from "../pages/homepage";
 
 // const HomepageComponent = React.lazy(() => import("../pages/homepage"));
 // const LessonPackagesComponent = React.lazy(() =>
@@ -25,20 +29,25 @@ export default function AppRoute() {
   return (
     <Suspense>
       <LoaderProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Homepage />} />
-            <Route path="/lessons" element={<LessonPackages />} />
-            <Route path="/instructors" element={<Instructors />} />
-            <Route path="/booking" element={<BookOnline />} />
-            <Route path="/gift-card" element={<GiftCard />} />
-            <Route path="/contact-us" element={<ContactUs />} />
-            <Route path="/calendar" element={<Calendar />} />
-            <Route path="/purchase-steps" element={<PurchaseSteps />} />
-            <Route path="/my-profile" element={<MyProfile />} />
-          </Routes>
-        </BrowserRouter>
+        <AuthProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/login" element={<Loginpage />} />
+              <Route element={<ProtectedRoute />}>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/lessons" element={<LessonPackages />} />
+                <Route path="/instructors" element={<Instructors />} />
+                <Route path="/booking" element={<BookOnline />} />
+                <Route path="/gift-card" element={<GiftCard />} />
+                <Route path="/contact-us" element={<ContactUs />} />
+                <Route path="/calendar" element={<Calendar />} />
+                <Route path="/purchase-steps" element={<PurchaseSteps />} />
+                <Route path="/profile" element={<MyProfile />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </AuthProvider>
       </LoaderProvider>
-    </Suspense>
+    </Suspense >
   );
 }

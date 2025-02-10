@@ -153,7 +153,7 @@ const EventScheduler = () => {
           today: "Today",
           month: "Month",
           week: "Week",
-          day: "Day",
+          day: "Daydss",
           // prev: 'Prev',
           // next: 'Next',
         }}
@@ -166,7 +166,7 @@ const EventScheduler = () => {
         height={"90vh"}
         dayHeaderFormat={{ weekday: "long" }}
       />
-
+sddsf
       {modal.isOpen && (
         <div
           className="modal show d-block"

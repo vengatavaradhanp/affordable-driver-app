@@ -74,13 +74,16 @@ export default function AppHeader() {
             >
               CONTACT US
             </a>
-            <a
+            {/* <a
               href="my-profile"
               className="nav-item nav-link"
               style={{ color: "rgb(1 42 65)", fontWeight: 600 }}
             >
               My Profile &nbsp;&nbsp;<i class="bi bi-arrow-right"></i>
-            </a>
+            </a> */}
+            
+            <a href="/login" className="btn btn-primary p-4 px-5 d-none d-lg-block"
+            ><i className="fa fa-user-circle"></i> Log In</a>
           </div>
         </div>
       </div>

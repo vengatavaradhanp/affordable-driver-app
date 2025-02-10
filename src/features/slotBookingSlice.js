@@ -9,7 +9,7 @@ const slotBookingSlice = createSlice({
   initialState,
   reducers: {
     setSelectedSlots: (state, action) => {
-      state.slots = action.payload;
+      state.slots.push(action.payload);
     }
   },
 });

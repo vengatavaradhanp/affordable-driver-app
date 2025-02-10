@@ -4,8 +4,10 @@ import Nav from "react-bootstrap/Nav";
 import Row from "react-bootstrap/Row";
 import Tab from "react-bootstrap/Tab";
 import Calendar from "../calendar";
+import { ToggleButton, ToggleButtonGroup } from "react-bootstrap";
 
 export default function MyProfile() {
+  const [selected, setSelected] = React.useState("profile");
   return (
     <>
       <>
@@ -25,7 +27,7 @@ export default function MyProfile() {
           >
             <div className="row justify-content-center">
               <div className="col-lg-12">
-                <h3 className="display-5 text-light mb-0">My Profile</h3>
+                <h3 className="display-5 text-light mb-0">Profile</h3>
               </div>
             </div>
           </div>
@@ -38,7 +40,151 @@ export default function MyProfile() {
               <div className="col-lg-12 wow fadeIn" data-wow-delay="0.1s">
                 <div className="bg-white shadow d-flex align-items-center h-100 p-4">
                   <div className="col-lg-12 wow fadeInUp" data-wow-delay="0.5s">
-                    <Tab.Container
+                    <ToggleButtonGroup
+                      type="radio"
+                      name="options"
+                      value={selected}
+                      onChange={setSelected}
+                    >
+                      <ToggleButton id="tbg-btn-1" value="profile" style={{ margin: '0px 5px', background: selected == 'profile' ? "#2b9348" : "#fff", color: selected == 'profile' ? "#ffff" : "#2b9348", width: '120px' }}>
+                        My Info
+                      </ToggleButton>
+                      <ToggleButton id="tbg-btn-2" value="calendar" style={{ margin: '0px 5px', background: selected == 'calendar' ? "#2b9348" : "#fff", color: selected == 'calendar' ? "#ffff" : "#2b9348", width: '120px' }}>
+                        My Calendar
+                      </ToggleButton>
+                    </ToggleButtonGroup>
+                    <div className="mt-3">
+                      {selected === "profile" ? <form>
+                        <Row style={{ paddingBottom: "40px" }}>
+                          <Col sm={6}>
+                            <div
+                              className="form-floating"
+                              style={{ margin: "0px 15px" }}
+                            >
+                              <input
+                                type="text"
+                                className="form-control border-0 bg-light"
+                                id="name"
+                                placeholder="First Name"
+                              />
+                              <label htmlFor="name">First Name</label>
+                            </div>
+                          </Col>
+                          <Col sm={6}>
+                            <div
+                              className="form-floating"
+                              style={{ margin: "0px 15px" }}
+                            >
+                              <input
+                                type="text"
+                                className="form-control border-0 bg-light"
+                                id="lastName"
+                                placeholder="Last Name"
+                              />
+                              <label htmlFor="lastName">
+                                Last Name
+                              </label>
+                            </div>
+                          </Col>
+                          <Col sm={6}>
+                            <div
+                              className="form-floating"
+                              style={{ margin: " 15px" }}
+                            >
+                              <input
+                                type="email"
+                                className="form-control border-0 bg-light"
+                                id="email"
+                                placeholder="Email Address"
+                              />
+                              <label htmlFor="email">
+                                Email Address
+                              </label>
+                            </div>
+                          </Col>
+                          <Col sm={6}>
+                            <div
+                              className="form-floating"
+                              style={{ margin: " 15px" }}
+                            >
+                              <input
+                                type="text"
+                                className="form-control border-0 bg-light"
+                                id="contactNumber"
+                                placeholder="Contact Number"
+                              />
+                              <label htmlFor="contactNumber">
+                                Contact Number
+                              </label>
+                            </div>
+                          </Col>
+                          <Col sm={6}>
+                            <div
+                              className="form-floating"
+                              style={{ margin: "0px 15px" }}
+                            >
+                              <select
+                                className="form-select"
+                                id="floatingSelect"
+                                aria-label="Inquiring About"
+                              >
+                                <option selected="">
+                                  Inquiring About
+                                </option>
+                                <option value={1}>
+                                  {" "}
+                                  Single Lesson
+                                </option>
+                                <option value={2}>
+                                  {" "}
+                                  3 x 50 Minute Lesson Package
+                                </option>
+                                <option value={3}>
+                                  5 x 50 Minute Lesson Package
+                                </option>
+                              </select>
+                              <label htmlFor="floatingSelect">
+                                Inquiring About
+                              </label>
+                            </div>
+                          </Col>
+                          <Col sm={6}>
+                            <div
+                              className="form-floating"
+                              style={{ margin: "0px 15px" }}
+                            >
+                              <textarea
+                                className="form-control border-0 bg-light"
+                                placeholder="Message"
+                                id="message"
+                                style={{ height: 100 }}
+                                defaultValue={""}
+                              />
+                              <label htmlFor="message">Message</label>
+                            </div>
+                          </Col>
+                        </Row>
+
+                        <Row
+                          style={{
+                            borderTop: "1px solid #e4e5e7",
+                            margin: "0px 0px",
+                            paddingTop: "40px",
+                          }}
+                        >
+                          <Col lg={3}>
+                            <button
+                              className="btn btn-primary py-3 px-5"
+                              type="submit"
+                            // style={{ margin: "0px 25px" }}
+                            >
+                              Update Profile
+                            </button>
+                          </Col>
+                        </Row>
+                      </form> : <Calendar />}
+                    </div>
+                    {/* <Tab.Container
                       id="left-tabs-example"
                       defaultActiveKey="first"
                     >
@@ -196,7 +342,7 @@ export default function MyProfile() {
                                     <button
                                       className="btn btn-primary py-3 px-5"
                                       type="submit"
-                                      // style={{ margin: "0px 25px" }}
+                                    // style={{ margin: "0px 25px" }}
                                     >
                                       Update Profile
                                     </button>
@@ -224,7 +370,7 @@ export default function MyProfile() {
                           </Tab.Content>
                         </Col>
                       </Row>
-                    </Tab.Container>
+                    </Tab.Container> */}
                   </div>
                 </div>
               </div>

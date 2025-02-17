@@ -108,6 +108,7 @@ export default function PurchaseBookingCalendar(props) {
     setSlotList(list)
     // props.handleNext();
   };
+  
 
   return (
     <>

@@ -8,8 +8,14 @@ import AppRoute from "./routes";
 import { ToastContainer } from "react-toastify";
 import { Provider } from "react-redux";
 import { store } from "./reducers/store";
+import { LoginResponse } from "./utils/constant";
 
 function App() {
+
+  // React.useEffect(() => {
+  //   localStorage.setItem("userInfo", JSON.stringify(LoginResponse));
+  //   localStorage.setItem("isLoggedIn", true);
+  // }, [])
   return (
     <Provider store={store}>
 

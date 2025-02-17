@@ -14,6 +14,8 @@ import PurchaseLessons from "./PurchaseLessons";
 import PurchaseRegistration from "./PurchaseRegistration";
 import PaypalDialog from "../../components/paypal-dialog/PaypalDialog";
 import PurchaseBookingCalendar from "./PurchaseBookingCalendar";
+import { LoginResponse } from "../../utils/constant";
+import { toast } from "react-toastify";
 
 const PurchaseSteps = () => {
   const [step, setStep] = useState(1);
@@ -77,6 +79,29 @@ const PurchaseSteps = () => {
     }, 2000);
   };
 
+  // const handleContinue = () => {
+  //     if (!LoginResponse.selectedSlot) {
+  //       toast.error("Please select a lesson slot before proceeding.");
+  //       return;
+  //     }
+  //     if (!LoginResponse.userDetails.firstName || !LoginResponse.userDetails.email) {
+  //       toast.error("Please complete all required fields.");
+  //       return;
+  //     }
+    
+  //     // Proceed to payment if everything is valid
+  //     paypalDialogRef.current.dialogHandler({
+  //       is_popular: 1,
+  //       count: LoginResponse.lessonPackage.count,
+  //       time_per_lesson: LoginResponse.lessonPackage.timePerLesson,
+  //       title: LoginResponse.lessonPackage.title,
+  //       validity_end: "01/01/2026",
+  //       is_active: true,
+  //     });
+  //   };
+    
+    
+
   return (
     <Container class="container" style={{ width: "80%", marginTop: "30px" }}>
       <h2 style={{ color: "#2b9348" }}> Purchase Steps {step}</h2>
@@ -92,7 +117,7 @@ const PurchaseSteps = () => {
             {" "}
             Learner Registration
           </div>
-          <span>Existing learner? Log in</span>
+          <span>Existing learner? <a href="/login">Log in</a></span>
         </>
       )}
       <ProgressBar
@@ -139,6 +164,8 @@ const PurchaseSteps = () => {
             >
               Continue to Payment
             </Button>
+          //  <Button  onClick={handleContinue}>Continue to Payment</Button>
+            
           )}
         </Col>
       </Row>

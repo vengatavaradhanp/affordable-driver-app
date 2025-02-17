@@ -10,8 +10,11 @@ import {
 } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import PaypalDialog from "../../components/paypal-dialog/PaypalDialog";
+import { LoginResponse } from "../../utils/constant";
+import { toast } from "react-toastify";
 
 export default function PurchaseRegistration() {
+  const loggedin = localStorage.getItem('isLoggedIn')
   const navigate = useNavigate();
   const location = useLocation();
   const bookingDetails = {
@@ -28,6 +31,76 @@ export default function PurchaseRegistration() {
     }, 2000);
   };
 
+  const handleContinue = () => {
+    if (!LoginResponse.selectedSlot) {
+      toast.error("Please select a lesson slot before proceeding.");
+      return;
+    }
+    if (!LoginResponse.userDetails.name || !LoginResponse.userDetails.email) {
+      toast.error("Please complete all required fieldsaaa.");
+      return;
+    }
+    console.log("LoginResponse", LoginResponse);
+    if(loggedin ){
+    console.log("paypalDialogRef.current", paypalDialogRef.current);
+    paypalDialogRef.current.dialogHandler({
+      is_popular: 1,
+      count: "3",
+      time_per_lesson: "60",
+      title: "An Affordable and Practical Start",
+      validity_end: "01/01/2026",
+      is_active: true,
+    });
+    }else{
+      toast.error("Please login to continue")
+      navigate("/login")
+    }
+
+    
+    // // Check if lessonPackage and count exist before proceeding
+    // if (!LoginResponse.selectedSlot.count) {
+    // toast.error("Invalid lesson package details.");
+    // return;
+    // }
+
+  
+    // Proceed to payment if everything is valid
+
+  };
+  
+  
+  // const handleContinue = () => {
+  //   // Check if user is logged in
+  //   const isLoggedIn = localStorage.getItem("isLoggedIn"); // Store user login state in localStorage
+  
+  //   if (!LoginResponse.selectedSlot) {
+  //     alert("Please select a lesson slot before proceeding.");
+  //     return;
+  //   }
+  //   if (!LoginResponse.userDetails.firstName || !LoginResponse.userDetails.email) {
+  //     alert("Please complete all required fields.");
+  //     return;
+  //   }
+  
+  //   if (!isLoggedIn) {
+  //     alert("You need to log in before proceeding.");
+  //     navigate("/login", { state: { from: "/purchase-registration" } }); // Redirect to login page
+  //     return;
+  //   }
+  
+  //   // Proceed to payment if logged in
+  //   paypalDialogRef.current.dialogHandler({
+  //     is_popular: 1,
+  //     count: LoginResponse.lessonPackage.count,
+  //     time_per_lesson: LoginResponse.lessonPackage.timePerLesson,
+  //     title: LoginResponse.lessonPackage.title,
+  //     validity_end: "01/01/2026",
+  //     is_active: true,
+  //   });
+  // };
+
+  
+  
   return (
     <div>
       {/* <div>
@@ -35,8 +108,8 @@ export default function PurchaseRegistration() {
         <p>
           Existing learner? <a href="#login">Log in</a>
         </p>
-      </div>
-      {JSON.stringify(location)} */}
+      </div> */}
+      {/* {JSON.stringify(location)} */}
       <div>
         <Row>
           {/* Form Section */}
@@ -80,6 +153,7 @@ export default function PurchaseRegistration() {
                           style={{ borderRadius: "10px" }}
                           type="text"
                           placeholder="Enter location"
+                          value={LoginResponse.userDetails.address}
                         />
                       </Form.Group>
                     </Col>
@@ -112,6 +186,7 @@ export default function PurchaseRegistration() {
                           type="text"
                           placeholder="First name"
                           style={{ borderRadius: "10px" }}
+                          value={LoginResponse.userDetails.name}
                         />
                       </Form.Group>
                     </Col>
@@ -122,6 +197,7 @@ export default function PurchaseRegistration() {
                           type="text"
                           placeholder="Last name"
                           style={{ borderRadius: "10px" }}
+                          value={LoginResponse.userDetails.lastName}
                         />
                       </Form.Group>
                     </Col>
@@ -134,6 +210,7 @@ export default function PurchaseRegistration() {
                           type="email"
                           placeholder="Your email address"
                           style={{ borderRadius: "10px" }}
+                          value={LoginResponse.userDetails.email}
                         />
                         <Form.Text className="text-muted">
                           We use your email to send lesson confirmation details.
@@ -147,6 +224,8 @@ export default function PurchaseRegistration() {
                           type="tel"
                           placeholder="0400 000 000"
                           style={{ borderRadius: "10px" }}
+                          // value={location.userDetails.phone}
+                          value={LoginResponse.userDetails.phone}
                         />
                         <Form.Text className="text-muted">
                           For instructors to contact on lesson pick-up if
@@ -167,6 +246,8 @@ export default function PurchaseRegistration() {
                           type="password"
                           placeholder="Enter password"
                           style={{ borderRadius: "10px" }}
+                          // value={location.userDetails.password}
+                          value={LoginResponse.userDetails.password}
                         />
                       </Form.Group>
                     </Col>
@@ -177,6 +258,7 @@ export default function PurchaseRegistration() {
                           type="password"
                           placeholder="Confirm password"
                           style={{ borderRadius: "10px" }}
+                          value={LoginResponse.userDetails.password}
                         />
                       </Form.Group>
                     </Col>
@@ -281,10 +363,11 @@ export default function PurchaseRegistration() {
                     padding: "15px 20px ",
                   }}
                 >
-                  <Button
+                  <Button className="w-100 justify-content-center" onClick={handleContinue}>Continue</Button>
+                  {/* <Button
                     className=" w-100 justify-content-center"
-                    // onClick={() => navigate("/bookyourlesson")}
-                    onClick={() =>
+                    onClick={() => navigate("/bookyourlesson")}
+                    onClick={() => handleContinue()}
                       paypalDialogRef.current.dialogHandler({
                         is_popular: 1,
                         count: "3",
@@ -299,7 +382,7 @@ export default function PurchaseRegistration() {
                     <span className="ms-1">
                       <i class="bi bi-chevron-right"></i>
                     </span>
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
             </div>

@@ -15,6 +15,8 @@ import Loginpage from "../pages/auth/Loginpage";
 import { AuthProvider } from "../context/AuthContext";
 import ProtectedRoute from "./ProtectedRoute";
 import HomePage from "../pages/homepage";
+import Dashboard from "../pages/admin/dashboard";
+import Users from "../pages/admin/users";
 
 // const HomepageComponent = React.lazy(() => import("../pages/homepage"));
 // const LessonPackagesComponent = React.lazy(() =>
@@ -43,6 +45,8 @@ export default function AppRoute() {
                 <Route path="/calendar" element={<Calendar />} />
                 <Route path="/purchase-steps" element={<PurchaseSteps />} />
                 <Route path="/profile" element={<MyProfile />} />
+                <Route path="/admin/dashboard" element={<Dashboard />} />
+                <Route path="/admin/user" element={<Users />} />
               </Route>
             </Routes>
           </BrowserRouter>

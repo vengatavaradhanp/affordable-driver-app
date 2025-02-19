@@ -99,25 +99,25 @@ import { Card, Row, Col } from "react-bootstrap";
 
 const cardData = [
   {
-    title: "Users",
+    title: "Total Users",
     value: "36,254",
-    icon: <div>logo</div>,
+    icon: <i class="bi bi-person-fill"></i>,
     trend: "5.27%",
     trendDirection: "up", // Define trend direction for conditional rendering
     description: "Since last month",
   },
   {
-    title: "Instructors",
+    title: "Total Instructors",
     value: "5,543",
-    icon: <div>logo</div>,
+    icon: <i class="bi bi-car-front-fill"></i>,
     trend: "1.08%",
     trendDirection: "down",
     description: "Since last month",
   },
   {
-    title: "Growth",
+    title: "Total Active Users",
     value: "+ 30.56%",
-    icon: <div>logo</div>,
+    icon: <i class="bi bi-person-check-fill"></i>,
     trend: "4.87%",
     trendDirection: "up",
     description: "Since last month",
@@ -131,50 +131,32 @@ export default function Dashboard() {
       <Row className="g-4">
         {cardData.map((card, index) => (
           <Col key={index} xs={12} md={6} lg={4}>
-            <Card className="shadow-sm border-0 rounded-3">
+            <Card className="border-1 rounded-3">
               <Card.Body
-                className="d-flex flex-column justify-content-between"
-                style={{ height: "10rem" }}
+                className="d-flex flex-column"
+                // style={{ height: "10rem" }}
               >
                 {/* <div className="d-flex justify-content-between">
                   
                 </div> */}
-                <Row>
-                  <Col key={index} xs={12} md={4}>
+                <Row  style={{alignItems: 'center'}}>
+                  <Col key={index} xs={12} md={3}>
                     <div
                       className="icon-container"
-                      style={{ fontSize: "1.5rem" }}
+                      style={{ fontSize: "50px", color: "#2b9348" }}
                     >
                       {card.icon}
                     </div>
                   </Col>
-                  <Col key={index} xs={12} md={8} className="text-end">
-                    <div className = "mb-4">
+                  <Col key={index} xs={12} md={9} className="text-end">
+                    <div >
                       <Card.Title>{card.title}</Card.Title>
                     </div>
-                    <div className = "mb-4">
+                    <div className = "mb-0">
                       <h2 className="fw-bold">{card.value}</h2>
                     </div>
 
-                    <div className="d-flex align-items-center justify-content-end">
-                      {card.trendDirection === "up" ? (
-                        <div style={{ color: "green" }} />
-                      ) : (
-                        <div style={{ color: "red" }} />
-                      )}
-                      <span
-                        style={{
-                          color: card.trendDirection === "up" ? "green" : "red",
-                          fontWeight: "bold",
-                          marginLeft: "5px",
-                        }}
-                      >
-                        {card.trend}
-                      </span>
-                      <span className="text-muted ms-2">
-                        {card.description}
-                      </span>
-                    </div>
+                   
                   </Col>
                 </Row>
               </Card.Body>

@@ -224,3 +224,34 @@ export const LoginResponse = {
     active: false,
   }
 };
+
+export const MenuList = [
+  {
+    id: 1,
+    name: "Dashboard",
+    link: "/admin/dashboard",
+    is_active: true,
+    icon: "bi-grid-fill"
+  },
+  {
+    id: 2,
+    name: "User Management",
+    link: "/admin/users",
+    is_active: true,
+    icon: "bi-person-fill"
+  },
+  {
+    id: 3,
+    name: "Instructor",
+    link: "/admin/instructor",
+    is_active: true,
+    icon: "bi-car-front-fill"
+  },
+  {
+    id: 4,
+    name: "Settings",
+    link: "/admin/settings",
+    is_active: true,
+    icon: "bi-gear-fill"
+  }
+]

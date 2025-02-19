@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext"; // Import the context
 import AppHeader from "../components/app-layout/AppHeader";
 import AppFooter from "../components/app-layout/AppFooter";
@@ -7,13 +7,16 @@ import { Navbar, Container, Button, Offcanvas, Nav, Stack } from "react-bootstra
 import { useState } from "react";
 import ListGroup from 'react-bootstrap/ListGroup';
 import logos from '../assets/images/logos.svg'
+import { MenuList } from "../utils/constant";
 
 const isAdmin = true;
 
 const AdminRoute = () => {
     const { user } = useAuth();
+    const [activeItem, setActiveItem] = useState("/admin/dashboard")
     const [show, setShow] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const navigate = useNavigate()
 
     return user ? (isAdmin ? <>
         <div style={{ overflowX: "hidden" }}>
@@ -55,22 +58,23 @@ const AdminRoute = () => {
                     background: '#fff',
                     boxShadow: '4px 0 6px -2px rgba(0, 0, 0, 0.1)',
                 }}
-            > 
-                    <div style={{textAlign: 'center'}}>
-                        <img src={logos} style={{width: '150px', padding: '10px 0px'}}/>
-                    </div>
-                 
-                    <div style={{paddingTop: '10px'}}>
-                    <ListGroup defaultActiveKey="#link1">
-                    <ListGroup.Item action href="/admin/dashboard">
-                        Dashboard
-                    </ListGroup.Item>
-                    <ListGroup.Item action href="/admin/users">
-                        Users
-                    </ListGroup.Item>
-                   
-                </ListGroup>
-                    </div>
+            >
+                <div style={{ textAlign: 'center' }}>
+                    <img src={logos} style={{ width: '150px', padding: '10px 0px' }} />
+                </div>
+
+                <div style={{ paddingTop: '10px' }}>
+                    <ListGroup defaultActiveKey="#link1" >
+                        {
+                            MenuList.map((item, index) => <ListGroup.Item action active={item.link === activeItem} key={index} onClick={() => {
+                                setActiveItem(item.link)
+                                navigate(item.link)
+                            }}>
+                            <div className="py-1"><span style={{ paddingRight: '10px' }}><i class={`bi ${item.icon}`}></i></span>{item.name}</div>
+                        </ListGroup.Item>)
+                        }
+                    </ListGroup>
+                </div>
             </div>
 
             {/* Main Content */}
@@ -82,7 +86,7 @@ const AdminRoute = () => {
                     marginTop: '50px'
                 }}
             >
-               <Outlet/>
+                <Outlet />
             </div>
         </div>
     </> : <NotAuthorized />) : <Navigate to="/login" replace />;

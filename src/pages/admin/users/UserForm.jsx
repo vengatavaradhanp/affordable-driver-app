@@ -120,7 +120,7 @@
 // }
 
 import React, { useState } from "react";
-import { Row, Col, Form } from "react-bootstrap";
+import { Row, Col, Form, Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 import Users from "./index";
 import { useNavigate } from "react-router-dom";
@@ -161,10 +161,10 @@ export default function UseForm() {
   return (
     <div>
       <Row>
-        <Col xs={12} lg={8}>
+        <Col xs={12} lg={12}>
           <div style={{ border: "1px solid #ddd", borderRadius: "10px" }}>
             <div
-              style={{ borderBottom: "1px solid #ddd", padding: "15px 20px" }}
+              style={{  padding: "15px 20px" }}
             >
               <Form>
                 <Row>
@@ -259,12 +259,14 @@ export default function UseForm() {
                   </Col>
                 </Row>
               </Form>
-              <button
+              <hr />
+              <Button
                 className="text-white bg-primary"
                 onClick={handleContinue} 
+                // style={{marginTop: '300px', border: '0px 0px 10px 1px solid grey'}}
               >
                 Submit
-              </button>
+              </Button>
             </div>
           </div>
         </Col>

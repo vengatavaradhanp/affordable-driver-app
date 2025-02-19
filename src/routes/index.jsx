@@ -17,6 +17,9 @@ import ProtectedRoute from "./ProtectedRoute";
 import HomePage from "../pages/homepage";
 import Dashboard from "../pages/admin/dashboard";
 import Users from "../pages/admin/users";
+import AdminRoute from "./AdminRoute";
+import NotFound from "../pages/not-found";
+import UserForm from "../pages/admin/users/UserForm";
 
 // const HomepageComponent = React.lazy(() => import("../pages/homepage"));
 // const LessonPackagesComponent = React.lazy(() =>
@@ -32,24 +35,29 @@ export default function AppRoute() {
     <Suspense>
       <LoaderProvider>
         <AuthProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/login" element={<Loginpage />} />
-              <Route element={<ProtectedRoute />}>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/lessons" element={<LessonPackages />} />
-                <Route path="/instructors" element={<Instructors />} />
-                <Route path="/booking" element={<BookOnline />} />
-                <Route path="/gift-card" element={<GiftCard />} />
-                <Route path="/contact-us" element={<ContactUs />} />
-                <Route path="/calendar" element={<Calendar />} />
-                <Route path="/purchase-steps" element={<PurchaseSteps />} />
-                <Route path="/profile" element={<MyProfile />} />
-                <Route path="/admin/dashboard" element={<Dashboard />} />
-                <Route path="/admin/user" element={<Users />} />
-              </Route>
-            </Routes>
-          </BrowserRouter>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/login" element={<Loginpage />} />
+                <Route element={<ProtectedRoute />}>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/lessons" element={<LessonPackages />} />
+                  <Route path="/instructors" element={<Instructors />} />
+                  <Route path="/booking" element={<BookOnline />} />
+                  <Route path="/gift-card" element={<GiftCard />} />
+                  <Route path="/contact-us" element={<ContactUs />} />
+                  <Route path="/calendar" element={<Calendar />} />
+                  <Route path="/purchase-steps" element={<PurchaseSteps />} />
+                  <Route path="/profile" element={<MyProfile />} />
+                </Route>
+                <Route element={<AdminRoute />}>
+                  <Route path="/admin/dashboard" element={<Dashboard />} />
+                  <Route path="/admin/users" element={<Users />} />
+                  <Route path="/admin/addUser" element={<UserForm />} />
+
+                </Route>
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
         </AuthProvider>
       </LoaderProvider>
     </Suspense >

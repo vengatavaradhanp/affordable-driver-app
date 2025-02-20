@@ -1,5 +1,5 @@
 import React from "react";
-import gift from "../../assets/images/gift.webp";
+import gift from "../../assets/images/gift card (2).png";
 
 export default function GiftCard() {
   return (
@@ -35,7 +35,7 @@ export default function GiftCard() {
                 className="col-lg-6 wow fadeInUp text-center"
                 data-wow-delay="0.1s"
               >
-                <img className="" src={gift} alt="" />
+                <img style={{ boxShadow: '0 4px 6px -2px rgba(0, 0, 0, 0.1)' }} src={gift} alt=""  />
               </div>
               <div className="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
                 <h1 className="display-6 mb-4">Digital Gift Card</h1>

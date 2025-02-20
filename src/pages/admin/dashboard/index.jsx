@@ -126,44 +126,46 @@ const cardData = [
 
 export default function Dashboard() {
   return (
-    <div className="p-4">
-      {/* <h3>Dashboard</h3> */}
-      <Row className="g-4">
-        {cardData.map((card, index) => (
-          <Col key={index} xs={12} md={6} lg={4}>
-            <Card className="border-1 rounded-3">
-              <Card.Body
-                className="d-flex flex-column"
+    <div>
+      <h4>Dashboard</h4>
+      <div style={{ marginTop: '20px' }}>
+        <Row>
+          {cardData.map((card, index) => (
+            <Col key={index} xs={12} md={6} lg={4}>
+              <Card className="border-1 rounded-3">
+                <Card.Body
+                  className="d-flex flex-column"
                 // style={{ height: "10rem" }}
-              >
-                {/* <div className="d-flex justify-content-between">
+                >
+                  {/* <div className="d-flex justify-content-between">
                   
                 </div> */}
-                <Row  style={{alignItems: 'center'}}>
-                  <Col key={index} xs={12} md={3}>
-                    <div
-                      className="icon-container"
-                      style={{ fontSize: "50px", color: "#2b9348" }}
-                    >
-                      {card.icon}
-                    </div>
-                  </Col>
-                  <Col key={index} xs={12} md={9} className="text-end">
-                    <div >
-                      <Card.Title>{card.title}</Card.Title>
-                    </div>
-                    <div className = "mb-0">
-                      <h2 className="fw-bold">{card.value}</h2>
-                    </div>
+                  <Row style={{ alignItems: 'center' }}>
+                    <Col key={index} xs={12} md={3}>
+                      <div
+                        className="icon-container"
+                        style={{ fontSize: "50px", color: "#2b9348" }}
+                      >
+                        {card.icon}
+                      </div>
+                    </Col>
+                    <Col key={index} xs={12} md={9} className="text-end">
+                      <div >
+                        <Card.Title>{card.title}</Card.Title>
+                      </div>
+                      <div className="mb-0">
+                        <h2 className="fw-medium">{card.value}</h2>
+                      </div>
 
-                   
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
+
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </div>
     </div>
   );
 }

@@ -75,7 +75,7 @@ export default function Users() {
 
 
   return (
-    <Container >
+    <Container>
       <h4>Users List</h4>
       <div>
         <Row  >
@@ -103,7 +103,7 @@ export default function Users() {
         </Row>
       </div>
       <div className="mt-3" >
-        <Table striped bordered responsive >
+        <Table responsive >
           <thead >
             <tr >
               <th>S No</th>

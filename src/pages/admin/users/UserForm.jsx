@@ -39,7 +39,7 @@
 //             >
 //               <Form>
 //                 <Row>
-//                   <Col xs={12} md={6}>
+//                   <Col xs={12} md={4}>
 //                     <Form.Group className="mb-3">
 //                       <Form.Label>First name</Form.Label>
 //                       <Form.Control
@@ -50,7 +50,7 @@
 //                       />
 //                     </Form.Group>
 //                   </Col>
-//                   <Col xs={12} md={6}>
+//                   <Col xs={12} md={4}>
 //                     <Form.Group className="mb-3">
 //                       <Form.Label>Last name</Form.Label>
 //                       <Form.Control
@@ -63,7 +63,7 @@
 //                   </Col>
 //                 </Row>
 //                 <Row>
-//                   <Col xs={12} md={6}>
+//                   <Col xs={12} md={4}>
 //                     <Form.Group className="mb-3">
 //                       <Form.Label>Suburb</Form.Label>
 //                       <Form.Select style={{ borderRadius: "10px" }}>
@@ -72,7 +72,7 @@
 //                       </Form.Select>
 //                     </Form.Group>
 //                   </Col>
-//                   <Col xs={12} md={6}>
+//                   <Col xs={12} md={4}>
 //                     <Form.Group className="mb-3">
 //                       <Form.Label>State</Form.Label>
 //                       <Form.Select style={{ borderRadius: "10px" }}>
@@ -95,7 +95,7 @@
 //                       <Form.Text className="text-muted"></Form.Text>
 //                     </Form.Group>
 //                   </Col>
-//                   <Col xs={12} md={6}>
+//                   <Col xs={12} md={4}>
 //                     <Form.Group className="mb-3">
 //                       <Form.Label>Phone number</Form.Label>
 //                       <Form.Control
@@ -120,7 +120,7 @@
 // }
 
 import React, { useState } from "react";
-import { Row, Col, Form, Button } from "react-bootstrap";
+import { Row, Col, Form, Button, Container } from "react-bootstrap";
 import { toast } from "react-toastify";
 import Users from "./index";
 import { useNavigate } from "react-router-dom";
@@ -139,7 +139,7 @@ export default function UseForm() {
 
 
   const handleContinue = () => {
-   navigate("/admin/users",{state:{firstName}});
+    navigate("/admin/users", { state: { firstName } });
     /* if (!AddUserResponse.userDetails.name || !AddUserResponse.userDetails.email) {
       toast.error("Please complete all required fields.");
       return;
@@ -159,18 +159,17 @@ export default function UseForm() {
   };
 
   return (
-    <div>
-      <Row>
-        <Col xs={12} lg={12}>
-          <div style={{ border: "1px solid #ddd", borderRadius: "10px" }}>
-            <div
-              style={{  padding: "15px 20px" }}
-            >
+    <Container >
+      <h4>Users Form</h4>
+      <div style={{ marginTop: '30px' }}>
+        <Row>
+          <Col xs={12} lg={12}>
+            <div>
               <Form>
                 <Row>
-                  <Col xs={12} md={6}>
+                  <Col lg={4}>
                     <Form.Group className="mb-3">
-                      <Form.Label>First name</Form.Label>
+                      <Form.Label>First Name</Form.Label>
                       <Form.Control
                         type="text"
                         placeholder="First name"
@@ -180,9 +179,9 @@ export default function UseForm() {
                       />
                     </Form.Group>
                   </Col>
-                  <Col xs={12} md={6}>
+                  <Col lg={4}>
                     <Form.Group className="mb-3">
-                      <Form.Label>Last name</Form.Label>
+                      <Form.Label>Last Name</Form.Label>
                       <Form.Control
                         type="text"
                         placeholder="Last name"
@@ -192,9 +191,8 @@ export default function UseForm() {
                       />
                     </Form.Group>
                   </Col>
-                </Row>
-                <Row>
-                  <Col xs={12} md={6}>
+                 
+                  <Col lg={4}>
                     <Form.Group className="mb-3">
                       <Form.Label>Suburb</Form.Label>
                       <Form.Select
@@ -204,7 +202,7 @@ export default function UseForm() {
                       >
                         {/* <option value=""disabled >select the suburb</option> */}
                         <option value="" disabled>
-                          Select a suburb
+                          Select a Suburb
                         </option>
                         <option value="Hobart, 7000">Hobart, 7000</option>
                         <option value="usa">usa</option>
@@ -213,7 +211,7 @@ export default function UseForm() {
                       </Form.Select>
                     </Form.Group>
                   </Col>
-                  <Col xs={12} md={6}>
+                  <Col lg={4}>
                     <Form.Group className="mb-3">
                       <Form.Label>State</Form.Label>
                       <Form.Select
@@ -222,7 +220,7 @@ export default function UseForm() {
                         value={state}
                       >
                         <option value="" disabled>
-                          Select a state
+                          Select a State
                         </option>
                         <option value="Tasmania">Tasmania</option>
                         <option value="france">france</option>
@@ -231,11 +229,9 @@ export default function UseForm() {
                       </Form.Select>
                     </Form.Group>
                   </Col>
-                </Row>
-                <Row>
-                  <Col xs={6}>
+                  <Col lg={4}>
                     <Form.Group className="mb-3">
-                      <Form.Label>Email address</Form.Label>
+                      <Form.Label>Email Address</Form.Label>
                       <Form.Control
                         type="email"
                         placeholder="Your email address"
@@ -245,9 +241,9 @@ export default function UseForm() {
                       />
                     </Form.Group>
                   </Col>
-                  <Col xs={12} md={6}>
+                  <Col lg={4}>
                     <Form.Group className="mb-3">
-                      <Form.Label>Phone number</Form.Label>
+                      <Form.Label>Phone Number</Form.Label>
                       <Form.Control
                         type="tel"
                         placeholder="0400 000 000"
@@ -258,19 +254,37 @@ export default function UseForm() {
                     </Form.Group>
                   </Col>
                 </Row>
+                 
               </Form>
-              <hr />
-              <Button
-                className="text-white bg-primary"
-                onClick={handleContinue} 
-                // style={{marginTop: '300px', border: '0px 0px 10px 1px solid grey'}}
-              >
-                Submit
-              </Button>
+              <div style={{ marginTop: '400px' }}>
+                <hr />
+                <div style={{display: 'flex', justifyContent: 'center', marginTop: '30px'}}>
+                  <div className="mx-2">
+                    <Button
+                      className="text-white bg-primary"
+                      onClick={handleContinue}
+                      // style={{marginTop: '300px', border: '0px 0px 10px 1px solid grey'}}
+                      style={{width: '100px'}}
+                    >
+                      Submit
+                    </Button>
+                  </div>
+                  <div className="mx-2">
+                    <Button
+                      className="text-white bg-secondary"
+                      // onClick={handleContinue}
+                      // style={{marginTop: '300px', border: '0px 0px 10px 1px solid grey'}}
+                      style={{width: '100px'}}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </Col>
-      </Row>
-    </div>
+          </Col>
+        </Row>
+      </div>
+    </Container>
   );
 }

@@ -9,7 +9,7 @@ export default function AppFooter() {
     <>
       {/* Footer Start */}
       <div
-        className="container-fluid bg-dark text-light footer my-6 mb-0 py-3 wow fadeIn"
+        className="container-fluid bg-dark text-light footer mb-0 py-3 wow fadeIn"
         data-wow-delay="0.1s"
       >
         <div className="container">
@@ -88,7 +88,7 @@ export default function AppFooter() {
         data-wow-delay="0.1s"
       >
         <div className="container text-center">
-          <p className="mb-0">© 2025 by DataTech Genius. All Rights Reserved</p>
+          <p className="mb-0">© {new Date().getFullYear()} by Datatech Genius. All Rights Reserved</p>
         </div>
       </div>
       {/* Copyright End */}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button, InputGroup, Container, Row, Col } from "react-bootstrap";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import logo from "../../assets/images/logos.svg";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -16,7 +16,8 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
-
+  const { type } = useParams()
+  console.log(type)
   // Toggle Password Visibility
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -25,7 +26,7 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setErrorMessage(""); // Optional if using only toast notifications
-  
+
     try {
       const response = await axios.post(
         "https://datatechgenius.com/expert-driver/public/index.php/api/login",
@@ -38,10 +39,10 @@ const Login = () => {
         console.log("User Data:", response.data.user);
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("userData", JSON.stringify(response.data.user));
-  
+
         // Show success toast
         toast.success("Login successful!");
-  
+
         // Redirect to the home page or previous page
         const redirectPath = location.state?.from || "/";
         navigate(redirectPath);
@@ -55,7 +56,7 @@ const Login = () => {
       );
     }
   };
-  
+
   // // Handle Login Submit
   // const handleSubmit = async (event) => {
   //   event.preventDefault();
@@ -88,108 +89,118 @@ const Login = () => {
   //     );
   //   }
   // };  
-  
+
   // const handleLogin = () => {
   //   // Simulate authentication
   //   localStorage.setItem("isLoggedIn", "true");
-  
+
   //   // Redirect back to purchase page if user was sent from there
   //   const redirectPath = location.state?.from || "/";
   //   navigate(redirectPath);
   // };
-  
+
 
   return (
-    <Container
-      fluid
-      className="vh-100 d-flex justify-content-center align-items-center"
-      style={{ backgroundColor: "#f8f9fa" }}
-    >
-      <Row>
-        <Col>
+    <>
+      {/* <Container>sadsa</Container> */}
+      <div
+        // fluid
+        className="vh-100 "
+        style={{ backgroundColor: "#f8f9fa" }}
+      >
+        <div
+          className="container-fluid page-header p-0 mt-0 wow fadeIn"
+          data-wow-delay="0.1s"
+        >
           <div
-            className="p-3"
+            className="container"
             style={{
-              backgroundColor: "#fff",
-              color: "#000",
-              borderRadius: "10px",
-              width: "600px",
-              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-              margin: "auto",
+              display: "flex",
+              height: "100%",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            <div style={{textAlign: 'center'}}>
-            <img src={logo} alt="logo" style={{width: '100%', height: '100%', maxWidth: "130px"}} />
-            </div>
-            <h3 className="text-center mb-4 text-success">
-              Affordable Student Login
-            </h3>
-            <Form onSubmit={handleSubmit}>
-              {/* Display Error Message */}
-              {errorMessage && (
-                <div
-                  className="alert alert-danger text-center"
-                  role="alert"
-                  style={{ fontSize: "14px" }}
-                >
-                  {errorMessage}
-                </div>
-              )}
-
-              {/* Email Input */}
-              <Form.Group className="mb-3 p-1" controlId="formEmail">
-                {/* <Form.Label>Email</Form.Label> */}
-                <Form.Control
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </Form.Group>
-
-              {/* Password Input */}
-              <Form.Group className="mb-3 p-1" controlId="formPassword">
-                {/* <Form.Label>Password</Form.Label> */}
-                <InputGroup>
-                  <Form.Control
-                    type={passwordVisible ? "text" : "password"}
-                    placeholder="Enter your password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                  <Button
-                    variant="outline-secondary"
-                    onClick={togglePasswordVisibility}
-                  >
-                    <i
-                      className={`bi ${
-                        passwordVisible ? "bi-eye-slash" : "bi-eye"
-                      }`}
-                    ></i>
-                  </Button>
-                </InputGroup>
-              </Form.Group>
-
-              <div className="d-flex justify-content-between align-items-center p-2">
-                <a href="/forgot-password" style={{ color: "#012A41" }}>
-                  Forgot Password?
-                </a>
-                <Button
-                  type="submit"
-                  variant="success"
-                  className="ml-auto p-2"
-                  style={{ fontWeight: "bold", width: "30%" }}
-                >
-                  Login
-                </Button>
+            <div className="row justify-content-center">
+              <div className="col-lg-12">
+                <h3 className="display-5 text-light mb-5" style={{textTransform: 'capitalize'}}>{type} Login</h3>
               </div>
-            </Form>
+            </div>
           </div>
-        </Col>
-      </Row>
-    </Container>
+        </div>
+        <div className="d-flex justify-content-center align-items-center" style={{ position: 'relative', bottom: '100px' }}>
+          <Row>
+            <Col>
+              {/* <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+            <img src={logo} alt="logo" style={{ width: '100%', height: '100%', width: "200px", height: '100px' }} />
+          </div> */}
+
+              <div
+                style={{
+                  backgroundColor: "#fff",
+                  color: "#000",
+                  // borderRadius: "10px",
+                  width: "550px",
+                  // boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+                  // margin: "auto",
+                  padding: '20px',
+                  // minHeight: '300px',
+                  // borderTop: '5px solid #2b9348',
+                  //  borderBottom: '4px solid #2b9348'
+                }}
+              >
+
+                <div style={{ textAlign: 'center' }}>
+                  <img style={{ width: "150px" }} src={logo} alt="" />
+                </div>
+                {/* <div style={{ fontSize: '28px', textAlign: 'center', color: "#2b9348", fontWeight: 600, textTransform: 'capitalize' }}>
+                  {type} Login
+                </div> */}
+
+                <div style={{ marginTop: '10px' }}>
+                  <Form style={{ padding: '0px 10px' }}>
+                    <Form.Group as={Row} className="mb-2" controlId="formPlaintextEmail">
+                      <Form.Label column sm="12">
+                        Email
+                      </Form.Label>
+                      <Col sm="12">
+                        <Form.Control placeholder="email@example.com" />
+                      </Col>
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="mb-2" controlId="formPlaintextPassword">
+                      <Form.Label column sm="12">
+                        Password
+                      </Form.Label>
+                      <Col sm="12">
+                        <Form.Control type="password" placeholder="Password" />
+                      </Col>
+                    </Form.Group>
+                    <div style={{ textAlign: 'right', paddingTop: '10px' }}>
+                      <a href="/forgot-password" style={{ color: "#012A41" }}>
+                        Forgot Password?
+                      </a>
+                    </div>
+                    <Button
+                      type="submit"
+                      variant="success"
+                      className="ml-auto p-2"
+                      style={{ fontWeight: "bold", width: "100%", marginTop: '20px' }}
+                    >
+                      LOGIN
+                    </Button>
+
+
+
+                  </Form>
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </div>
+
+      </div>
+    </>
   );
 };
 

@@ -242,13 +242,20 @@ export const MenuList = [
   },
   {
     id: 3,
+    name: "Lessons Package",
+    link: "/admin/lessons",
+    is_active: true,
+    icon: "bi-car-front-fill"
+  },
+  {
+    id: 4,
     name: "Instructor",
     link: "/admin/instructor",
     is_active: true,
     icon: "bi-car-front-fill"
   },
   {
-    id: 4,
+    id: 5,
     name: "Settings",
     link: "/admin/settings",
     is_active: true,

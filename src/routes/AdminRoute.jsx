@@ -34,7 +34,7 @@ const AdminRoute = () => {
             }}>
                 <div className="container-fluid" >
                     <button
-                        className="btn btn-outline-light"
+                        className="btn btn-outline-primary"
                         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                         style={{ color: '#fff', border: '1px solid #fff' }}
                     >
@@ -89,7 +89,7 @@ const AdminRoute = () => {
                 <Outlet />
             </div>
         </div>
-    </> : <NotAuthorized />) : <Navigate to="/login" replace />;
+    </> : <NotAuthorized />) : <Navigate to="/" replace />;
 };
 
 export default AdminRoute;

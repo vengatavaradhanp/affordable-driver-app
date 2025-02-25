@@ -117,7 +117,7 @@ const PurchaseSteps = () => {
             {" "}
             Learner Registration
           </div>
-          <span>Existing learner? <a href="/login">Log in</a></span>
+          <span>Existing learner? <a href="/login/student">Log in</a></span>
         </>
       )}
       <ProgressBar

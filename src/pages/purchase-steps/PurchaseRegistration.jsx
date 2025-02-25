@@ -53,7 +53,7 @@ export default function PurchaseRegistration() {
     });
     }else{
       toast.error("Please login to continue")
-      navigate("/login")
+      navigate("/login/student")
     }
 
     

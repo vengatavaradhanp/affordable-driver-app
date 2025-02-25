@@ -6,7 +6,7 @@ import AppFooter from "../components/app-layout/AppFooter";
 const ProtectedRoute = () => {
     const { user } = useAuth();
 
-    return user ? <><AppHeader /><Outlet /> <AppFooter /></> : <Navigate to="/login" replace />;
+    return user ? <><AppHeader /><Outlet /> <AppFooter /></> : <Navigate to="/" replace />;
 };
 
 export default ProtectedRoute;

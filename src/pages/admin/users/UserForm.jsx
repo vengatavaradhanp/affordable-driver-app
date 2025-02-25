@@ -338,7 +338,7 @@ export default function UseForm() {
   const [phone, setPhone] = useState("");
   const [suburb, setSuburb] = useState("");
   const [errors, setErrors] = useState({});
-  const [pickUpAddress, setPickUpAddress] = useState(""); 
+  const [pickUpAddress, setPickUpAddress] = useState("");
   const navigate = useNavigate();
 
   const validateForm = () => {
@@ -367,7 +367,7 @@ export default function UseForm() {
     } else if (!/^\d{10}$/.test(phone)) {
       formErrors.phone = "Phone number can only contain numbers.";
     }
-    
+
     if (!pickUpAddress) {
       formErrors.pickUpAddress = "pick up address is requried.";
     } else if (!/^\d$/.test(pickUpAddress)) {
@@ -407,7 +407,7 @@ export default function UseForm() {
         setState(value);
         if (value) setErrors((prev) => ({ ...prev, state: "" }));
         break;
-        case "pickUpAddress":
+      case "pickUpAddress":
         setPickUpAddress(value);
         if (value) setErrors((prev) => ({ ...prev, state: "" }));
         break;
@@ -482,39 +482,6 @@ export default function UseForm() {
 
           <Col lg={4}>
             <Form.Group className="mb-3">
-              <Form.Label>Suburb</Form.Label>
-              <Form.Select
-                name="suburb"
-                value={suburb}
-                onChange={handleInputChange}
-              >
-                <option value="" disabled>
-                  Select a Suburb
-                </option>
-                <option value="Hobart, 7000">Hobart, 7000</option>
-                <option value="USA">USA</option>
-                <option value="Africa">Africa</option>
-                <option value="Glebe, 7000">Glebe, 7000</option>
-              </Form.Select>
-              {errors.suburb && <div style={{ color: "#dc3545" }}>{errors.suburb}</div>}
-            </Form.Group>
-          </Col>
-          <Col lg={12}>
-            <Form.Group className="mb-3">
-              <Form.Label>Pick Up Address</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Pick Up Address" 
-                name="pickupaddress"
-                value={pickUpAddress}
-                onChange={handleInputChange}
-              />
-              {errors.pickUpAddress && <div style={{ color: "#dc3545" }}>{errors.pickUpAddress}</div>}
-            </Form.Group>
-          </Col>
-
-          <Col lg={4}>
-            <Form.Group className="mb-3">
               <Form.Label>Email Address</Form.Label>
               <Form.Control
                 type="email"
@@ -539,6 +506,42 @@ export default function UseForm() {
                 maxLength="10"
               />
               {errors.phone && <div style={{ color: "#dc3545" }}>{errors.phone}</div>}
+            </Form.Group>
+          </Col>
+
+
+          <Col lg={4}>
+            <Form.Group className="mb-3">
+              <Form.Label>Pick Up Address</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Pick Up Address"
+                name="pickupaddress"
+                value={pickUpAddress}
+                onChange={handleInputChange}
+                as="textarea" rows={3}
+              />
+              {errors.pickUpAddress && <div style={{ color: "#dc3545" }}>{errors.pickUpAddress}</div>}
+            </Form.Group>
+          </Col>
+
+          <Col lg={4}>
+            <Form.Group className="mb-3">
+              <Form.Label>Suburb</Form.Label>
+              <Form.Select
+                name="suburb"
+                value={suburb}
+                onChange={handleInputChange}
+              >
+                <option value="" disabled>
+                  Select a Suburb
+                </option>
+                <option value="Hobart, 7000">Hobart, 7000</option>
+                <option value="USA">USA</option>
+                <option value="Africa">Africa</option>
+                <option value="Glebe, 7000">Glebe, 7000</option>
+              </Form.Select>
+              {errors.suburb && <div style={{ color: "#dc3545" }}>{errors.suburb}</div>}
             </Form.Group>
           </Col>
 

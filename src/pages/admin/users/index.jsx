@@ -8,22 +8,22 @@ export default function Users() {
   const navigate = useNavigate();
   // Sample data
   const [data, setData] = useState([
-    { id: 1, name: "John Doe", email: "john@example.com", gender: 'M', status: true },
-    { id: 2, name: "Jane Smith", email: "jane@example.com", gender: 'F', status: true },
-    { id: 3, name: "Sam Wilson", email: "sam@example.com", gender: 'M', status: true },
-    { id: 4, name: "Anna Taylor", email: "anna@example.com", gender: 'F', status: false },
-    { id: 5, name: "John Doe", email: "john@example.com", gender: 'M', status: true },
-    { id: 6, name: "Jane Smith", email: "jane@example.com", gender: 'F', status: false },
-    { id: 7, name: "Sam Wilson", email: "sam@example.com", gender: 'M', status: true },
-    { id: 8, name: "Anna Taylor", email: "anna@example.com", gender: 'F', status: false },
-    { id: 9, name: "Jane Smith", email: "jane@example.com", gender: 'F', status: true },
-    { id: 10, name: "Sam Wilson", email: "sam@example.com", gender: 'M', status: true },
-    { id: 11, name: "Anna Taylor", email: "anna@example.com", gender: 'F', status: true }
+    { id: 1, full_name: "John Doe", email: "john@example.com", gender: 'M', status: true },
+    { id: 2, full_name: "Jane Smith", email: "jane@example.com", gender: 'F', status: true },
+    { id: 3, full_name: "Sam Wilson", email: "sam@example.com", gender: 'M', status: true },
+    { id: 4, full_name: "Anna Taylor", email: "anna@example.com", gender: 'F', status: false },
+    { id: 5, full_name: "John Doe", email: "john@example.com", gender: 'M', status: true },
+    { id: 6, full_name: "Jane Smith", email: "jane@example.com", gender: 'F', status: false },
+    { id: 7, full_name: "Sam Wilson", email: "sam@example.com", gender: 'M', status: true },
+    { id: 8, full_name: "Anna Taylor", email: "anna@example.com", gender: 'F', status: false },
+    { id: 9, full_name: "Jane Smith", email: "jane@example.com", gender: 'F', status: true },
+    { id: 10, full_name: "Sam Wilson", email: "sam@example.com", gender: 'M', status: true },
+    { id: 11, full_name: "Anna Taylor", email: "anna@example.com", gender: 'F', status: true }
   ]);
 
   const [showModal, setShowModal] = useState(false);
   const [editItem, setEditItem] = useState(null);
-  const [name, setName] = useState("");
+  const [full_name, setName] = useState("");
   const [email, setEmail] = useState("");
 
   // Pagination state
@@ -41,7 +41,7 @@ export default function Users() {
   // Handle editing an existing item
   const handleEdit = (item) => {
     setEditItem(item);
-    setName(item.name);
+    setName(item.full_name);
     setEmail(item.email);
     setShowModal(true);
   };
@@ -50,11 +50,11 @@ export default function Users() {
   const handleSave = () => {
     if (editItem) {
       const updatedData = data.map((item) =>
-        item.id === editItem.id ? { ...item, name, email } : item
+        item.id === editItem.id ? { ...item, full_name, email } : item
       );
       setData(updatedData);
     } else {
-      const newItem = { id: data.length + 1, name, email };
+      const newItem = { id: data.length + 1, full_name, email };
       setData([...data, newItem]);
     }
     setShowModal(false);
@@ -95,7 +95,7 @@ export default function Users() {
           </Col>
           <Col />
           
-          <Col className='d-flex justify-content-end'>  <Button style={{ width: '100px' }} variant="primary" onClick={() => (navigate("/admin/addUser"))}
+          <Col className='d-flex justify-content-end'>  <Button style={{ width: '100px' }} variant="primary" onClick={() => (navigate("/admin/users/create"))}
             className="my-1"
           >
             Add &nbsp;&nbsp;<i class="bi bi-plus-circle"></i>
@@ -105,7 +105,7 @@ export default function Users() {
       <div className="mt-3" >
         <Table responsive >
           <thead >
-            <tr >
+            <tr className="admin-table-head-tr">
               <th>S No</th>
               <th>User</th>
               <th>Email</th>
@@ -116,23 +116,23 @@ export default function Users() {
           </thead>
           <tbody>
             {currentItems.map((item) => (
-              <tr key={item.id}>
+              <tr key={item.id} className="admin-table-body-tr">
                 <td>{item.id}</td>
-                <td>{item.name}</td>
+                <td>{item.full_name}</td>
                 <td>{item.email}</td>
                 <td>{item.gender}</td>
                 <td>{item.status ? <span style={{ color: '#2b9348' }}>Active</span> : <span style={{ color: '#eb433f' }}>Inactive</span>}</td>
                 <td >
 
                   <span
-                    style={{ padding: '0px 5px', cursor: 'pointer' }}
+                    style={{ padding: '0px 10px', cursor: 'pointer' }}
                     onClick={() => handleEdit(item)}
 
                   >
                     <i class="bi bi-pencil-square" style={{ color: '#40a0ed', fontSize: '18px' }}></i>
                   </span>
                   <span
-                    style={{ padding: '0px 5px', cursor: 'pointer' }}
+                    style={{ padding: '0px 10px', cursor: 'pointer' }}
                     onClick={() => handleDelete(item.id)}
                   >
                     <i class="bi bi-trash" style={{ color: '#eb433f', fontSize: '18px' }}></i>
@@ -171,8 +171,8 @@ export default function Users() {
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter name"
-                value={name}
+                placeholder="Enter full_name"
+                value={full_name}
                 onChange={(e) => setName(e.target.value)}
               />
             </Form.Group>

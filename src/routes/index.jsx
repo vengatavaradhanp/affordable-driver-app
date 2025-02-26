@@ -22,6 +22,7 @@ import NotFound from "../pages/not-found";
 import UserForm from "../pages/admin/users/UserForm";
 import Settings from "../pages/admin/settings";
 import Instructor from "../pages/admin/instructor";
+import FeedBack from "../pages/admin/feedback";
 import LessonsPackage from "../pages/admin/lessons-package";
 import LessonsForm from "../pages/admin/lessons-package/LessonsForm";
 
@@ -58,6 +59,7 @@ export default function AppRoute() {
                 <Route path="/admin/dashboard" element={<Dashboard />} />
                 <Route path="/admin/users" element={<Users />} />
                 <Route path="/admin/users/:type" element={<UserForm />} />
+                <Route path="/admin/feedback" element={<FeedBack />} />
                 <Route path="/admin/instructor" element={<Instructor />} />
                 <Route path="/admin/settings" element={<Settings />} />
                 <Route path="/admin/lessons" element={<LessonsPackage />} />

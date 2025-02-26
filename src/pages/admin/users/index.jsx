@@ -309,7 +309,7 @@ export default function Users() {
  
       <div className="mt-3">
         <Table responsive>
-          <thead>
+            <thead>
             <tr>
               <th>S No</th>
               <th>FullName</th>
@@ -319,7 +319,7 @@ export default function Users() {
               <th>Suburbs</th>
               <th>Actions</th>
             </tr>
-          </thead>
+            </thead>
           <tbody>
             {currentItems.map((item, index) => (
               <tr key={item.id}>

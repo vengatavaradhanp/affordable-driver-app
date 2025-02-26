@@ -225,6 +225,51 @@ export const LoginResponse = {
   }
 };
 
+// export const MenuList = [
+//   {
+//     id: 1,
+//     name: "Dashboard",
+//     link: "/admin/dashboard",
+//     is_active: true,
+//     icon: "bi-grid-fill"
+//   },
+//   {
+//     id: 2,
+//     name: "User Management",
+//     link: "/admin/users",
+//     is_active: true,
+//     icon: "bi-person-fill"
+//   },
+//   {
+//     id: 3,
+//     name: "Lessons Package",
+//     link: "/admin/lessons",
+//     is_active: true,
+//     icon: "bi-car-front-fill"
+//   },
+//   {
+//     id: 4,
+//     name: "FeedBack",
+//     link: "/admin/feedback",
+//     is_active: true,
+//     icon: "bi-car-front-fill"
+//   },
+//   {
+//     id: 5,
+//     name: "Instructor",
+//     link: "/admin/instructor",
+//     is_active: true,
+//     icon: "bi-car-front-fill"
+//   },
+//   {
+//     id: 6,
+//     name: "Settings",
+//     link: "/admin/settings",
+//     is_active: true,
+//     icon: "bi-gear-fill"
+//   }
+// ]
+
 export const MenuList = [
   {
     id: 1,
@@ -249,16 +294,24 @@ export const MenuList = [
   },
   {
     id: 4,
+    name: "Feedback",
+    link: "/admin/feedback",
+    is_active: true,
+    icon: "bi bi-chat-left-text"
+    
+  },
+  {
+    id: 5,
     name: "Instructor",
     link: "/admin/instructor",
     is_active: true,
     icon: "bi-car-front-fill"
   },
   {
-    id: 5,
+    id: 6,
     name: "Settings",
     link: "/admin/settings",
     is_active: true,
     icon: "bi-gear-fill"
   }
-]
+];

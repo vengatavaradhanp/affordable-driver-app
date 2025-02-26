@@ -57,7 +57,7 @@ const Login = () => {
     }
   };
 
-  // // Handle Login Submit
+  // Handle Login Submit
   // const handleSubmit = async (event) => {
   //   event.preventDefault();
   //   setErrorMessage("");
@@ -158,7 +158,7 @@ const Login = () => {
                 </div> */}
 
                 <div style={{ marginTop: '10px' }}>
-                  <Form style={{ padding: '0px 10px' }}>
+                  <Form  onSubmit={handleSubmit} style={{ padding: '0px 10px' }}>
                     <Form.Group as={Row} className="mb-2" controlId="formPlaintextEmail">
                       <Form.Label column sm="12">
                         Email

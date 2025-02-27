@@ -280,7 +280,7 @@ export default function Users() {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
  
   return (
-    <Container>
+    <Container fluid>
       <h4>Users List</h4>
       <Row>
         <Col>
@@ -308,15 +308,15 @@ export default function Users() {
       {error && <p style={{ color: "red" }}>{error}</p>}
  
       <div className="mt-3">
-        <Table responsive>
+        <Table responsive className="dataTable">
             <thead>
             <tr>
               <th>S No</th>
-              <th>FullName</th>
+              <th>Full Name</th>
               <th>Email</th>
               <th>Phone</th>
               <th>State</th>
-              <th>Suburbs</th>
+              <th>Suburb</th>
               <th>Actions</th>
             </tr>
             </thead>
@@ -330,22 +330,24 @@ export default function Users() {
                 <td>{item.state}</td>
                 <td>{item.suburbs}</td>
                 <td>
-                  <span style={{ padding: "0px 5px", cursor: "pointer" }} onClick={() => handleEdit(item)}>
+                  <div style={{display: 'flex'}}>
+                  <span style={{ padding: "0px 10px", cursor: "pointer" }} onClick={() => handleEdit(item)}>
                     <i className="bi bi-pencil-square" style={{ color: "#40a0ed", fontSize: "18px" }}></i>
                   </span>
-                  <span style={{ padding: "0px 5px", cursor: "pointer" }} onClick={() => handleDelete(item.id)}>
+                  <span style={{ padding: "0px 10px", cursor: "pointer" }} onClick={() => handleDelete(item.id)}>
                     <i className="bi bi-trash" style={{ color: "#eb433f", fontSize: "18px" }}></i>
                   </span>
-                  <span style={{ padding: "0px 5px", cursor: "pointer" }} onClick={() => handleToggle(item.id)}>
-                    <i
-                      className={`bi ${toggleStates[item.id] ? "bi-toggle-on" : "bi-toggle-off"}`}
-                      style={{
-                        fontSize: "24px",
-                        color: toggleStates[item.id] ? "#28a745" : "#dc3545",
-                        cursor: "pointer",
-                      }}
-                    ></i>
+                  <span style={{ padding: "0px 10px", cursor: "pointer" }} onClick={() => handleToggle(item.id)}>
+                    <Form.Check
+                      type="switch"
+                      id="custom-switch"
+                      style={{fontSize: '18px'}}
+                      value={true}
+                      checked
+                    />
+                    
                   </span>
+                  </div>
                 </td>
               </tr>
             ))}

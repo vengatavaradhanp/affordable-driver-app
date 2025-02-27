@@ -225,51 +225,6 @@ export const LoginResponse = {
   }
 };
 
-// export const MenuList = [
-//   {
-//     id: 1,
-//     name: "Dashboard",
-//     link: "/admin/dashboard",
-//     is_active: true,
-//     icon: "bi-grid-fill"
-//   },
-//   {
-//     id: 2,
-//     name: "User Management",
-//     link: "/admin/users",
-//     is_active: true,
-//     icon: "bi-person-fill"
-//   },
-//   {
-//     id: 3,
-//     name: "Lessons Package",
-//     link: "/admin/lessons",
-//     is_active: true,
-//     icon: "bi-car-front-fill"
-//   },
-//   {
-//     id: 4,
-//     name: "FeedBack",
-//     link: "/admin/feedback",
-//     is_active: true,
-//     icon: "bi-car-front-fill"
-//   },
-//   {
-//     id: 5,
-//     name: "Instructor",
-//     link: "/admin/instructor",
-//     is_active: true,
-//     icon: "bi-car-front-fill"
-//   },
-//   {
-//     id: 6,
-//     name: "Settings",
-//     link: "/admin/settings",
-//     is_active: true,
-//     icon: "bi-gear-fill"
-//   }
-// ]
-
 export const MenuList = [
   {
     id: 1,
@@ -315,3 +270,54 @@ export const MenuList = [
     icon: "bi-gear-fill"
   }
 ];
+
+export const StateList = [
+  {
+    id: 1,
+    name: "Adelaid",
+    value: "adelaid"
+  },
+  {
+    id: 2,
+    name: "Brisbane",
+    value: "brisbane"
+  },
+  {
+    id: 3,
+    name: "Hobart",
+    value: "hobart"
+  },
+  {
+    id: 4,
+    name: "Melbourne",
+    value: "melborne"
+  },
+  {
+    id: 5,
+    name: "Sydney",
+    value: "sydney"
+  }
+]
+
+export const SuburbList = [
+  {
+    id: 1,
+    name: "Cambridge",
+    value: "cambridge"
+  },
+  {
+    id: 2,
+    name: "Tasmania",
+    value: "tasmania"
+  },
+  {
+    id: 3,
+    name: "Cascades",
+    value: "cascades"
+  },
+  {
+    id: 4,
+    name: "Clifton Beach",
+    value: "cliftonbeach"
+  },
+]

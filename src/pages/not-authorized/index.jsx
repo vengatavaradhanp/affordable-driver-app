@@ -13,7 +13,7 @@ export default function NotAuthorized() {
         {/* <div className='text-muted'>You are not authorized for this page..</div> */}
       </div>
       <div style={{ marginTop: '20px' }}>
-        <div style={{ padding: '10px', width: '180px', color: '#fff', background: '#2b9348', textAlign: 'center', cursor: 'pointer', borderRadius: '3px' }} onClick={() => navigate('/')}>Go to Home</div>
+        <div style={{ padding: '10px', width: '180px', color: '#fff', background: '#2b9348', textAlign: 'center', cursor: 'pointer', borderRadius: '3px' }} onClick={() => navigate('/login/student')}>Go to Login</div>
       </div>
     </div>
   )

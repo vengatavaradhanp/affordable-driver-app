@@ -13,7 +13,7 @@ export default function NotFound() {
       {/* <div className='text-muted'>The page does not exist..</div> */}
       </div>
       <div style={{marginTop: '20px'}}>
-        <div style={{padding: '10px', width: '180px', color: '#fff', background: '#2b9348', textAlign: 'center', cursor: 'pointer', borderRadius: '3px'}} onClick={() => navigate('/')}>Back to Home</div>
+        <div style={{padding: '10px', width: '180px', color: '#fff', background: '#2b9348', textAlign: 'center', cursor: 'pointer', borderRadius: '3px'}} onClick={() => navigate(-1)}>Go Back</div>
       </div>
     </div>
   )

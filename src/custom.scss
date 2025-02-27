@@ -440,3 +440,15 @@ span.rating-star-5 {
     padding: 15px;
   }
 }
+
+.dataTable {
+  tr {
+    th {
+      padding-top: 0px !important;
+      padding: 15px;
+    }
+    td {
+      padding: 15px;
+    }
+  }
+}

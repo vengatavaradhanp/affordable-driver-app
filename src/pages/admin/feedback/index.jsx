@@ -25,14 +25,14 @@ export default function Users() {
   
 
   return (
-    <Container>
-      <h4>Users List</h4>
+    <Container fluid>
+      <h4>Feedback List</h4>
       {error && <p style={{ color: "red" }}>{error}</p>}
       <div className="mt-3">
         <Table responsive>
           <thead>
             <tr>
-              <th>S No</th>
+              <th>ID</th>
               <th>FirstName</th>
               <th>LastName</th>
               <th>Email</th>

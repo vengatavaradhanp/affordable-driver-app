@@ -35,7 +35,7 @@ const Login = () => {
           password,
         }
       );
-      if (response.status === 200) {
+      if (response.status === 201) {
         console.log("User Data:", response.data.user);
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("userData", JSON.stringify(response.data.user));

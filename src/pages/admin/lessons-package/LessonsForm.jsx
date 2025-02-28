@@ -3,250 +3,301 @@ import { Row, Col, Form, Button, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 export default function LessonsForm() {
-   const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
-    const [state, setState] = useState("");
-    const [phone, setPhone] = useState("");
-    const [suburb, setSuburb] = useState("");
-    const [errors, setErrors] = useState({});
-    const [pickUpAddress, setPickUpAddress] = useState("");
-    const navigate = useNavigate();
-  
-    const validateForm = () => {
-      let formErrors = {};
-  
-      if (!firstName) {
-        formErrors.firstName = "First name is required.";
-      } else if (!/^[A-Za-z]+$/.test(firstName)) {
-        formErrors.firstName = "First name can only contain letters.";
-      }
-  
-      if (!lastName) {
-        formErrors.lastName = "Last name is required.";
-      } else if (!/^[A-Za-z\s.,]+$/.test(lastName)) {
-        formErrors.lastName = "Last name can only contain letters.";
-      }
-  
-      if (!email) {
-        formErrors.email = "Email address is required.";
-      } else if (!/\S+@\S+\.\S+/.test(email)) {
-        formErrors.email = "Please enter a valid email address.";
-      }
-  
-      if (!phone) {
-        formErrors.phone = "Phone number is required.";
-      } else if (!/^\d{10}$/.test(phone)) {
-        formErrors.phone = "Phone number can only contain numbers.";
-      }
-  
-      if (!pickUpAddress) {
-        formErrors.pickUpAddress = "pick up address is requried.";
-      } else if (!/^\d$/.test(pickUpAddress)) {
-        formErrors.pickUpAddress = "pick up address is requried.";
-      }
-  
-      if (!state) formErrors.state = "State is required.";
-      if (!suburb) formErrors.suburb = "Suburb is required.";
-  
-      setErrors(formErrors);
-      return Object.keys(formErrors).length === 0;
-    };
-  
-    // Handle input change and validate in real-time
-    const handleInputChange = (e) => {
-      const { name, value } = e.target;
-      switch (name) {
-        case "firstName":
-          setFirstName(value);
-          if (/^[A-Za-z]+$/.test(value)) setErrors((prev) => ({ ...prev, firstName: "" }));
-          break;
-        case "lastName":
-          setLastName(value);
-          if (/^[A-Za-z\s.,]+$/.test(value)) setErrors((prev) => ({ ...prev, lastName: "" }));
-          break;
-        case "email":
-          setEmail(value);
-          if (/\S+@\S+\.\S+/.test(value)) setErrors((prev) => ({ ...prev, email: "" }));
-          break;
-        case "phone":
-          setPhone(value);
-          if (/^\d{10}$/.test(value)) {
-            setErrors((prev) => ({ ...prev, phone: "" }));
-          }
-          break;
-        case "state":
-          setState(value);
-          if (value) setErrors((prev) => ({ ...prev, state: "" }));
-          break;
-        case "pickUpAddress":
-          setPickUpAddress(value);
-          if (value) setErrors((prev) => ({ ...prev, state: "" }));
-          break;
-        case "suburb":
-          setSuburb(value);
-          if (value) setErrors((prev) => ({ ...prev, suburb: "" }));
-          break;
-        default:
-          break;
-      }
-    };
-  
-    const handleContinue = (e) => {
-      e.preventDefault(); // Prevent page refresh
-  
-      if (!validateForm()) {
-        return;
-      }
-  
-      console.log("Form Data:", {
-        firstName,
-        lastName,
-        email,
-        phone,
-        suburb,
-        state,
-      });
-  
-      navigate("/admin/users", { state: { firstName } });
-  
-      // Optionally reset the form fields
-      setFirstName("");
-      setLastName("");
-      setEmail("");
-      setState("");
-      setPhone("");
-      setSuburb("");
-    };
-  
-    return (
-      <Container className="mt-4">
-        <h4>Lessons Form</h4>
-        <Form onSubmit={handleContinue} style={{ marginTop: "30px" }}>
-          <Row>
-            <Col lg={4}>
-              <Form.Group className="mb-3">
-                <Form.Label>First Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="First name"
-                  name="firstName"
-                  value={firstName}
-                  onChange={handleInputChange}
+  const [title, setTitle] = useState("");
+  const [price, setPrice] = useState("");
+  const [validity, setValidity] = useState("");
+  const [duration, setDuration] = useState("");
+  const [description, setDescription] = useState("");
+  const [status, setStatus] = useState("");
+  const [errors, setErrors] = useState({});
+
+  // New states for image upload
+  const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+ 
+  const navigate = useNavigate();
+
+  const validateForm = () => {
+    let formErrors = {};
+
+    if (!title) {
+      formErrors.title = "Title is required.";
+    } else if (!/^[A-Za-z]+$/.test(title)) {
+      formErrors.title = "Title can only contain letters.";
+    }
+
+    if (!price) {
+      formErrors.price = "Price is required.";
+    } else if (!/^[A-Za-z\s.,]+$/.test(price)) {
+      formErrors.price = "Price can only contain letters.";
+    }
+
+    if (!validity) {
+      formErrors.validity = "Validity is required.";
+    } else if (!/\S+@\S+\.\S+/.test(validity)) {
+      formErrors.validity = "Please enter a valid validity.";
+    }
+
+    if (!duration) {
+      formErrors.duration = "Duration is required.";
+    } else if (!/^\d+$/.test(duration)) {
+      formErrors.duration = "Duration can only contain numbers.";
+    }
+
+    if (!description) {
+      formErrors.description = "Description is required.";
+    }
+
+    // Optionally add validation for image field if needed
+    // e.g., if (!image) { formErrors.image = "Image is required."; }
+
+    setErrors(formErrors);
+    return Object.keys(formErrors).length === 0;
+  };
+
+  // Handle input change and validate in real-time
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    switch (name) {
+      case "title":
+        setTitle(value);
+        if (/^[A-Za-z]+$/.test(value))
+          setErrors((prev) => ({ ...prev, title: "" }));
+        break;
+      case "price":
+        setPrice(value);
+        if (/^[A-Za-z\s.,]+$/.test(value))
+          setErrors((prev) => ({ ...prev, price: "" }));
+        break;
+      case "validity":
+        setValidity(value);
+        if (/\S+@\S+\.\S+/.test(value))
+          setErrors((prev) => ({ ...prev, validity: "" }));
+        break;
+      case "duration":
+        setDuration(value);
+        if (/^\d+$/.test(value)) {
+          setErrors((prev) => ({ ...prev, duration: "" }));
+        }
+        break;
+      case "description":
+        setDescription(value);
+        if (value) setErrors((prev) => ({ ...prev, description: "" }));
+        break;
+      default:
+        break;
+    }
+  };
+
+  // Handle image file selection and preview
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleContinue = (e) => {
+    e.preventDefault(); // Prevent page refresh
+
+   
+
+    console.log("Form Data:", {
+      title,
+      price,
+      validity,
+      duration,
+      description,
+      status,
+      image,
+    });
+
+    navigate("/admin/users", { state: { title } });
+
+    // Optionally reset the form fields
+    setTitle("");
+    setPrice("");
+    setValidity("");
+    setDuration("");
+    setDescription("");
+    setStatus("");
+    setImage(null);
+    setImagePreview(null);
+  };
+
+  return (
+    <Container fluid className="mt-4">
+      <h4>Lessons Form</h4>
+      <Form onSubmit={handleContinue} style={{ marginTop: "30px" }}>
+        <Row>
+          <Col lg={4}>
+            <Form.Group className="mb-3">
+              <Form.Label>Title</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Title"
+                name="title"
+                value={title}
+                onChange={handleInputChange}
+              />
+              {errors.title && (
+                <div style={{ color: "#dc3545" }}>{errors.title}</div>
+              )}
+            </Form.Group>
+          </Col>
+
+          <Col lg={4}>
+            <Form.Group className="mb-3">
+              <Form.Label>Price</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Price"
+                name="price"
+                value={price}
+                onChange={handleInputChange}
+              />
+              {errors.price && (
+                <div style={{ color: "#dc3545" }}>{errors.price}</div>
+              )}
+            </Form.Group>
+          </Col>
+
+          <Col lg={4}>
+            <Form.Group className="mb-3">
+              <Form.Label>Validity</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Validity"
+                name="validity"
+                value={validity}
+                onChange={handleInputChange}
+              />
+              {errors.validity && (
+                <div style={{ color: "#dc3545" }}>{errors.validity}</div>
+              )}
+            </Form.Group>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col lg={4}>
+            <Form.Group className="mb-3">
+              <Form.Label>Duration</Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="Duration"
+                name="duration"
+                value={duration}
+                onChange={handleInputChange}
+              />
+              {errors.duration && (
+                <div style={{ color: "#dc3545" }}>{errors.duration}</div>
+              )}
+            </Form.Group>
+          </Col>
+
+          <Col lg={4}>
+            <Form.Group className="mb-3">
+              <Form.Label>Status</Form.Label>
+              <div className="mt-1">
+                <Form.Check
+                  inline
+                  label="Active"
+                  name="status"
+                  type="radio"
+                  id="inline-radio-1"
+                  onChange={() => setStatus("Active")}
                 />
-                {errors.firstName && <div style={{ color: "#dc3545" }}>{errors.firstName}</div>}
-              </Form.Group>
-            </Col>
-  
-            <Col lg={4}>
-              <Form.Group className="mb-3">
-                <Form.Label>Last Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Last name"
-                  name="lastName"
-                  value={lastName}
-                  onChange={handleInputChange}
+                <Form.Check
+                  inline
+                  label="Inactive"
+                  name="status"
+                  type="radio"
+                  id="inline-radio-2"
+                  onChange={() => setStatus("Inactive")}
                 />
-                {errors.lastName && <div style={{ color: "#dc3545" }}>{errors.lastName}</div>}
-              </Form.Group>
-            </Col>
-  
+              </div>
+              {errors.status && (
+                <div style={{ color: "#dc3545", marginTop: "5px" }}>
+                  {errors.status}
+                </div>
+              )}
+            </Form.Group>
+          </Col>
+
+          <Col lg={4}>
+            <Form.Group className="mb-3">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Description"
+                name="description"
+                value={description}
+                onChange={handleInputChange}
+                as="textarea"
+                rows={3}
+              />
+              {errors.description && (
+                <div style={{ color: "#dc3545" }}>{errors.description}</div>
+              )}
+            </Form.Group>
+          </Col>
+        </Row>
+
+        {/* New Row for Image Upload */}
+        <Row>
+          <Col lg={4}>
+            <Form.Group className="mb-3">
+              <Form.Label>Image Upload</Form.Label>
+              <Form.Control
+                type="file"
+                accept="image/*"
+                name="image"
+                onChange={handleImageUpload}
+              />
+              {/* Optionally show validation errors for image if needed */}
+              {errors.image && (
+                <div style={{ color: "#dc3545" }}>{errors.image}</div>
+              )}
+            </Form.Group>
+          </Col>
+          {imagePreview && (
             <Col lg={4}>
               <Form.Group className="mb-3">
-                <Form.Label>Email Address</Form.Label>
-                <Form.Control
-                  type="email"
-                  placeholder="Your email address"
-                  name="email"
-                  value={email}
-                  onChange={handleInputChange}
-                />
-                {errors.email && <div style={{ color: "#dc3545" }}>{errors.email}</div>}
+                <Form.Label>Preview</Form.Label>
+                <div>
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    style={{ maxWidth: "200px" }}
+                  />
+                </div>
               </Form.Group>
             </Col>
-  
-            <Col lg={4}>
-              <Form.Group className="mb-3">
-                <Form.Label>Phone Number</Form.Label>
-                <Form.Control
-                  type="tel"
-                  placeholder="0400 000 000"
-                  name="phone"
-                  value={phone}
-                  onChange={handleInputChange}
-                  maxLength="10"
-                />
-                {errors.phone && <div style={{ color: "#dc3545" }}>{errors.phone}</div>}
-              </Form.Group>
-            </Col>
-  
-  
-            <Col lg={4}>
-              <Form.Group className="mb-3">
-                <Form.Label>Pick Up Address</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Pick Up Address"
-                  name="pickupaddress"
-                  value={pickUpAddress}
-                  onChange={handleInputChange}
-                  as="textarea" rows={3}
-                />
-                {errors.pickUpAddress && <div style={{ color: "#dc3545" }}>{errors.pickUpAddress}</div>}
-              </Form.Group>
-            </Col>
-  
-            <Col lg={4}>
-              <Form.Group className="mb-3">
-                <Form.Label>Suburb</Form.Label>
-                <Form.Select
-                  name="suburb"
-                  value={suburb}
-                  onChange={handleInputChange}
-                >
-                  <option value="" disabled>
-                    Select a Suburb
-                  </option>
-                  <option value="Hobart, 7000">Hobart, 7000</option>
-                  <option value="USA">USA</option>
-                  <option value="Africa">Africa</option>
-                  <option value="Glebe, 7000">Glebe, 7000</option>
-                </Form.Select>
-                {errors.suburb && <div style={{ color: "#dc3545" }}>{errors.suburb}</div>}
-              </Form.Group>
-            </Col>
-  
-            <Col lg={4}>
-              <Form.Group className="mb-3">
-                <Form.Label>State</Form.Label>s
-                <Form.Select
-                  name="state"
-                  value={state}
-                  onChange={handleInputChange}
-                >
-                  <option value="" disabled>
-                    Select a State
-                  </option>
-                  <option value="Tasmania">Tasmania</option>
-                  <option value="France">France</option>
-                  <option value="Paris">Paris</option>
-                  <option value="Other">Other</option>
-                </Form.Select>
-                {errors.state && <div style={{ color: "#dc3545" }}>{errors.state}</div>}
-              </Form.Group>
-            </Col>
-          </Row>
-  
-          <div style={{ marginTop: "30px", display: "flex", justifyContent: "center" }}>
-            <Button type="submit" className="me-2" variant="primary">
-              Submit
-            </Button>
-            <Button type="button" variant="secondary">
-              Cancel
-            </Button>
-          </div>
-        </Form>
-      </Container>
-    );
+          )}
+        </Row>
+
+        <div
+          style={{
+            marginTop: "30px",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Button
+            type="submit"
+            className="me-2"
+            variant="primary"
+            style={{ width: "100px" }}
+          >
+            Submit
+          </Button>
+          <Button type="button" variant="secondary" style={{ width: "100px" }}>
+            Cancel
+          </Button>
+        </div>
+      </Form>
+    </Container>
+  );
 }

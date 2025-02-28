@@ -10,8 +10,11 @@ export default function UseForm() {
   const [state, setState] = useState("");
   const [phone, setPhone] = useState("");
   const [suburb, setSuburb] = useState("");
+  const [status, setStatus] = useState("");
   const [errors, setErrors] = useState({});
-  const [pickUpAddress, setPickUpAddress] = useState("");
+  const [addressLine1, setAddressLine1] = useState("");
+  const [addressLine2, setAddressLine2] = useState("");
+
   const navigate = useNavigate();
 
   const validateForm = () => {
@@ -41,14 +44,20 @@ export default function UseForm() {
       formErrors.phone = "Phone number can only contain numbers.";
     }
 
-    if (!pickUpAddress) {
-      formErrors.pickUpAddress = "pick up address is requried.";
-    } else if (!/^\d$/.test(pickUpAddress)) {
-      formErrors.pickUpAddress = "pick up address is requried.";
+    if (!addressLine1) {
+      formErrors.addressLine1 = "Address line 1 is requried.";
+    } else if (!/^\d$/.test(addressLine1)) {
+      formErrors.addressLine1 = "Address line 1 is requried.";
+    }
+    if (!addressLine2) {
+      formErrors.addressLine2 = "Address line 2 is requried.";
+    } else if (!/^\d$/.test(addressLine2)) {
+      formErrors.addressLine1 = "Address line 2 is requried.";
     }
 
     if (!state) formErrors.state = "State is required.";
     if (!suburb) formErrors.suburb = "Suburb is required.";
+    if (!status) formErrors.status = "Status is required.";
 
     setErrors(formErrors);
     return Object.keys(formErrors).length === 0;
@@ -60,15 +69,18 @@ export default function UseForm() {
     switch (name) {
       case "firstName":
         setFirstName(value);
-        if (/^[A-Za-z]+$/.test(value)) setErrors((prev) => ({ ...prev, firstName: "" }));
+        if (/^[A-Za-z]+$/.test(value))
+          setErrors((prev) => ({ ...prev, firstName: "" }));
         break;
       case "lastName":
         setLastName(value);
-        if (/^[A-Za-z\s.,]+$/.test(value)) setErrors((prev) => ({ ...prev, lastName: "" }));
+        if (/^[A-Za-z\s.,]+$/.test(value))
+          setErrors((prev) => ({ ...prev, lastName: "" }));
         break;
       case "email":
         setEmail(value);
-        if (/\S+@\S+\.\S+/.test(value)) setErrors((prev) => ({ ...prev, email: "" }));
+        if (/\S+@\S+\.\S+/.test(value))
+          setErrors((prev) => ({ ...prev, email: "" }));
         break;
       case "phone":
         setPhone(value);
@@ -80,13 +92,21 @@ export default function UseForm() {
         setState(value);
         if (value) setErrors((prev) => ({ ...prev, state: "" }));
         break;
-      case "pickUpAddress":
-        setPickUpAddress(value);
+      case "addressLine1":
+        setAddressLine1(value);
+        if (value) setErrors((prev) => ({ ...prev, state: "" }));
+        break;
+      case "addressLine2":
+        setAddressLine2(value);
         if (value) setErrors((prev) => ({ ...prev, state: "" }));
         break;
       case "suburb":
         setSuburb(value);
         if (value) setErrors((prev) => ({ ...prev, suburb: "" }));
+        break;
+      case "status":
+        setStatus(value);
+        if (value) setErrors((prev) => ({ ...prev, status: "" }));
         break;
       default:
         break;
@@ -107,21 +127,14 @@ export default function UseForm() {
       phone,
       suburb,
       state,
+      status,
     });
 
     navigate("/admin/users", { state: { firstName } });
-
-    // Optionally reset the form fields
-    setFirstName("");
-    setLastName("");
-    setEmail("");
-    setState("");
-    setPhone("");
-    setSuburb("");
   };
 
   return (
-    <Container className="mt-4">
+    <Container className="mt-2" fluid>
       <h4>Users Form</h4>
       <Form onSubmit={handleContinue} style={{ marginTop: "30px" }}>
         <Row>
@@ -135,7 +148,11 @@ export default function UseForm() {
                 value={firstName}
                 onChange={handleInputChange}
               />
-              {errors.firstName && <div style={{ color: "#dc3545" }}>{errors.firstName}</div>}
+              {errors.firstName && (
+                <div style={{ color: "#dc3545", marginTop: "5px" }}>
+                  {errors.firstName}
+                </div>
+              )}
             </Form.Group>
           </Col>
 
@@ -149,10 +166,13 @@ export default function UseForm() {
                 value={lastName}
                 onChange={handleInputChange}
               />
-              {errors.lastName && <div style={{ color: "#dc3545" }}>{errors.lastName}</div>}
+              {errors.lastName && (
+                <div style={{ color: "#dc3545", marginTop: "5px" }}>
+                  {errors.lastName}
+                </div>
+              )}
             </Form.Group>
           </Col>
-
 
           <Col lg={4}>
             <Form.Group className="mb-3">
@@ -164,10 +184,13 @@ export default function UseForm() {
                 value={email}
                 onChange={handleInputChange}
               />
-              {errors.email && <div style={{ color: "#dc3545" }}>{errors.email}</div>}
+              {errors.email && (
+                <div style={{ color: "#dc3545", marginTop: "5px" }}>
+                  {errors.email}
+                </div>
+              )}
             </Form.Group>
           </Col>
-
 
           <Col lg={4}>
             <Form.Group className="mb-3">
@@ -180,7 +203,11 @@ export default function UseForm() {
                 onChange={handleInputChange}
                 maxLength="10"
               />
-              {errors.phone && <div style={{ color: "#dc3545" }}>{errors.phone}</div>}
+              {errors.phone && (
+                <div style={{ color: "#dc3545", marginTop: "5px" }}>
+                  {errors.phone}
+                </div>
+              )}
             </Form.Group>
           </Col>
           <Col lg={4}>
@@ -189,11 +216,15 @@ export default function UseForm() {
               <Form.Control
                 type="text"
                 placeholder="Address Line 1"
-                name="pickupaddress"
-                value={pickUpAddress}
+                name="addressLine1"
+                value={addressLine1}
                 onChange={handleInputChange}
               />
-              {errors.pickUpAddress && <div style={{ color: "#dc3545" }}>{errors.pickUpAddress}</div>}
+              {errors.addressLine1 && (
+                <div style={{ color: "#dc3545", marginTop: "5px" }}>
+                  {errors.addressLine1}
+                </div>
+              )}
             </Form.Group>
           </Col>
           <Col lg={4}>
@@ -202,11 +233,15 @@ export default function UseForm() {
               <Form.Control
                 type="text"
                 placeholder="Address Line 2"
-                name="pickupaddress"
-                value={pickUpAddress}
+                name="addressLine2"
+                value={addressLine2}
                 onChange={handleInputChange}
               />
-              {errors.pickUpAddress && <div style={{ color: "#dc3545" }}>{errors.pickUpAddress}</div>}
+              {errors.addressLine2 && (
+                <div style={{ color: "#dc3545", marginTop: "5px" }}>
+                  {errors.addressLine2}
+                </div>
+              )}
             </Form.Group>
           </Col>
 
@@ -221,11 +256,17 @@ export default function UseForm() {
                 <option value="" disabled>
                   Select State
                 </option>
-                {
-                  StateList.map((item, index) => <option key={index} value={item.value}>{item.name}</option>)
-                }
+                {StateList.map((item, index) => (
+                  <option key={index} value={item.value}>
+                    {item.name}
+                  </option>
+                ))}
               </Form.Select>
-              {errors.state && <div style={{ color: "#dc3545" }}>{errors.state}</div>}
+              {errors.state && (
+                <div style={{ color: "#dc3545", marginTop: "5px" }}>
+                  {errors.state}
+                </div>
+              )}
             </Form.Group>
           </Col>
 
@@ -240,11 +281,17 @@ export default function UseForm() {
                 <option value="" disabled>
                   Select Suburb
                 </option>
-                {
-                  SuburbList.map((item, index) => <option key={index} value={item.value}>{item.name}</option>)
-                }
+                {SuburbList.map((item, index) => (
+                  <option key={index} value={item.value}>
+                    {item.name}
+                  </option>
+                ))}
               </Form.Select>
-              {errors.suburb && <div style={{ color: "#dc3545" }}>{errors.suburb}</div>}
+              {errors.suburb && (
+                <div style={{ color: "#dc3545", marginTop: "5px" }}>
+                  {errors.suburb}
+                </div>
+              )}
             </Form.Group>
           </Col>
 
@@ -255,31 +302,43 @@ export default function UseForm() {
                 <Form.Check
                   inline
                   label="Active"
-                  name="active"
+                  name="status"
                   type="radio"
                   id={`inline-radio-1`}
                 />
                 <Form.Check
                   inline
                   label="Inactive"
-                  name="inactive"
+                  name="status"
                   type="radio"
                   id={`inline-radio-2`}
                 />
-                
               </div>
-              {errors.suburb && <div style={{ color: "#dc3545" }}>{errors.suburb}</div>}
+              {errors.status && (
+                <div style={{ color: "#dc3545", marginTop: "5px" }}>
+                  {errors.status}
+                </div>
+              )}
             </Form.Group>
           </Col>
-
-
         </Row>
 
-        <div style={{ marginTop: "30px", display: "flex", justifyContent: "center" }}>
-          <Button type="submit" className="me-2" variant="primary">
+        <div
+          style={{
+            marginTop: "30px",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Button
+            type="submit"
+            className="me-3"
+            variant="primary"
+            style={{ width: "100px" }}
+          >
             Submit
           </Button>
-          <Button type="button" variant="secondary">
+          <Button type="button" variant="secondary" style={{ width: "100px" }}>
             Cancel
           </Button>
         </div>

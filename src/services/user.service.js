@@ -5,6 +5,10 @@ const UserService = {
     const response = await api.get(`users?page=${query.pageNumber}&pageSize=${query.perPage}&search=${query.search}`);
     return response;
   },
+  getAllUsersById: async (id) => {
+    const response = await api.get(`users/${id}`);
+    return response;
+  },
 
   createUser: async (payload) => {
     const response = await api.post(`users`, payload);

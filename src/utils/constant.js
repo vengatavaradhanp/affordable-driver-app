@@ -321,3 +321,29 @@ export const SuburbList = [
     value: "cliftonbeach"
   },
 ]
+
+export const GenderList = [
+  {
+    id: 1,
+    name: "Male",
+    value: "male"
+  },
+  {
+    id: 2,
+    name: "Female",
+    value: "female"
+  },
+  {
+    id: 3,
+    name: "Other",
+    value: "other"
+  }
+]
+
+export const RoleList = [
+  {
+    id: 1,
+    name: "Student",
+    value: "student"
+  }
+]

@@ -38,6 +38,7 @@ export default function Users() {
       .then((response) => {
         const responseData = response.data;
         setUserData(responseData);
+        console.log(responseData)
       })
       .catch((error) => {
         const errorData = error.response.data;

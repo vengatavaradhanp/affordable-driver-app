@@ -18,16 +18,16 @@
 //      { id: 10, full_name: "Sam Wilson", email: "sam@example.com", gender: 'M', status: true },
 //      { id: 11, full_name: "Anna Taylor", email: "anna@example.com", gender: 'F', status: true }
 //    ]);
- 
+
 //    const [showModal, setShowModal] = useState(false);
 //    const [editItem, setEditItem] = useState(null);
 //    const [full_name, setName] = useState("");
 //    const [email, setEmail] = useState("");
- 
+
 //    // Pagination state
 //    const [currentPage, setCurrentPage] = useState(1);
 //    const itemsPerPage = 10;
- 
+
 //    // Handle opening the modal for creating a new item
 //    const handleCreate = () => {
 //      setEditItem(null);
@@ -35,7 +35,7 @@
 //      setEmail("");
 //      setShowModal(true);
 //    };
- 
+
 //    // Handle editing an existing item
 //    const handleEdit = (item) => {
 //      setEditItem(item);
@@ -43,7 +43,7 @@
 //      setEmail(item.email);
 //      setShowModal(true);
 //    };
- 
+
 //    // Handle saving the item (create or update)
 //    const handleSave = () => {
 //      if (editItem) {
@@ -57,21 +57,20 @@
 //      }
 //      setShowModal(false);
 //    };
- 
+
 //    // Handle deleting an item
 //    const handleDelete = (id) => {
 //      const updatedData = data.filter((item) => item.id !== id);
 //      setData(updatedData);
 //    };
- 
+
 //    // Handle pagination
 //    const indexOfLastItem = currentPage * itemsPerPage;
 //    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 //    const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
- 
+
 //    const paginate = (pageNumber) => setCurrentPage(pageNumber);
- 
- 
+
 //    return (
 //      <Container>
 //        <h4>Lessons List</h4>
@@ -84,7 +83,7 @@
 //                  placeholder="Search Lessons"
 //                  aria-label="Search Lessons"
 //                  aria-describedby="basic-addon2"
- 
+
 //                />
 //                <Button variant="btn btn-primary" id="button-addon2">
 //                  <i class="bi bi-search"></i>
@@ -92,7 +91,7 @@
 //              </InputGroup>
 //            </Col>
 //            <Col />
-           
+
 //            <Col className='d-flex justify-content-end'>  <Button style={{ width: '100px' }} variant="primary" onClick={() => (navigate("/admin/users/create"))}
 //              className="my-1"
 //            >
@@ -121,11 +120,11 @@
 //                  <td>{item.gender}</td>
 //                  <td>{item.status ? <span style={{ color: '#2b9348' }}>Active</span> : <span style={{ color: '#eb433f' }}>Inactive</span>}</td>
 //                  <td >
- 
+
 //                    <span
 //                      style={{ padding: '0px 10px', cursor: 'pointer' }}
 //                      onClick={() => handleEdit(item)}
- 
+
 //                    >
 //                      <i class="bi bi-pencil-square" style={{ color: '#40a0ed', fontSize: '18px' }}></i>
 //                    </span>
@@ -140,9 +139,9 @@
 //              ))}
 //            </tbody>
 //          </Table>
- 
+
 //        </div>
- 
+
 //        <div className='d-flex justify-content-end mt-2'>
 //          <Pagination>
 //            {[{}, {}, {}, {}, {}, {}, {}].map((number, i) => (
@@ -157,8 +156,7 @@
 //            ))}
 //          </Pagination>
 //        </div>
- 
- 
+
 //        <Modal show={showModal} onHide={() => setShowModal(false)}>
 //          <Modal.Header closeButton>
 //            <Modal.Title>{editItem ? "Edit Item" : "Add New Item"}</Modal.Title>
@@ -174,7 +172,7 @@
 //                  onChange={(e) => setName(e.target.value)}
 //                />
 //              </Form.Group>
- 
+
 //              <Form.Group controlId="formEmail" className="mb-3">
 //                <Form.Label>Email</Form.Label>
 //                <Form.Control
@@ -196,24 +194,20 @@
 //          </Modal.Footer>
 //        </Modal>
 //      </Container>
- 
+
 //    )
 // }
-
-
 
 // import React, { useState } from 'react'
 // import { Table, Button, Modal, Form, Pagination, Container, Row, Col, InputGroup } from "react-bootstrap";
 // import { useNavigate } from "react-router-dom";
-
-
 
 // export default function Users() {
 //   const navigate = useNavigate();
 //   // Sample data
 //   const [data, setData] = useState([
 //     { id: 1, full_name: "John Doe", email: "john@example.com", gender: 'M', status: true },
-    
+
 //   ]);
 
 //   const [showModal, setShowModal] = useState(false);
@@ -268,7 +262,6 @@
 
 //   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-
 //   return (
 //     <Container>
 //       <h4>Users List</h4>
@@ -289,7 +282,7 @@
 //             </InputGroup>
 //           </Col>
 //           <Col />
-          
+
 //           <Col className='d-flex justify-content-end'>  <Button style={{ width: '100px' }} variant="primary" onClick={() => (navigate("/admin/users/create"))}
 //             className="my-1"
 //           >
@@ -355,7 +348,6 @@
 //         </Pagination>
 //       </div>
 
-
 //       <Modal show={showModal} onHide={() => setShowModal(false)}>
 //         <Modal.Header closeButton>
 //           <Modal.Title>{editItem ? "Edit Item" : "Add New Item"}</Modal.Title>
@@ -397,175 +389,183 @@
 //   )
 // }
 
-
- 
-import React, { useState, useEffect } from "react";
-import { Table, Button, Modal, Form, Pagination, Container, Row, Col, InputGroup } from "react-bootstrap";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  Table,
+  Button,
+  Form,
+  Pagination,
+  Container,
+  Row,
+  Col,
+  InputGroup,
+} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { toast } from "react-toastify";
- 
-export default function Users() {
+import LessonPackageService from "../../../services/lesson-package.service";
+import ConfirmationModalComponent from "../../../components/confirmation-modal/ConfirmationModalComponent";
+
+export default function LessonPackageList() {
   const navigate = useNavigate();
-  const [data, setData] = useState([]);
+  const [lessonData, setLessonData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
- 
-  const [showModal, setShowModal] = useState(false);
-  const [editItem, setEditItem] = useState(null);
-  const [title, setTitle] = useState("");
-  const [price, setPrice] = useState("");
-  const [toggleStates, setToggleStates] = useState({});
- 
+
+  // For modal confirmation deletion
+  const confirmationModalRef = useRef(null);
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
- 
+
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get("https://datatechgenius.com/expert-driver/public/index.php/api/lesson-packages");
-        setData(response.data);
-      } catch (err) {
-        setError("Failed to fetch users. Please try again.");
-      } finally {
-        setLoading(false);
-      }
+    getLessonPackage();
+    // eslint-disable-next-line
+  }, [currentPage, searchTerm]);
+
+  const getLessonPackage = () => {
+    const query = {
+      pageNumber: currentPage,
+      perPage: itemsPerPage,
+      search: searchTerm,
     };
-    fetchUsers();
-  }, []);
- 
+    LessonPackageService.getAllLessons(query)
+      .then((response) => {
+        // Adjust the path if your API response structure differs
+        setLessonData(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError("Failed to retrieve lesson packages");
+        setLoading(false);
+        toast.error("Failed to retrieve lesson packages");
+      });
+  };
+
   const handleCreate = () => {
-    setEditItem(null);
-    setTitle("");
-    setPrice("");
-    setShowModal(true);
+    navigate("/admin/lesson-package/create");
   };
- 
+
   const handleEdit = (item) => {
-    setEditItem(item);
-    setTitle(item.title);
-    setPrice(item.price);
-    setShowModal(true);
+    navigate("/admin/lessons/:type", { state: item });
   };
- 
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      try {
-        await axios.delete(`https://datatechgenius.com/expert-driver/public/index.php/api/users/${id}`);
-        setData(data.filter((item) => item.id !== id));
-        toast.success("User deleted successfully!");
-      } catch (error) {
-        toast.error("Failed to delete user.");
-      }
-    }
+
+  // Open confirmation modal with the lesson package ID
+  const handleDelete = (id) => {
+    console.log(id);
+    confirmationModalRef.current.open(id);
   };
- 
-  const handleToggle = (id) => {
-    setToggleStates((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
+
+  const handleDeleteLesson = (id) => {
+    LessonPackageService.deleteLesson(id)
+      .then(() => {
+        toast.success("Lesson package deleted successfully");
+        getLessonPackage();
+      })
+      .catch(() => {
+        toast.error("Failed to delete lesson package");
+      });
   };
- 
+
+  const handleSearch = () => {
+    setCurrentPage(1); // Reset to first page when searching
+    getLessonPackage();
+  };
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
- 
-  const filteredUsers = data.filter((user) =>
-    (user.title || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (user.price || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (user.duration || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (user.description || "").toLowerCase().includes(searchTerm.toLowerCase())
-  );
-  
- 
-  const currentItems = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
- 
+
+  // (Optional) Pagination rendering can be added here if needed
+
   return (
     <Container fluid>
-      <h4>Lesson Package list</h4>
+      <h4>Lesson Package List</h4>
       <Row>
         <Col>
           <InputGroup className="my-1">
             <Form.Control
-              placeholder="Search User"
-              aria-label="Search User"
+              placeholder="Search Lesson Package"
+              aria-label="Search Lesson Package"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <Button variant="btn btn-primary">
+            <Button variant="primary" onClick={handleSearch}>
               <i className="bi bi-search"></i>
             </Button>
           </InputGroup>
         </Col>
         <Col />
         <Col className="d-flex justify-content-end">
-          <Button style={{ width: "100px" }} variant="primary" onClick={() => navigate("/admin/lessons/:type")} className="my-1">
+          <Button
+            style={{ width: "100px" }}
+            variant="primary"
+            onClick={() => navigate("/admin/lessons/:type")}
+            // onClick={handleCreate}
+            className="my-1"
+          >
             Add &nbsp;&nbsp;<i className="bi bi-plus-circle"></i>
           </Button>
         </Col>
       </Row>
- 
-      {/* {loading && <p>Loading users...</p>} */}
+
+      {loading && <p>Loading lesson packages...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
- 
+
       <div className="mt-3">
-        <Table responsive>
-            <thead>
+        <Table responsive className="dataTable">
+          <thead>
             <tr>
               <th>Id</th>
               <th>Title</th>
-              <th>Price</th>
-              <th>Duration</th>
-              <th>validity</th>
+              <th>Price In (Dollar)</th>
+              <th>Minutes</th>
+              <th>Single Package</th>
+              <th>Lesson Package</th>
               <th>Actions</th>
             </tr>
-            </thead>
+          </thead>
           <tbody>
-            {currentItems.map((item, index) => (
+            {lessonData.map((item, index) => (
               <tr key={item.id}>
                 <td>{indexOfFirstItem + index + 1}</td>
                 <td>{item.title}</td>
                 <td>{item.amount}</td>
                 <td>{item.minutes}</td>
-                <td>{item.expiry_date}</td>
-                {/* <td>{item.suburbs}</td> */}
+                <td>{item.created_at}</td>
+                <td>{item.updated_at}</td>
                 <td>
-                  <span style={{ padding: "0px 5px", cursor: "pointer" }} onClick={() => handleEdit(item)}>
-                    <i className="bi bi-pencil-square" style={{ color: "#40a0ed", fontSize: "18px" }}></i>
-                  </span>
-                  <span style={{ padding: "0px 5px", cursor: "pointer" }} onClick={() => handleDelete(item.id)}>
-                    <i className="bi bi-trash" style={{ color: "#eb433f", fontSize: "18px" }}></i>
-                  </span>
-                  {/* <span style={{ padding: "0px 5px", cursor: "pointer" }} onClick={() => handleToggle(item.id)}>
+                  <span
+                    style={{ padding: "0px 5px", cursor: "pointer" }}
+                    onClick={() => handleEdit(item)}
+                  >
                     <i
-                      className={`bi ${toggleStates[item.id] ? "bi-toggle-on" : "bi-toggle-off"}`}
-                      style={{
-                        fontSize: "24px",
-                        color: toggleStates[item.id] ? "#28a745" : "#dc3545",
-                        cursor: "pointer",
-                      }}
+                      className="bi bi-pencil-square"
+                      style={{ color: "#40a0ed", fontSize: "18px" }}
                     ></i>
-                  </span> */}
+                  </span>
+                  <span
+                    style={{ padding: "0px 5px", cursor: "pointer" }}
+                    onClick={() => handleDelete(item)}
+                  >
+                    <i
+                      className="bi bi-trash"
+                      style={{ color: "#eb433f", fontSize: "18px" }}
+                    ></i>
+                  </span>
                 </td>
               </tr>
             ))}
           </tbody>
         </Table>
       </div>
- 
+
       <div className="d-flex justify-content-end mt-2">
-        <Pagination>
-          {Array.from({ length: Math.ceil(filteredUsers.length / itemsPerPage) }, (_, i) => (
-            <Pagination.Item key={i + 1} active={i + 1 === currentPage} onClick={() => paginate(i + 1)}>
-              {i + 1}
-            </Pagination.Item>
-          ))}
-        </Pagination>
+        <Pagination>{/* Pagination items can be added here */}</Pagination>
       </div>
+      <ConfirmationModalComponent
+        ref={confirmationModalRef}
+        handleDeleteUser={handleDeleteLesson}
+      />
     </Container>
   );
 }
- 
- 

@@ -425,7 +425,7 @@ export default function UseForm() {
           password: "password123",
           phone: formData.phone,
           suburbs: formData.suburb,
-          address: formData.pickUpAddress, // ✅ Ensure it's correctly mapped in API call
+          address: formData.pickUpAddress, 
           state: formData.state,
           gender: "male",
           role: "user",

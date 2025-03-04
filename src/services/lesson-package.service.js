@@ -8,6 +8,13 @@ const LessonPackageService = {
     return response;
   },
 
+  getLessonsById: async (id) => {
+    const response = await api.get(
+      `lesson-packages/${id}`
+    );
+    return response;
+  },
+
   createLesson: async (payload) => {
     const response = await api.post(`lesson-packages`, payload);
     return response;

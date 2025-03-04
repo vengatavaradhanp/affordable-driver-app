@@ -639,6 +639,8 @@ import { Row, Col, Form, Button, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+import UserService from "../../../services/user.service";
+import LessonPackageService from "../../../services/lesson-package.service";
 
 export default function LessonsForm() {
   const [formData, setFormData] = useState({
@@ -711,52 +713,65 @@ export default function LessonsForm() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateForm()) return;
+    // e.preventDefault();
+    // if (!validateForm()) return;
 
     // Create FormData for file upload and text fields
-    const data = new FormData();
-    data.append("title", formData.title);
-    data.append("amount", formData.price);
-    data.append("expiry_date", formData.validity);
-    data.append("minutes", formData.duration);
-    data.append("count", "5"); // Default count; adjust as needed
-    data.append("description", formData.description);
-    data.append("favorite", "1"); // Default favorite value
-    data.append("status", formData.status);
-    data.append("image", image);
+    // const data = new FormData();
+    // data.append("title", formData.title);
+    // data.append("amount", formData.price);
+    // data.append("expiry_date", formData.validity);
+    // data.append("minutes", formData.duration);
+    // data.append("count", "5"); // Default count; adjust as needed
+    // data.append("description", formData.description);
+    // data.append("favorite", "1"); // Default favorite value
+    // data.append("status", formData.status);
+    // data.append("image", image);
 
-    try {
-      const response = await axios.post(
-        "https://datatechgenius.com/expert-driver/public/index.php/api/lesson-packages",
-        data,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+    // try {
+    //   const response = await axios.post(
+    //     "https://datatechgenius.com/expert-driver/public/index.php/api/lesson-packages",
+    //     data,
+    //     {
+    //       headers: { "Content-Type": "multipart/form-data" },
+    //     }
+    //   );
 
-      if (response.data.success) {
-        toast.success(response.data.message || "Lesson registered successfully!");
-        navigate("/admin/lessons", { state: { title: formData.title } });
-        setFormData({
-          title: "",
-          price: "",
-          validity: "",
-          duration: "",
-          description: "",
-          status: "",
-        });
-        setImage(null);
-        setImagePreview(null);
-      } else {
-        toast.error(response.data.message || "Submission failed.");
-      }
-    } catch (error) {
-      console.error("API Error:", error);
-      const errorMessage =
-        error.response?.data?.message ||
-        "An error occurred. Please try again.";
-      toast.error(errorMessage);
+    //   if (response.data.success) {
+    //     toast.success(response.data.message || "Lesson registered successfully!");
+    //     navigate("/admin/lessons", { state: { title: formData.title } });
+    //     setFormData({
+    //       title: "",
+    //       price: "",
+    //       validity: "",
+    //       duration: "",
+    //       description: "",
+    //       status: "",
+    //     });
+    //     setImage(null);
+    //     setImagePreview(null);
+    //   } else {
+    //     toast.error(response.data.message || "Submission failed.");
+    //   }
+    // } catch (error) {
+    //   console.error("API Error:", error);
+    //   const errorMessage =
+    //     error.response?.data?.message ||
+    //     "An error occurred. Please try again.";
+    //   toast.error(errorMessage);
+    // }
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (validateForm()) {
+      const payload = { ...formData };
+      UserService.createUser(payload)
+        .then(() => {
+          toast.success("Lessons was created successfully!");
+          navigate("/admin/users");
+        })
+        .catch(() => toast.error("Failed to create user"));
     }
   };
 

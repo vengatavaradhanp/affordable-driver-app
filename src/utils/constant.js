@@ -344,6 +344,6 @@ export const RoleList = [
   {
     id: 1,
     name: "Student",
-    value: "student"
+    value: "user"
   }
 ]

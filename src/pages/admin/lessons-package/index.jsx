@@ -404,6 +404,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import LessonPackageService from "../../../services/lesson-package.service";
 import ConfirmationModalComponent from "../../../components/confirmation-modal/ConfirmationModalComponent";
+import moment from "moment/moment";
 
 export default function LessonPackageList() {
   const navigate = useNavigate();
@@ -447,7 +448,7 @@ export default function LessonPackageList() {
   };
 
   const handleEdit = (item) => {
-    navigate("/admin/lessons/:type", { state: item });
+    navigate("/admin/lessons/edit", { state: item });
   };
 
   // Open confirmation modal with the lesson package ID
@@ -479,13 +480,14 @@ export default function LessonPackageList() {
 
   return (
     <Container fluid>
-      <h4>Lesson Package List</h4>
+      <h4>Lessons List</h4>
+      <hr />
       <Row>
         <Col>
           <InputGroup className="my-1">
             <Form.Control
-              placeholder="Search Lesson Package"
-              aria-label="Search Lesson Package"
+              placeholder="Search Lessons"
+              aria-label="Search Lessons"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -499,7 +501,7 @@ export default function LessonPackageList() {
           <Button
             style={{ width: "100px" }}
             variant="primary"
-            onClick={() => navigate("/admin/lessons/:type")}
+            onClick={() => navigate("/admin/lessons/create")}
             // onClick={handleCreate}
             className="my-1"
           >
@@ -508,31 +510,28 @@ export default function LessonPackageList() {
         </Col>
       </Row>
 
-      {loading && <p>Loading lesson packages...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
       <div className="mt-3">
         <Table responsive className="dataTable">
           <thead>
             <tr>
-              <th>Id</th>
-              <th>Title</th>
-              <th>Price In (Dollar)</th>
-              <th>Minutes</th>
-              <th>Single Package</th>
-              <th>Lesson Package</th>
+              <th>S No</th>
+              <th>Lesson Title</th>
+              <th>Price</th>
+              <th>Duration</th>
+              <th>Lesson Type</th>
+              <th>Created On</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {lessonData.map((item, index) => (
               <tr key={item.id}>
-                <td>{indexOfFirstItem + index + 1}</td>
+                <td>{index + 1}</td>
                 <td>{item.title}</td>
-                <td>{item.amount}</td>
-                <td>{item.minutes}</td>
-                <td>{item.created_at}</td>
-                <td>{item.updated_at}</td>
+                <td>$ {item.amount}</td>
+                <td>{item.minutes} mins</td>
+                <td>{index % 4 !== 0 ? "Package" : "Single"}</td>
+                <td>{moment(item.created_at).format("DD-MM-YYYY")}</td>
                 <td>
                   <span
                     style={{ padding: "0px 5px", cursor: "pointer" }}

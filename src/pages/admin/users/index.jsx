@@ -127,6 +127,7 @@ export default function Users() {
   return (
     <Container fluid>
       <h4>Users List</h4>
+      <hr />
       <Row>
         <Col>
           <InputGroup className="my-1">
@@ -143,14 +144,16 @@ export default function Users() {
         </Col>
         <Col />
         <Col className="d-flex justify-content-end">
-          <Button style={{ width: "100px" }} variant="primary" onClick={() => navigate("/admin/users/create")} className="my-1">
+          <Button
+            style={{ width: "100px" }}
+            variant="primary"
+            onClick={() => navigate("/admin/users/create")}
+            className="my-1"
+          >
             Add &nbsp;&nbsp;<i className="bi bi-plus-circle"></i>
           </Button>
         </Col>
       </Row>
-
-      {/* {loading && <p>Loading users...</p>} */}
-      {error && <p style={{ color: "red" }}>{error}</p>}
 
       <div className="mt-3">
         <Table responsive className="dataTable">
@@ -175,18 +178,30 @@ export default function Users() {
                 <td>{item.state}</td>
                 <td>{item.suburbs}</td>
                 <td>
-                  <div style={{ display: 'flex' }}>
-                    <span style={{ padding: "0px 10px", cursor: "pointer" }} onClick={() => handleEdit(item)}>
-                      <i className="bi bi-pencil-square" style={{ color: "#40a0ed", fontSize: "18px" }}></i>
+                  <div style={{ display: "flex" }}>
+                    <span
+                      style={{ padding: "0px 10px", cursor: "pointer" }}
+                      onClick={() => handleEdit(item)}
+                    >
+                      <i
+                        className="bi bi-pencil-square"
+                        style={{ color: "#40a0ed", fontSize: "18px" }}
+                      ></i>
                     </span>
-                    <span style={{ padding: "0px 10px", cursor: "pointer" }} onClick={() => handleDelete(item)}>
-                      <i className="bi bi-trash" style={{ color: "#eb433f", fontSize: "18px" }}></i>
+                    <span
+                      style={{ padding: "0px 10px", cursor: "pointer" }}
+                      onClick={() => handleDelete(item)}
+                    >
+                      <i
+                        className="bi bi-trash"
+                        style={{ color: "#eb433f", fontSize: "18px" }}
+                      ></i>
                     </span>
-                    <span style={{ padding: "0px 10px", cursor: "pointer" }} >
+                    <span style={{ padding: "0px 10px", cursor: "pointer" }}>
                       <Form.Check
                         type="switch"
                         id="custom-switch"
-                        style={{ fontSize: '18px' }}
+                        style={{ fontSize: "18px" }}
                         value={item.status}
                         checked={item.status === 1 ? true : false}
                         onChange={(event) => handleSwitchChange(event, item)}
@@ -209,7 +224,10 @@ export default function Users() {
           ))} */}
         </Pagination>
       </div>
-      <ConfirmationModalComponent ref={confirmationModalRef} handleDeleteUser={handleDeleteUser} />
+      <ConfirmationModalComponent
+        ref={confirmationModalRef}
+        handleDeleteUser={handleDeleteUser}
+      />
     </Container>
   );
 }

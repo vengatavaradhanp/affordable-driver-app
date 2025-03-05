@@ -52,10 +52,19 @@ const ConfirmationModalComponent = forwardRef((props, ref) => {
       </Modal.Body>
 
       <Modal.Footer style={{ justifyContent: "center" }}>
-        <Button variant="primary" onClick={handleUserDelete}>
+        <Button
+          variant="primary"
+          className="me-3"
+          onClick={handleUserDelete}
+          style={{ width: "100px" }}
+        >
           Confirm
         </Button>
-        <Button variant="secondary" onClick={() => setModal(false)}>
+        <Button
+          variant="secondary"
+          onClick={() => setModal(false)}
+          style={{ width: "100px" }}
+        >
           Cancel
         </Button>
       </Modal.Footer>

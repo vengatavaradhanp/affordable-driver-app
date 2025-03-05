@@ -1,66 +1,116 @@
-import React, { useState, useEffect } from "react";
-import { Table, Container } from "react-bootstrap";
-import axios from "axios";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  Table,
+  Button,
+  Form,
+  Pagination,
+  Container,
+  Row,
+  Col,
+  InputGroup,
+} from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import ConfirmationModalComponent from "../../../components/confirmation-modal/ConfirmationModalComponent";
+import moment from "moment/moment";
+import FeebackService from "../../../services/feedback.service";
 
-export default function Users() {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+export default function FeedbackList() {
+  const navigate = useNavigate();
+  const [lessonData, setFeedbackData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get("https://datatechgenius.com/expert-driver/public/index.php/api/contacts");
-        console.log("API Response:", response.data);
-        setData(response.data);
-      } catch (err) {
-        console.error("API Error:", err.response ? err.response.data : err.message);
-        setError("Failed to fetch users. Please try again.");
-      } finally {
-        setLoading(false);
-      }
+    getFeedbacks();
+  }, [currentPage, searchTerm]);
+
+  const getFeedbacks = () => {
+    const query = {
+      pageNumber: currentPage,
+      perPage: itemsPerPage,
+      search: searchTerm,
     };
-    fetchUsers();
-  }, []);
-  
+    FeebackService.getAllFeedback(query)
+      .then((response) => {
+        setFeedbackData(response.data);
+        console.log("#########", response.data);
+      })
+      .catch((error) => {
+        toast.error("Failed to retrieve feedback");
+      });
+  };
+
+  const handleSearch = () => {
+    setCurrentPage(1); // Reset to first page when searching
+    getFeedbacks();
+  };
 
   return (
     <Container fluid>
       <h4>Feedback List</h4>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      <hr />
+      <Row>
+        <Col>
+          <InputGroup className="my-1">
+            <Form.Control
+              placeholder="Search Feedback"
+              aria-label="Search Feedback"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <Button variant="primary" onClick={handleSearch}>
+              <i className="bi bi-search"></i>
+            </Button>
+          </InputGroup>
+        </Col>
+        <Col />
+        <Col />
+        {/* <Col className="d-flex justify-content-end">
+          <Button
+            style={{ width: "100px" }}
+            variant="primary"
+            onClick={() => navigate("/admin/feedback/create")}
+            // onClick={handleCreate}
+            className="my-1"
+          >
+            Add &nbsp;&nbsp;<i className="bi bi-plus-circle"></i>
+          </Button>
+        </Col> */}
+      </Row>
+
       <div className="mt-3">
-        <Table responsive>
+        <Table responsive className="dataTable">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>FirstName</th>
-              <th>LastName</th>
+              <th>S No</th>
+              <th>Full Name</th>
               <th>Email</th>
               <th>Phone</th>
               <th>Inquiry About</th>
-              <th>Message</th>
-
+              <th>Created On</th>
+              {/* <th>Message</th> */}
             </tr>
           </thead>
           <tbody>
-            {data.map((item, index) => (
+            {lessonData.map((item, index) => (
               <tr key={item.id}>
                 <td>{index + 1}</td>
-                <td>{item.firstname}</td>
-                <td>{item.lastname}</td>
+                <td>{item.firstname + " " + item.lastname}</td>
                 <td>{item.emailaddress}</td>
                 <td>{item.contact_number}</td>
                 <td>{item.inquiring_about}</td>
-                <td>{item.message}</td>
-
-
-                {/* <td>{item.inquiring_about}</td> */}
-                
-                
+                <td>{moment(item.created_at).format("DD-MM-YYYY")}</td>
+                {/* <td>{item.message}</td> */}
               </tr>
             ))}
           </tbody>
         </Table>
+      </div>
+
+      <div className="d-flex justify-content-end mt-2">
+        <Pagination>{/* Pagination items can be added here */}</Pagination>
       </div>
     </Container>
   );

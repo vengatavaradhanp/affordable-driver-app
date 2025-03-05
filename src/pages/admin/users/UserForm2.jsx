@@ -61,10 +61,8 @@ export default function UserForm2() {
     const { name, value, type, checked } = event.target;
     setFields({
       ...fields,
-      [name]: type === "radio" ? (checked ? 1 : 0) : value,
+      [name]: type === "radio" ? (fields.status ? 0 : 1) : value,
     });
-
-    // Remove error message when user selects a value
     if (value) {
       setErrors({ ...errors, [name]: false });
     }
@@ -331,16 +329,16 @@ export default function UserForm2() {
         </Row>
 
         <hr />
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        <div style={{ display: "flex", justifyContent: "center", marginTop: '30px' }}>
           <Button
             type="submit"
-            className="me-2"
+            className="me-3"
             variant="primary"
-            style={{ width: "100px" }}
+            style={{ width: "130px" }}
           >
             {fields.id ? "Update" : "Submit"}
           </Button>
-          <Button type="button" variant="secondary" style={{ width: "100px" }}>
+          <Button type="button" variant="secondary" style={{ width: "130px" }} onClick={() => navigate(-1)}>
             Cancel
           </Button>
         </div>

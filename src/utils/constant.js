@@ -255,13 +255,13 @@ export const MenuList = [
     icon: "bi bi-chat-left-text"
     
   },
-  {
-    id: 5,
-    name: "Instructor",
-    link: "/admin/instructor",
-    is_active: true,
-    icon: "bi-car-front-fill"
-  },
+  // {
+  //   id: 5,
+  //   name: "Instructor",
+  //   link: "/admin/instructor",
+  //   is_active: true,
+  //   icon: "bi-car-front-fill"
+  // },
   {
     id: 6,
     name: "Settings",

@@ -7,6 +7,7 @@ import map from "../../assets/images/map.jpg";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 import AppLoader from "../../components/app-layout/AppLoader";
 import { useLoader } from "../../context/LoaderContext";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const mapContainerStyle = {
   width: "100%",
@@ -19,6 +20,7 @@ const center = {
 };
 
 export default function HomePage() {
+  const navigate = useNavigate();
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyCkew4NnI7F1QTw89mys9ivJBv4LaKRSVU",
   });
@@ -41,6 +43,10 @@ export default function HomePage() {
   const onUnmount = React.useCallback(function callback(map) {
     setMap(null);
   }, []);
+
+  const handleNavigate = () => {
+    navigate("/lessons#target-section");
+  };
 
   return (
     <div style={{ minHeight: "100vh" }}>
@@ -310,9 +316,9 @@ export default function HomePage() {
                     For suburbs not listed, please call us to see if we can make
                     alternative arrangements.
                   </p>
-                  <a className="btn btn-outline-primary border-2" href="">
+                  <button className="btn btn-outline-primary border-2" onClick={handleNavigate} >
                     Book Now
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>

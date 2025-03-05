@@ -1,19 +1,38 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PaypalDialog from "../../components/paypal-dialog/PaypalDialog";
 import { LessonsList } from "../../utils/constant";
 import AppLoader from "../../components/app-layout/AppLoader";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function LessonPackages() {
   const paypalDialogRef = React.useRef(null);
   const [isLoading, setIsLoading] = React.useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
+
 
   React.useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-    }, 200);
+    }, 500);
+    
   }, []);
+
+  useEffect(() => {
+    if (!isLoading) {
+      setTimeout(() => {
+        if (location.hash) {
+          const targetElement = document.getElementById(location.hash.substring(1));
+          console.log("Scrolling to:", targetElement);
+          if (targetElement) {
+            targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
+          } else {
+            console.log("Element not found:", location.hash);
+          }
+        }
+      }, 100); // Delay ensures the element is in the DOM
+    }
+  }, [isLoading, location]);
 
   const paymentHandler = () => {
     setTimeout(() => {
@@ -78,46 +97,49 @@ export default function LessonPackages() {
                   Lesson Packages make great gifts! You can buy our digital gift
                   cards and set your amount to cover any of our services.
                 </p>
-
-                {LessonsList.map((item, index) => (
-                  <div
-                    className="col-lg-5 col-md-6 wow fadeInUp"
-                    data-wow-delay="0.1s"
-                    key={index}
-                  >
-                    <div className="courses-item d-flex flex-column bg-light overflow-hidden h-100">
-                      <div className="text-center p-4 pt-0">
-                        {item.is_popular === 1 ? (
-                          <div className="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">
-                            Most Popular
+                <div id="target-section" className="row">
+                  {LessonsList.map((item, index) => (
+                    <div
+                      className="col-lg-6 col-md-6 wow fadeInUp mb-4"
+                      data-wow-delay="0.1s"
+                      key={index}
+                    >
+                      <div className="courses-item d-flex flex-column bg-light overflow-hidden h-100">
+                        <div className="text-center p-4 pt-0">
+                          {item.is_popular === 1 ? (
+                            <div className="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">
+                              Most Popular
+                            </div>
+                          ) : (
+                            <div className="d-inline-block text-white fs-5 py-3 px-4 mb-4"></div>
+                          )}
+                          <p>
+                            {item.count} x {item.time_per_lesson} Minute Lesson
+                          </p>
+                          <h1 className="mb-3">
+                            {item.count * item.time_per_lesson}
+                          </h1>
+                          <p>{item.title}</p>
+                          <small>Valid for one year</small>
+                          <div
+                            className="mt-4"
+                            data-toggle="modal"
+                            data-target="#exampleModalCenter"
+                            onClick={() =>
+                              navigate("/purchase-steps", {
+                                state: { ...item },
+                              })
+                            }
+                          >
+                            <span className="btn btn-primary border-2 w-100">
+                              Select
+                            </span>
                           </div>
-                        ) : (
-                          <div className="d-inline-block text-white fs-5 py-3 px-4 mb-4"></div>
-                        )}
-                        <p>
-                          {item.count} x {item.time_per_lesson} Minute Lesson
-                        </p>
-                        <h1 className="mb-3">
-                          {item.count * item.time_per_lesson}
-                        </h1>
-                        <p>{item.title}</p>
-                        <small>Valid for one year</small>
-                        <div
-                          className="mt-4"
-                          data-toggle="modal"
-                          data-target="#exampleModalCenter"
-                          onClick={() =>
-                            navigate("/purchase-steps", { state: { ...item } })
-                          }
-                        >
-                          <span className="btn btn-primary border-2 w-100">
-                            Select
-                          </span>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
 
                 {/* <div
               className="col-lg-5 col-md-6 wow fadeInUp"

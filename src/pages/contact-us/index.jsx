@@ -152,8 +152,7 @@
 //                                         <option value="">7 x 25 Minute Lesson</option>
 //                                         <option value="">10 x 60 Minute Lesson</option>
 //                                       </Form.Select>
-                     
-                     
+
 //                     </Form.Group>
 
 //                     <Form.Group
@@ -164,7 +163,7 @@
 //                       <Form.Label column sm="12">
 //                         Comment
 //                       </Form.Label>
-                      
+
 //                       <Col sm="12">
 //                         <Form.Control type="password" placeholder="comment" />
 //                       </Col>
@@ -197,8 +196,6 @@
 //     </>
 //   );
 // }
-
-
 
 // import axios from "axios";
 // import React, { useState } from "react";
@@ -417,12 +414,237 @@
 //   );
 // }
 
+// import axios from "axios";
+// import React, { useState } from "react";
+// import { Form, Button, Col, Row } from "react-bootstrap";
+// import { toast } from "react-toastify";
 
+// export default function ContactUs() {
+//   const [formData, setFormData] = useState({
+//     firstName: "",
+//     lastName: "",
+//     email: "",
+//     contactNumber: "",
+//     inquiry: "",
+//     message: "",
+//   });
 
-import axios from "axios";
+//   const [errors, setErrors] = useState({});
+//   const [successMessage, setSuccessMessage] = useState("");
+
+//   // Handle input change
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     setFormData({ ...formData, [name]: value });
+//     setErrors({ ...errors, [name]: "" }); // Reset error when user types
+//   };
+
+//   // Form validation
+//   const validate = () => {
+//     const newErrors = {};
+//     if (!formData.firstName.trim())
+//       newErrors.firstName = "First Name is required.";
+//     if (!formData.lastName.trim())
+//       newErrors.lastName = "Last Name is required.";
+//     if (!formData.email.trim()) newErrors.email = "Email Address is required.";
+//     else if (!/\S+@\S+\.\S+/.test(formData.email))
+//       newErrors.email = "Invalid email format.";
+//     if (!formData.contactNumber.trim())
+//       newErrors.contactNumber = "Contact Number is required.";
+//     if (!formData.inquiry) newErrors.inquiry = "Please select an option.";
+//     if (!formData.message.trim())
+//       newErrors.message = "Message cannot be empty.";
+
+//     setErrors(newErrors);
+//     return Object.keys(newErrors).length === 0;
+//   };
+
+//   // Handle form submission
+//   const handleSubmit = async (event) => {
+//     event.preventDefault();
+
+//     if (!validate()) return;
+
+//     try {
+//       const response = await axios.post(
+//         "https://datatechgenius.com/expert-driver/public/index.php/api/contacts",
+//         {
+//           firstname: formData.firstName,
+//           lastname: formData.lastName,
+//           emailaddress: formData.email,
+//           contact_number: formData.contactNumber,
+//           inquiring_about: formData.inquiry,
+//           message: formData.message,
+//         }
+//       );
+
+//       if (response.status === 201) {
+//         toast.success("Message sent successfully!");
+//         setSuccessMessage("Your message has been sent successfully!");
+//         setFormData({
+//           firstName: "",
+//           lastName: "",
+//           email: "",
+//           contactNumber: "",
+//           inquiry: "",
+//           message: "",
+//         });
+//       } else {
+//         toast.error(response.data.message || "Submission failed.");
+//       }
+//     } catch (error) {
+//       toast.error(
+//         error.response?.data?.message || "An error occurred. Please try again."
+//       );
+//     }
+//   };
+
+//   return (
+//     <>
+//       <div className="container-fluid page-header py-6 my-5 mt-0 wow fadeIn">
+//         <div
+//           className="container"
+//           style={{
+//             display: "flex",
+//             height: "100%",
+//             alignItems: "center",
+//             justifyContent: "center",
+//           }}
+//         >
+//           <div className="row justify-content-center">
+//             <div className="col-lg-12">
+//               <h3 className="display-5 text-light mb-0">Contact Us</h3>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//       <div className="container-fluid facts py-5 pt-lg-0 contactFacts">
+//         <div className="container py-5 pt-lg-0">
+//           <div className="row gx-0">
+//             <div className="col-lg-12 wow fadeIn">
+//               <div className="bg-white shadow d-flex align-items-center h-100 p-4">
+//                 <div className="col-lg-12 wow fadeInUp">
+//                   <h1 className="display-12 mb-4 text-center">
+//                     If You Have Any Query, Please Contact Us
+//                   </h1>
+
+//                   <Form onSubmit={handleSubmit}>
+//                     <Row className="mb-3">
+//                       <Form.Group className="mb-2" as={Col} md="6">
+//                         <Form.Label>First Name</Form.Label>
+//                         <Form.Control
+//                           name="firstName"
+//                           placeholder="First Name"
+//                           value={formData.firstName}
+//                           onChange={handleChange}
+//                         />
+//                         {errors.firstName && (
+//                           <div className="text-danger">{errors.firstName}</div>
+//                         )}
+//                       </Form.Group>
+
+//                       <Form.Group className="mb-2" as={Col} md="6">
+//                         <Form.Label>Last Name</Form.Label>
+//                         <Form.Control
+//                           name="lastName"
+//                           placeholder="Last Name"
+//                           value={formData.lastName}
+//                           onChange={handleChange}
+//                         />
+//                         {errors.lastName && (
+//                           <div className="text-danger">{errors.lastName}</div>
+//                         )}
+//                       </Form.Group>
+
+//                       <Form.Group className="mb-2" as={Col} md="6">
+//                         <Form.Label>Email Address</Form.Label>
+//                         <Form.Control
+//                           name="email"
+//                           type="email"
+//                           placeholder="Email Address"
+//                           value={formData.email}
+//                           onChange={handleChange}
+//                         />
+//                         {errors.email && (
+//                           <div className="text-danger">{errors.email}</div>
+//                         )}
+//                       </Form.Group>
+
+//                       <Form.Group className="mb-2" as={Col} md="6">
+//                         <Form.Label>Contact Number</Form.Label>
+//                         <Form.Control
+//                           name="contactNumber"
+//                           placeholder="Contact Number"
+//                           value={formData.contactNumber}
+//                           onChange={handleChange}
+//                         />
+//                         {errors.contactNumber && (
+//                           <div className="text-danger">
+//                             {errors.contactNumber}
+//                           </div>
+//                         )}
+//                       </Form.Group>
+
+//                       <Form.Group className="mb-2" as={Col} md="6">
+//                         <Form.Label>Inquiry</Form.Label>
+//                         <Form.Select
+//                           name="inquiry"
+//                           value={formData.inquiry}
+//                           onChange={handleChange}
+//                         >
+//                           <option value="">Select an option</option>
+//                           <option value="3x60">3 x 60 Minute Lesson</option>
+//                           <option value="5x30">5 x 30 Minute Lesson</option>
+//                           <option value="7x25">7 x 25 Minute Lesson</option>
+//                           <option value="10x60">10 x 60 Minute Lesson</option>
+//                           <option value="other">Other</option>
+//                         </Form.Select>
+//                         {errors.inquiry && (
+//                           <div className="text-danger">{errors.inquiry}</div>
+//                         )}
+//                       </Form.Group>
+
+//                       <Form.Group className="mb-2">
+//                         <Form.Label>Message</Form.Label>
+//                         <Form.Control
+//                           rows={4}
+//                           name="message"
+//                           as="textarea"
+//                           placeholder="Enter your message"
+//                           value={formData.message}
+//                           onChange={handleChange}
+//                         />
+//                         {errors.message && (
+//                           <div className="text-danger">{errors.message}</div>
+//                         )}
+//                       </Form.Group>
+//                       <div className="d-flex justify-content-center">
+//                         <Button type="submit" variant="success">
+//                           Submit
+//                         </Button>
+//                       </div>
+
+//                       {successMessage && (
+//                         <div className="alert alert-success mt-3">
+//                           {successMessage}
+//                         </div>
+//                       )}
+//                     </Row>
+//                   </Form>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </>
+//   );
+// }
+
 import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Col, Row } from "react-bootstrap";
 import { toast } from "react-toastify";
+import ContactUsService from "../../services/contactus.service";
 
 export default function ContactUs() {
   const [formData, setFormData] = useState({
@@ -437,48 +659,45 @@ export default function ContactUs() {
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
 
+  // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    setErrors({ ...errors, [name]: "" });
+    setErrors({ ...errors, [name]: "" }); // Reset error when user types
   };
 
+  // Form validation
   const validate = () => {
     const newErrors = {};
-    if (!formData.firstName) newErrors.firstName = "First Name is required.";
-    if (!formData.lastName) newErrors.lastName = "Last Name is required.";
-    if (!formData.email) newErrors.email = "Email Address is required.";
+    if (!formData.firstName.trim())
+      newErrors.firstName = "First Name is required.";
+    if (!formData.lastName.trim())
+      newErrors.lastName = "Last Name is required.";
+    if (!formData.email.trim()) newErrors.email = "Email Address is required.";
     else if (!/\S+@\S+\.\S+/.test(formData.email))
       newErrors.email = "Invalid email format.";
-    if (!formData.contactNumber)
+    if (!formData.contactNumber.trim())
       newErrors.contactNumber = "Contact Number is required.";
     if (!formData.inquiry) newErrors.inquiry = "Please select an option.";
-    if (!formData.message) newErrors.message = "Message cannot be empty.";
+    if (!formData.message.trim())
+      newErrors.message = "Message cannot be empty.";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
+  // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!validate()) return;
 
     try {
-      const response = await axios.post(
-        "https://datatechgenius.com/expert-driver/public/index.php/api/contacts",
-        {
-          firstname: formData.firstName,
-          lastname: formData.lastName,
-          emailaddress: formData.email,
-          contact_number: formData.contactNumber,
-          inquiring_about: formData.inquiry,
-          message: formData.message,
-        }
-      );
+      const response = await ContactUsService.submitContactForm(formData);
 
       if (response.status === 201) {
         toast.success("Message sent successfully!");
+        setSuccessMessage("Your message has been sent successfully!");
         setFormData({
           firstName: "",
           lastName: "",
@@ -487,7 +706,6 @@ export default function ContactUs() {
           inquiry: "",
           message: "",
         });
-        setSuccessMessage("Your message has been sent successfully!");
       } else {
         toast.error(response.data.message || "Submission failed.");
       }
@@ -499,85 +717,143 @@ export default function ContactUs() {
   };
 
   return (
-    <div className="container py-5">
-      <h1 className="text-center mb-4">Contact Us</h1>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-2">
-          <Form.Label>First Name</Form.Label>
-          <Form.Control
-            name="firstName"
-            placeholder="First Name"
-            value={formData.firstName}
-            onChange={handleChange}
-          />
-          {errors.firstName && <div className="text-danger">{errors.firstName}</div>}
-        </Form.Group>
+    <>
+      <div className="container-fluid page-header py-6 my-5 mt-0 wow fadeIn">
+        <div
+          className="container"
+          style={{
+            display: "flex",
+            height: "100%",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <div className="row justify-content-center">
+            <div className="col-lg-12">
+              <h3 className="display-5 text-light mb-0">Contact Us</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="container-fluid facts py-5 pt-lg-0 contactFacts">
+        <div className="container py-5 pt-lg-0">
+          <div className="row gx-0">
+            <div className="col-lg-12 wow fadeIn">
+              <div className="bg-white shadow d-flex align-items-center h-100 p-4">
+                <div className="col-lg-12 wow fadeInUp">
+                  <h1 className="display-12 mb-4 text-center">
+                    If You Have Any Query, Please Contact Us
+                  </h1>
 
-        <Form.Group className="mb-2">
-          <Form.Label>Last Name</Form.Label>
-          <Form.Control
-            name="lastName"
-            placeholder="Last Name"
-            value={formData.lastName}
-            onChange={handleChange}
-          />
-          {errors.lastName && <div className="text-danger">{errors.lastName}</div>}
-        </Form.Group>
+                  <Form onSubmit={handleSubmit}>
+                    <Row className="mb-3">
+                      <Form.Group className="mb-2" as={Col} md="6">
+                        <Form.Label>First Name</Form.Label>
+                        <Form.Control
+                          name="firstName"
+                          placeholder="First Name"
+                          value={formData.firstName}
+                          onChange={handleChange}
+                        />
+                        {errors.firstName && (
+                          <div className="text-danger">{errors.firstName}</div>
+                        )}
+                      </Form.Group>
 
-        <Form.Group className="mb-2">
-          <Form.Label>Email Address</Form.Label>
-          <Form.Control
-            name="email"
-            type="email"
-            placeholder="Email Address"
-            value={formData.email}
-            onChange={handleChange}
-          />
-          {errors.email && <div className="text-danger">{errors.email}</div>}
-        </Form.Group>
+                      <Form.Group className="mb-2" as={Col} md="6">
+                        <Form.Label>Last Name</Form.Label>
+                        <Form.Control
+                          name="lastName"
+                          placeholder="Last Name"
+                          value={formData.lastName}
+                          onChange={handleChange}
+                        />
+                        {errors.lastName && (
+                          <div className="text-danger">{errors.lastName}</div>
+                        )}
+                      </Form.Group>
 
-        <Form.Group className="mb-2">
-          <Form.Label>Contact Number</Form.Label>
-          <Form.Control
-            name="contactNumber"
-            placeholder="Contact Number"
-            value={formData.contactNumber}
-            onChange={handleChange}
-          />
-          {errors.contactNumber && <div className="text-danger">{errors.contactNumber}</div>}
-        </Form.Group>
+                      <Form.Group className="mb-2" as={Col} md="6">
+                        <Form.Label>Email Address</Form.Label>
+                        <Form.Control
+                          name="email"
+                          type="email"
+                          placeholder="Email Address"
+                          value={formData.email}
+                          onChange={handleChange}
+                        />
+                        {errors.email && (
+                          <div className="text-danger">{errors.email}</div>
+                        )}
+                      </Form.Group>
 
-        <Form.Group className="mb-2">
-          <Form.Label>Inquiry</Form.Label>
-          <Form.Select name="inquiry" value={formData.inquiry} onChange={handleChange}>
-            <option value="">Select an option</option>
-            <option value="3x60">3 x 60 Minute Lesson</option>
-            <option value="5x30">5 x 30 Minute Lesson</option>
-            <option value="7x25">7 x 25 Minute Lesson</option>
-            <option value="10x60">10 x 60 Minute Lesson</option>
-            <option value="other">Other</option>
-          </Form.Select>
-          {errors.inquiry && <div className="text-danger">{errors.inquiry}</div>}
-        </Form.Group>
+                      <Form.Group className="mb-2" as={Col} md="6">
+                        <Form.Label>Contact Number</Form.Label>
+                        <Form.Control
+                          name="contactNumber"
+                          placeholder="Contact Number"
+                          value={formData.contactNumber}
+                          onChange={handleChange}
+                        />
+                        {errors.contactNumber && (
+                          <div className="text-danger">
+                            {errors.contactNumber}
+                          </div>
+                        )}
+                      </Form.Group>
 
-        <Form.Group className="mb-2">
-          <Form.Label>Message</Form.Label>
-          <Form.Control
-            name="message"
-            as="textarea"
-            placeholder="Enter your message"
-            value={formData.message}
-            onChange={handleChange}
-          />
-          {errors.message && <div className="text-danger">{errors.message}</div>}
-        </Form.Group>
+                      <Form.Group className="mb-2" as={Col} md="6">
+                        <Form.Label>Inquiry</Form.Label>
+                        <Form.Select
+                          name="inquiry"
+                          value={formData.inquiry}
+                          onChange={handleChange}
+                        >
+                          <option value="">Select an option</option>
+                          <option value="3x60">3 x 60 Minute Lesson</option>
+                          <option value="5x30">5 x 30 Minute Lesson</option>
+                          <option value="7x25">7 x 25 Minute Lesson</option>
+                          <option value="10x60">10 x 60 Minute Lesson</option>
+                          <option value="other">Other</option>
+                        </Form.Select>
+                        {errors.inquiry && (
+                          <div className="text-danger">{errors.inquiry}</div>
+                        )}
+                      </Form.Group>
 
-        <Button type="submit" variant="success" className="w-100 mt-3">
-          Submit
-        </Button>
+                      <Form.Group className="mb-2">
+                        <Form.Label>Message</Form.Label>
+                        <Form.Control
+                          rows={4}
+                          name="message"
+                          as="textarea"
+                          placeholder="Enter your message"
+                          value={formData.message}
+                          onChange={handleChange}
+                        />
+                        {errors.message && (
+                          <div className="text-danger">{errors.message}</div>
+                        )}
+                      </Form.Group>
+                      <div className="d-flex justify-content-center">
+                        <Button type="submit" variant="success">
+                          Submit
+                        </Button>
+                      </div>
 
-        {successMessage && <div className="alert alert-success mt-3">{successMessage}</div>}
-      </Form>
-    </div>
+                      {successMessage && (
+                        <div className="alert alert-success mt-3">
+                          {successMessage}
+                        </div>
+                      )}
+                    </Row>
+                  </Form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }

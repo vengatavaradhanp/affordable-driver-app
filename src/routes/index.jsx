@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import LessonPackages from "../pages/lesson-packages";
 import Homepage from "../pages/homepage";
 import BookOnline from "../pages/book-online";
@@ -43,7 +43,7 @@ export default function AppRoute() {
         <AuthProvider>
           <BrowserRouter>
             <Routes>
-
+            <Route path="/api/authorize" element={<Navigate to="/" />} />
               <Route element={<ProtectedRoute />}>
                 <Route path="/login/:type" element={<Loginpage />} />
                 <Route path="/" element={<HomePage />} />

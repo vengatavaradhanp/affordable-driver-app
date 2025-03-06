@@ -1,5 +1,9 @@
 import React from "react";
 import bgHome from "../../assets/images/bgHome.jpg";
+import homepage2 from "../../assets/images/homepage2.jpg";
+import homepage3 from "../../assets/images/homepage3.jpg";
+import homepage4 from "../../assets/images/homepage4.jpg";
+import homepage5 from "../../assets/images/homepage5.jpg";
 import book from "../../assets/images/book.png";
 import heart from "../../assets/images/heart.jpg";
 import facebook from "../../assets/images/facebooksmall.webp";
@@ -8,6 +12,8 @@ import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 import AppLoader from "../../components/app-layout/AppLoader";
 import { useLoader } from "../../context/LoaderContext";
 import { Navigate, useNavigate } from "react-router-dom";
+import { Carousel } from "react-bootstrap";
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 const mapContainerStyle = {
   width: "100%",
@@ -49,7 +55,7 @@ export default function HomePage() {
   };
 
   return (
-    <div style={{ minHeight: "100vh" }}>
+    <div style={{ minHeight: "" }}>
       {isLoading ? (
         <AppLoader />
       ) : (
@@ -60,9 +66,47 @@ export default function HomePage() {
               className="carousel slide"
               data-bs-ride="carousel"
             >
+              {/* Header Carousel Start */}
+              <Carousel interval={3000} controls={true} indicators={true}>
+                <Carousel.Item >
+                  
+                  <img
+                   style={{height:"700px", objectFit:"cover"}}
+                    className="d-block w-100"
+                    src={homepage2}
+                    alt="First slide"
+                  />
+                </Carousel.Item>
+                <Carousel.Item>
+                  <img
+                   style={{height:"700px", objectFit:"cover"}}
+                    className="d-block w-100"
+                    src={homepage3}
+                    alt="Second slide"
+                  />
+                </Carousel.Item>
+                <Carousel.Item>
+                  <img
+                   style={{height:"700px", objectFit:"cover"}}
+                    className="d-block w-100"
+                    src={homepage4}
+                    alt="Third slide"
+                  />
+                </Carousel.Item>
+                <Carousel.Item>
+                  <img
+                   style={{height:"700px", objectFit:"cover"}}
+                    className="d-block w-100"
+                    src={homepage5}
+                    alt="Fourth slide"
+                  />
+                </Carousel.Item>
+              </Carousel>
+              {/* Header Carousel End */}
+
               <div className="carousel-inner">
                 <div className="carousel-item active">
-                  <img className="w-100" src={bgHome} alt="Image" />
+                  {/* <img className="w-100" src={bgHome} alt="Image" /> */}
                   <div className="carousel-caption">
                     <div className="container">
                       <div className="row justify-content-center">
@@ -273,7 +317,7 @@ export default function HomePage() {
           </div>
           {/* Courses End */}
           {/* Features Start */}
-          <div className="container-xxl py-0">
+          <div className="container-xxl py-0 p-3 mb-5">
             <div className="container">
               <div
                 className="text-center mx-auto mb-5 wow fadeInUp"
@@ -316,13 +360,37 @@ export default function HomePage() {
                     For suburbs not listed, please call us to see if we can make
                     alternative arrangements.
                   </p>
-                  <button className="btn btn-outline-primary border-2" onClick={handleNavigate} >
+                  <button
+                    className="btn btn-outline-primary border-2"
+                    onClick={handleNavigate}
+                  >
                     Book Now
                   </button>
                 </div>
               </div>
             </div>
           </div>
+          {/* <div>
+          <section className="bg-light py-5">
+          
+        <h2 className="text-center mb-4">About Us</h2>
+        <Row className="justify-content-center">
+          {milestones.map((milestone, index) => (
+            <Col md={6} lg={4} key={index} className="mb-4">
+              <Card className="shadow text-center border-0">
+                <Card.Body>
+                  <h4 className="text-primary">{milestone.year}</h4>
+                  <h5 className="fw-bold">{milestone.title}</h5>
+                  <p className="text-muted">{milestone.description}</p>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+     
+    </section>
+              
+         </div> */}
         </>
       )}
     </div>

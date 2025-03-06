@@ -5,6 +5,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import logo from "../../assets/images/logos.svg";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import { auth, googleProvider, facebookProvider,signInWithGoogle, signInWithFacebook, logout} from "../../pages/auth/firebaseconfig"
+import { useAuthState } from "react-firebase-hooks/auth";
+
+
+
 
 
 
@@ -17,6 +22,8 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { type } = useParams()
+  const [user] = useAuthState(auth); // Tracks login state
+  
   console.log(type)
   // Toggle Password Visibility
   const togglePasswordVisibility = () => {
@@ -198,6 +205,27 @@ const Login = () => {
             </Col>
           </Row>
         </div>
+
+        {user ? (
+                  <>
+                    <img src={user.photoURL} alt="Profile" className="rounded-circle mx-auto d-block mb-3" width="80" />
+                    <h5 className="text-center">{user.displayName}</h5>
+                    <p className="text-center">{user.email}</p>
+                    <Button variant="danger" className="w-100" onClick={logout}>
+                      Logout
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button variant="primary" className="w-100 mb-2" onClick={signInWithGoogle}>
+                      Sign in with Google
+                    </Button>
+                    <Button variant="info" className="w-100" onClick={signInWithFacebook}>
+                      Sign in with Facebook
+                    </Button>
+                  </>
+                )}
+                {/* <a href="http://datatechgenius.com/expert-driver/public/index.php/api/auth/google">Google</a> */}
 
       </div>
     </>

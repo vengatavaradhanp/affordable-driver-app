@@ -206,7 +206,7 @@ const Login = () => {
           </Row>
         </div>
 
-        {user ? (
+        {/* {user ? (
                   <>
                     <img src={user.photoURL} alt="Profile" className="rounded-circle mx-auto d-block mb-3" width="80" />
                     <h5 className="text-center">{user.displayName}</h5>
@@ -224,7 +224,7 @@ const Login = () => {
                       Sign in with Facebook
                     </Button>
                   </>
-                )}
+                )} */}
                 {/* <a href="http://datatechgenius.com/expert-driver/public/index.php/api/auth/google">Google</a> */}
 
       </div>

@@ -12,7 +12,7 @@ import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 import AppLoader from "../../components/app-layout/AppLoader";
 import { useLoader } from "../../context/LoaderContext";
 import { Navigate, useNavigate } from "react-router-dom";
-import { Carousel } from "react-bootstrap";
+import { Carousel, Button, Container, Row, Col } from "react-bootstrap";
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
 const mapContainerStyle = {
@@ -68,26 +68,43 @@ export default function HomePage() {
             >
               {/* Header Carousel Start */}
               <Carousel interval={3000} controls={true} indicators={true}>
-                <Carousel.Item >
-                  
-                  <img
-                   style={{height:"700px", objectFit:"cover"}}
-                    className="d-block w-100"
-                    src={homepage2}
-                    alt="First slide"
-                  />
+                <Carousel.Item className="image2">
+                  {/* <div>
+                    <img
+                      style={{ height: "700px", objectFit: "cover" }}
+                      className="d-block w-100"
+                      src={bgHome}
+                      alt="First slide"
+                    />
+                  </div> */}
+                  <Carousel.Caption style={{ top: "35%" }}>
+                    <h3 className="text-white " style={{ fontSize: "48px" }}>
+                      We Drive
+                    </h3>
+                    <div
+                      className="center-caption"
+                      style={{ fontSize: "26px" }}
+                    >
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      </p>
+                    </div>
+                    <Button style={{ width: "15%", paddingTop: "5px" }}>
+                      Book Now
+                    </Button>
+                  </Carousel.Caption>
                 </Carousel.Item>
-                <Carousel.Item>
+                {/* <Carousel.Item>
                   <img
                    style={{height:"700px", objectFit:"cover"}}
                     className="d-block w-100"
                     src={homepage3}
                     alt="Second slide"
                   />
-                </Carousel.Item>
+                </Carousel.Item> 
                 <Carousel.Item>
                   <img
-                   style={{height:"700px", objectFit:"cover"}}
+                    style={{ height: "700px", objectFit: "cover" }}
                     className="d-block w-100"
                     src={homepage4}
                     alt="Third slide"
@@ -95,12 +112,12 @@ export default function HomePage() {
                 </Carousel.Item>
                 <Carousel.Item>
                   <img
-                   style={{height:"700px", objectFit:"cover"}}
+                    style={{ height: "700px", objectFit: "cover" }}
                     className="d-block w-100"
                     src={homepage5}
                     alt="Fourth slide"
                   />
-                </Carousel.Item>
+                </Carousel.Item> */}
               </Carousel>
               {/* Header Carousel End */}
 
@@ -316,6 +333,49 @@ export default function HomePage() {
             </div>
           </div>
           {/* Courses End */}
+          <div className="container-xxl py-0 p-3 mb-5">
+            <div className="container">
+              <div
+                className="text-center mx-auto mb-5 wow fadeInUp"
+                data-wow-delay="0.1s"
+                style={{ maxWidth: 500 }}
+              >
+                <h1 className="display-6 mb-4">Company History</h1>
+              </div>
+              <div className="row g-5">
+                {/* <div className="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+                <h5>
+                   Company History
+                  </h5>
+                </div> */}
+                <div className="col-lg-12 wow fadeInUp" data-wow-delay="0.1s">
+                  <p>
+                    Founded with a vision to revolutionize driving education,
+                    <strong> We-Drive</strong> began as a small initiative aimed
+                    at making driving lessons more accessible and structured.
+                    Over the years, we have grown into a comprehensive platform
+                    that connects learners with certified instructors, offering
+                    flexible scheduling and tailored lesson plans. Over the
+                    years, we have grown into a comprehensive platform that
+                    connects learners with certified instructors, offering
+                    flexible scheduling and tailored lesson plans. Over the
+                    years, we have grown into a comprehensive platform that
+                    connects learners with certified instructors, offering
+                    flexible scheduling and tailored lesson plans.
+                  </p>
+                  <p>
+                    With a commitment to safety, convenience, and innovation,
+                    We-Drive continues to enhance the driving learning
+                    experience, helping thousands of learners gain confidence on
+                    the road. With a commitment to safety, convenience, and
+                    innovation, We-Drive continues to enhance the driving
+                    learning experience, helping thousands of learners gain
+                    confidence on the road.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
           {/* Features Start */}
           <div className="container-xxl py-0 p-3 mb-5">
             <div className="container">
@@ -370,6 +430,37 @@ export default function HomePage() {
               </div>
             </div>
           </div>
+
+          {/* <Container className="text-center my-5 py-5">
+                <Row className="text-justify">
+                  <Col lg={4}>
+                    <div>
+                      <h2 className="fw-bold mb-4">Our History</h2>
+                    </div>
+                  </Col>
+                  <Col lg={8}>
+                    <div className="fs-6"
+                    style={{fontFamily:"var(--bs-body-font-family)", textAlign:"start"}}>
+                      <p >
+                        Founded with a vision to revolutionize driving
+                        education,
+                        <strong> We-Drive</strong> began as a small initiative
+                        aimed at making driving lessons more accessible and
+                        structured. Over the years, we have grown into a
+                        comprehensive platform that connects learners with
+                        certified instructors, offering flexible scheduling and
+                        tailored lesson plans.
+                      </p>
+                      <p className="mt-3 ">
+                        With a commitment to safety, convenience, and
+                        innovation, We-Drive continues to enhance the driving
+                        learning experience, helping thousands of learners gain
+                        confidence on the road.
+                      </p>
+                    </div>
+                  </Col>
+                </Row>
+              </Container> */}
           {/* <div>
           <section className="bg-light py-5">
           

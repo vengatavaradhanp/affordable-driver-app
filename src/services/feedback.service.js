@@ -1,8 +1,17 @@
 import api from "./api";
 
+const getToken = () => localStorage.getItem("token");
+
 const FeebackService = {
   getAllFeedback: async (query) => {
-    const response = await api.get(`contacts`);
+    const token = getToken();
+    console.log("Token", token);
+
+    const response = await api.get(`contacts`,{
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     return response;
   },
 

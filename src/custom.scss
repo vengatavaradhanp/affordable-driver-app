@@ -178,6 +178,26 @@
 //   }
 // }
 
+.image2 {
+  background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
+    url(./assets/images/bgHome.jpg) center center no-repeat;
+  background-size: cover;
+  height: 700px;
+}
+
+.center-caption {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  // top: 35%;
+  // transform: translate(-50%, -50%);
+  text-align: center;
+  color: white; 
+  // padding: 20px;
+  // height: 100px;
+}
+
 .page-header {
   background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
     url(./assets/images/bgHome.jpg) center center no-repeat;

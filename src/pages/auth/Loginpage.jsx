@@ -33,19 +33,23 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setErrorMessage(""); // Optional if using only toast notifications
-
+    if (!email || !password) {
+      toast.error("Please enter email and password.");
+      return;
+  }
     try {
       const response = await axios.post(
         "https://datatechgenius.com/expert-driver/public/index.php/api/login",
         {
-          email,
-          password,
+          email, password
         }
       );
-      if (response.status === 201) {
-        console.log("User Data:", response.data.user);
+      if (response.status === 200) {
+        console.log("User Data:", response);
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("userData", JSON.stringify(response.data.user));
+        localStorage.setItem("token", response.data.token);
+        
 
         // Show success toast
         toast.success("Login successful!");
@@ -171,7 +175,14 @@ const Login = () => {
                         Email
                       </Form.Label>
                       <Col sm="12">
-                        <Form.Control placeholder="email@example.com" />
+                        {/* <Form.Control placeholder="email@example.com" onChange={(e) => setEmail(e.target.value)}/> */}
+                        <Form.Control
+                        type="email"
+                        placeholder="email@example.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
                       </Col>
                     </Form.Group>
 
@@ -180,7 +191,14 @@ const Login = () => {
                         Password
                       </Form.Label>
                       <Col sm="12">
-                        <Form.Control type="password" placeholder="Password" />
+                        {/* <Form.Control type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} /> */}
+                        <Form.Control
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
                       </Col>
                     </Form.Group>
                     <div style={{ textAlign: 'right', paddingTop: '10px' }}>

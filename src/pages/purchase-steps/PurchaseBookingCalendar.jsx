@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -10,33 +10,34 @@ import slotBookingService from "../../services/slotBookingService";
 import "../../App.css";
 import { useSelector } from "react-redux";
 
-export default function PurchaseBookingCalendar(props) {
+export default function PurchaseBookingCalendar() {
   const [eventsList, setEventsList] = useState([]);
   const [slotList, setSlotList] = useState({});
   const location = useLocation();
   const slotsBookingDialogRef = useRef(null);
   const slotsSelector = useSelector(state => state.slots);
+  const [selectedSlots, setSelectedSlots] = useState({});
+  const navigate = useNavigate(); // ✅ Correct way to navigate
 
   // Function to fetch available slots for the current month
   const fetchAvailableSlots = useCallback(async (year, month) => {
     try {
       const payload = { year, month };
       const data = await slotBookingService.getAvailableMonthlySlots(payload);
-      let slots = {}
+      let slots = {};
       Object.keys(data).forEach((element) => {
-        const date = []
+        const date = [];
         data[element].forEach((item) => {
           date.push({
             date: item.date,
             end_hour: item.end_hour,
             id: item.id,
             start_hour: item.start_hour,
-            active: false
-          })
-
-        })
-        slots[element] = date
-      })
+            active: false,
+          });
+        });
+        slots[element] = date;
+      });
       setSlotList(slots);
     } catch (error) {
       console.error("Error fetching available slots", error);
@@ -62,8 +63,10 @@ export default function PurchaseBookingCalendar(props) {
   const renderDayCellContent = useCallback(
     (dayCellInfo) => {
       const formattedDate = moment(dayCellInfo.date).format("YYYY-MM-DD");
-      const slots = slotList[formattedDate] ? slotList[formattedDate].filter((item) => !item.active) : []
-      console.log('@#@#', slotList[formattedDate])
+      const slots = slotList[formattedDate]
+        ? slotList[formattedDate].filter((item) => !item.active)
+        : [];
+
       return (
         <div style={{ textAlign: "right", maxHeight: "70px", minHeight: "70px" }}>
           <div>{dayCellInfo.dayNumberText}</div>
@@ -72,10 +75,10 @@ export default function PurchaseBookingCalendar(props) {
               style={{
                 fontSize: "12px",
                 fontWeight: 600,
-                color: slots.length < 3 ? "#d22f25" : "#2c3e50",
+                color: slots.length < slotsSelector.item ? "#d22f25" : "#2c3e50",
                 position: "relative",
                 top: "65px",
-                whiteSpace: 'nowrap'
+                whiteSpace: "nowrap",
               }}
             >
               {slots.length} Slot{slots.length > 1 ? "s" : ""} Available
@@ -84,10 +87,11 @@ export default function PurchaseBookingCalendar(props) {
         </div>
       );
     },
-    [slotList]
+    [slotList, slotsSelector] // ✅ Added slotsSelector as dependency
   );
 
   const handleDateClick = (e) => {
+    console.log('slotList => ',slotList)
     slotsBookingDialogRef.current.dialogHandler(slotList, e.startStr);
   };
 
@@ -102,13 +106,26 @@ export default function PurchaseBookingCalendar(props) {
     });
   };
 
+  // ✅ FIXED: Use `navigate()` directly, instead of `props.navigate`
   const handleSlotSubmit = (data, date) => {
     const list = { ...slotList };
     list[date] = data;
-    setSlotList(list)
-    // props.handleNext();
+    setSlotList(list);
+
+    // Store the selected slots count
+    const selectedSlotCount = Object.values(list)
+      .flat()
+      .filter(slot => slot.active).length;
+
+    navigate("/purchase-steps", {
+      state: {
+        count: location.state?.count || 0,
+        amount: location.state?.amount || 0,
+        selectedSlots: selectedSlotCount,
+        totalSelectedSlots : selectedSlots // ✅ Pass selected slot count
+      },
+    });
   };
-  
 
   return (
     <>

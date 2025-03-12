@@ -68,6 +68,7 @@ export default function AppHeader() {
               <a href="/gift-card" className={location === "/gift-card" ? "nav-item nav-link active" : "nav-item nav-link"}>GIFT CARD</a>
               <a href="/contact-us" className={location === "/contact-us" ? "nav-item nav-link active" : "nav-item nav-link"}>CONTACT US</a>
               <a href="/admin/dashboard" className={location === "/contact-us" ? "nav-item nav-link active" : "nav-item nav-link"}>DASHBOARD</a>
+              
               {/* <a href="/login" className={"nav-item nav-link"}>Log In</a> */}
               {/* {isLoggedIn ? (
                 <button className="btn btn-danger p-4 px-5 d-none d-lg-block" onClick={handleLogout}>

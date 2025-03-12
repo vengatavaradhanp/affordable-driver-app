@@ -43,6 +43,17 @@ const userService = {
   updateUser: async (id, payload) => {
     const token = getToken();
 
+    const response = await api.post(`users/${id}/update`, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  },
+
+  blockUser: async (id, payload) => {
+    const token = getToken();
+
     const response = await api.put(`users/${id}/block`, payload, {
       headers: {
         Authorization: `Bearer ${token}`,

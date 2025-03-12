@@ -66,6 +66,22 @@ export const LessonsList = [
     validity_end: "01/01/2026",
     is_active: true,
   },
+  {
+    is_popular: 0,
+    count: "7",
+    time_per_lesson: "25",
+    title: "Big Savings & Our Most Requested Package",
+    validity_end: "01/06/2025",
+    is_active: true,
+  },
+  {
+    is_popular: 0,
+    count: "10",
+    time_per_lesson: "60",
+    title: "This is the Ultimate Lesson Package",
+    validity_end: "01/01/2026",
+    is_active: true,
+  },
 ];
 
 export const EventsList = [

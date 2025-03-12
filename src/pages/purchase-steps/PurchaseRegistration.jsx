@@ -1,204 +1,166 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Container,
   Row,
   Col,
   Form,
   Button,
-  Card,
-  Stack,
 } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import PaypalDialog from "../../components/paypal-dialog/PaypalDialog";
-import { LoginResponse } from "../../utils/constant";
 import { toast } from "react-toastify";
+import { setSelectedSlots } from "../../features/slotBookingSlice";
+import subscriptionService from "../../services/subscription.service";
+import { useSelector } from "react-redux";
 
 export default function PurchaseRegistration() {
-  const loggedin = localStorage.getItem('isLoggedIn')
+  const loggedin = localStorage.getItem("isLoggedIn");
   const navigate = useNavigate();
   const location = useLocation();
+  const [totalSelectedSlots, setTotalSelectedSlots] = React.useState(0); 
+  const paypalDialogRef = useRef(null);
+  const [profile, setProfile] = useState({
+    fname: "",
+    lname: "",
+    email: "",
+    phone: "",
+    suburbs: "",
+    address: "",
+    state: "",
+    gender: "",
+  });
+
   const bookingDetails = {
     totalAmount: 300,
     discount: 15,
     finalAmount: 285,
   };
-  const paypalDialogRef = React.useRef(null);
-  const [isLoading, setIsLoading] = React.useState(true);
 
-  const paymentHandler = () => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-  };
+  const slots = useSelector((state) => state.slotsAdd.slots);
+  
+
+  // Fetch user data
+  useEffect(() => {
+    console.log('slots : ',totalSelectedSlots)
+    console.log('current state : ',location.state)
+
+    console.log('slotStoreData : ',slots)
+    
+    fetch("https://datatechgenius.com/expert-driver/public/index.php/api/users/profile", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data && data.data) {
+          setProfile({
+            fname: data.data.fname || "",
+            lname: data.data.lname || "",
+            email: data.data.email || "",
+            phone: data.data.phone || "",
+            suburbs: data.data.suburbs || "",
+            address: data.data.address || "",
+            state: data.data.state || "",
+            gender: data.data.gender || "",
+          });
+        }
+      })
+      .catch((error) => console.error("Error fetching profile:", error));
+  }, []);
 
   const handleContinue = () => {
-    if (!LoginResponse.selectedSlot) {
-      toast.error("Please select a lesson slot before proceeding.");
-      return;
-    }
-    if (!LoginResponse.userDetails.name || !LoginResponse.userDetails.email) {
-      toast.error("Please complete all required fieldsaaa.");
-      return;
-    }
-    console.log("LoginResponse", LoginResponse);
-    if(loggedin ){
-    console.log("paypalDialogRef.current", paypalDialogRef.current);
-    paypalDialogRef.current.dialogHandler({
-      is_popular: 1,
-      count: "3",
-      time_per_lesson: "60",
-      title: "An Affordable and Practical Start",
-      validity_end: "01/01/2026",
-      is_active: true,
-    });
-    }else{
-      toast.error("Please login to continue")
-      navigate("/login/student")
-    }
-
+    callPay();
     
-    // // Check if lessonPackage and count exist before proceeding
-    // if (!LoginResponse.selectedSlot.count) {
-    // toast.error("Invalid lesson package details.");
-    // return;
-    // }
+    if (!profile.fname || !profile.email) {
+      toast.error("Please complete all required fields.");
+      return;
+    }
 
-  
-    // Proceed to payment if everything is valid
-
+    if (loggedin) {
+      paypalDialogRef.current.dialogHandler({
+        is_popular: 1,
+        count: "3",
+        time_per_lesson: "60",
+        title: "An Affordable and Practical Start",
+        validity_end: "01/01/2026",
+        is_active: true,
+      });
+    } else {
+      toast.error("Please login to continue");
+      navigate("/login/student");
+    }
   };
-  
-  
-  // const handleContinue = () => {
-  //   // Check if user is logged in
-  //   const isLoggedIn = localStorage.getItem("isLoggedIn"); // Store user login state in localStorage
-  
-  //   if (!LoginResponse.selectedSlot) {
-  //     alert("Please select a lesson slot before proceeding.");
-  //     return;
-  //   }
-  //   if (!LoginResponse.userDetails.firstName || !LoginResponse.userDetails.email) {
-  //     alert("Please complete all required fields.");
-  //     return;
-  //   }
-  
-  //   if (!isLoggedIn) {
-  //     alert("You need to log in before proceeding.");
-  //     navigate("/login", { state: { from: "/purchase-registration" } }); // Redirect to login page
-  //     return;
-  //   }
-  
-  //   // Proceed to payment if logged in
-  //   paypalDialogRef.current.dialogHandler({
-  //     is_popular: 1,
-  //     count: LoginResponse.lessonPackage.count,
-  //     time_per_lesson: LoginResponse.lessonPackage.timePerLesson,
-  //     title: LoginResponse.lessonPackage.title,
-  //     validity_end: "01/01/2026",
-  //     is_active: true,
-  //   });
-  // };
 
+  const callPay = async()=>{
+    const payload = {
+      transaction: "ORD1111111", // Replace with dynamic transaction ID if needed
+      slots: slots, 
+    };
+    try {
+      // Send API request
+      const response = await subscriptionService.createSubscription(payload);
+      console.log("API Response:", response.data);
   
-  
+      // Call parent function if needed
+      
+      // Proceed with any other actions
+    } catch (error) {
+      console.error("Error submitting slots:", error);
+    }
+  }
+
   return (
     <div>
-      {/* <div>
-        <h1>Learner Registration</h1>
-        <p>
-          Existing learner? <a href="#login">Log in</a>
-        </p>
-      </div> */}
-      {/* {JSON.stringify(location)} */}
       <div>
         <Row>
           {/* Form Section */}
           <Col xs={12} lg={8}>
-            <div
-              style={{
-                border: "1px solid #ddd",
-                borderRadius: "10px",
-              }}
-            >
-              <div
-                style={{
-                  borderBottom: "1px solid #ddd",
-                  padding: "15px 20px ",
-                }}
-              >
+            <div style={{ border: "1px solid #ddd", borderRadius: "10px" }}>
+              <div style={{ borderBottom: "1px solid #ddd", padding: "15px 20px " }}>
                 <Form>
                   <Form.Group>
                     <Form.Label>Who are you registering for?</Form.Label>
-                    <Form.Check
-                      type="radio"
-                      label="Myself"
-                      name="registerFor"
-                      id="registerMyself"
-                      defaultChecked
-                    />
-                    <Form.Check
-                      type="radio"
-                      label="Someone else (e.g. child, partner, grandchild, other)"
-                      name="registerFor"
-                      id="registerSomeoneElse"
-                    />
+                    <Form.Check type="radio" label="Myself" name="registerFor" defaultChecked />
+                    <Form.Check type="radio" label="Someone else" name="registerFor" />
                   </Form.Group>
 
+                  {/* Pick-up Details */}
                   <h5 className="mt-4">Please enter your pick-up details</h5>
                   <Row>
                     <Col xs={12}>
                       <Form.Group className="mb-3">
                         <Form.Label>Pick-up address</Form.Label>
-                        <Form.Control
-                          style={{ borderRadius: "10px" }}
-                          type="text"
-                          placeholder="Enter location"
-                          value={LoginResponse.userDetails.address}
-                        />
+                        <Form.Control type="text" placeholder="Enter location" value={profile.address} readOnly />
                       </Form.Group>
                     </Col>
                     <Col xs={12} md={6}>
                       <Form.Group className="mb-3">
                         <Form.Label>Suburb</Form.Label>
-                        <Form.Select style={{ borderRadius: "10px" }}>
-                          <option value="Hobart, 7000">Hobart, 7000</option>
-                          <option value="Glebe, 7000">Glebe, 7000</option>
-                        </Form.Select>
+                        <Form.Control type="text" value={profile.suburbs} readOnly />
                       </Form.Group>
                     </Col>
                     <Col xs={12} md={6}>
                       <Form.Group className="mb-3">
                         <Form.Label>State</Form.Label>
-                        <Form.Select style={{ borderRadius: "10px" }}>
-                          <option value="Tasmania">Tasmania</option>
-                          <option value="Other">Other</option>
-                        </Form.Select>
+                        <Form.Control type="text" value={profile.state} readOnly />
                       </Form.Group>
                     </Col>
                   </Row>
 
+                  {/* Personal Details */}
                   <h5 className="mt-4">Please provide your personal details</h5>
                   <Row>
                     <Col xs={12} md={6}>
                       <Form.Group className="mb-3">
                         <Form.Label>First name</Form.Label>
-                        <Form.Control
-                          type="text"
-                          placeholder="First name"
-                          style={{ borderRadius: "10px" }}
-                          value={LoginResponse.userDetails.name}
-                        />
+                        <Form.Control type="text" placeholder="First name" value={profile.fname} readOnly />
                       </Form.Group>
                     </Col>
                     <Col xs={12} md={6}>
                       <Form.Group className="mb-3">
                         <Form.Label>Last name</Form.Label>
-                        <Form.Control
-                          type="text"
-                          placeholder="Last name"
-                          style={{ borderRadius: "10px" }}
-                          value={LoginResponse.userDetails.lastName}
-                        />
+                        <Form.Control type="text" placeholder="Last name" value={profile.lname} readOnly />
                       </Form.Group>
                     </Col>
                   </Row>
@@ -206,73 +168,37 @@ export default function PurchaseRegistration() {
                     <Col xs={12}>
                       <Form.Group className="mb-3">
                         <Form.Label>Email address</Form.Label>
-                        <Form.Control
-                          type="email"
-                          placeholder="Your email address"
-                          style={{ borderRadius: "10px" }}
-                          value={LoginResponse.userDetails.email}
-                        />
-                        <Form.Text className="text-muted">
-                          We use your email to send lesson confirmation details.
-                        </Form.Text>
+                        <Form.Control type="email" placeholder="Your email address" value={profile.email} readOnly />
                       </Form.Group>
                     </Col>
                     <Col xs={12} md={6}>
                       <Form.Group className="mb-3">
                         <Form.Label>Phone number</Form.Label>
-                        <Form.Control
-                          type="tel"
-                          placeholder="0400 000 000"
-                          style={{ borderRadius: "10px" }}
-                          // value={location.userDetails.phone}
-                          value={LoginResponse.userDetails.phone}
-                        />
-                        <Form.Text className="text-muted">
-                          For instructors to contact on lesson pick-up if
-                          needed.
-                        </Form.Text>
+                        <Form.Control type="tel" placeholder="0400 000 000" value={profile.phone} readOnly />
                       </Form.Group>
                     </Col>
                   </Row>
 
-                  <h5 className="mt-4">
-                    Choose a password for your learning dashboard
-                  </h5>
+                  {/* Password Section */}
+                  <h5 className="mt-4">Choose a password for your learning dashboard</h5>
                   <Row>
                     <Col xs={12} md={6}>
                       <Form.Group className="mb-3">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control
-                          type="password"
-                          placeholder="Enter password"
-                          style={{ borderRadius: "10px" }}
-                          // value={location.userDetails.password}
-                          value={LoginResponse.userDetails.password}
-                        />
+                        <Form.Control type="password" placeholder="Enter password" />
                       </Form.Group>
                     </Col>
                     <Col xs={12} md={6}>
                       <Form.Group className="mb-3">
                         <Form.Label>Password confirmation</Form.Label>
-                        <Form.Control
-                          type="password"
-                          placeholder="Confirm password"
-                          style={{ borderRadius: "10px" }}
-                          value={LoginResponse.userDetails.password}
-                        />
+                        <Form.Control type="password" placeholder="Confirm password" />
                       </Form.Group>
                     </Col>
                   </Row>
 
                   <Form.Group className="my-3">
-                    <Form.Check
-                      type="checkbox"
-                      label="I agree to receive occasional marketing communications and offers from EzLicence."
-                    />
-                    <Form.Check
-                      type="checkbox"
-                      label="I agree to the Learner Driver Terms & Conditions"
-                    />
+                    <Form.Check type="checkbox" label="I agree to receive marketing communications." />
+                    <Form.Check type="checkbox" label="I agree to the Terms & Conditions" />
                   </Form.Group>
                 </Form>
               </div>
@@ -281,115 +207,50 @@ export default function PurchaseRegistration() {
 
           {/* Order Summary Section */}
           <Col>
-            <div
-              style={{
-                border: "1px solid #ddd",
-                borderRadius: "10px",
-              }}
-            >
+            <div style={{ border: "1px solid #ddd", borderRadius: "10px" }}>
               <div>
-                <div
-                  className="d-flex"
-                  style={{
-                    borderBottom: "1px solid #ddd",
-                    padding: "15px 20px ",
-                  }}
-                >
-                  <div
-                    className="h5 m-0"
-                    //   style={{ padding: "15px 20px " }}
-                  >
-                    Order Summary
-                  </div>
+                <div className="d-flex" style={{ borderBottom: "1px solid #ddd", padding: "15px 20px " }}>
+                  <div className="h5 m-0">Order Summary</div>
                 </div>
 
-                <div
-                  className="d-flex"
-                  style={{
-                    borderBottom: "1px solid #ddd",
-                    padding: "15px 20px ",
-                  }}
-                >
+                <div className="d-flex" style={{ borderBottom: "1px solid #ddd", padding: "15px 20px " }}>
                   <div style={{ flex: 1 }}>
-                    <i class="bi bi-ticket-perforated"></i> &nbsp;{" "}
-                    {location.state.count} hrs Booking Credit
+                    <i className="bi bi-ticket-perforated"></i> &nbsp; {location.state?.selectedSlots || 0} Slot(s) Booked
                   </div>
-
                   <div style={{ fontWeight: 600 }}>
-                    ${location.state.count * location.state.time_per_lesson}
-                    .00
+                    ${location.state?.count * location.state?.amount || 0}.00
                   </div>
                 </div>
 
-                <div
-                  className="d-flex"
-                  style={{
-                    borderBottom: "1px solid #ddd",
-                    padding: "15px 20px ",
-                  }}
-                >
+                <div className="d-flex" style={{ borderBottom: "1px solid #ddd", padding: "15px 20px " }}>
                   <div style={{ flex: 1 }}>Credit Discount</div>
                   <div style={{ fontWeight: 600, color: "#00a326" }}>
                     - ${bookingDetails.discount.toFixed(2)}
                   </div>
                 </div>
 
-                <div
-                  className="d-flex justify-content-between"
-                  style={{
-                    padding: "15px 20px ",
-                  }}
-                >
+                <div className="d-flex justify-content-between" style={{ padding: "15px 20px " }}>
                   <div style={{ flex: 1 }}>
                     <div className=" fw-bold">Total Payment Due </div>
-                    <div
-                      className="text-muted mt-2 "
-                      style={{ fontSize: "12px" }}
-                    >
-                      Or 4 payments of ${bookingDetails.discount * 4}
-                    </div>
                   </div>
                   <div style={{ fontWeight: 600 }}>
-                    <span>
-                      $
-                      {location.state.count * location.state.time_per_lesson -
-                        bookingDetails.discount}
-                      .00
-                    </span>
+                    ${location.state?.count * location.state?.amount - bookingDetails.discount}.00
                   </div>
                 </div>
-                <div
-                  style={{
-                    padding: "15px 20px ",
-                  }}
-                >
-                  <Button className="w-100 justify-content-center" onClick={handleContinue}>Continue</Button>
-                  {/* <Button
-                    className=" w-100 justify-content-center"
-                    onClick={() => navigate("/bookyourlesson")}
-                    onClick={() => handleContinue()}
-                      paypalDialogRef.current.dialogHandler({
-                        is_popular: 1,
-                        count: "3",
-                        time_per_lesson: "60",
-                        title: "An Affordable and Practical Start",
-                        validity_end: "01/01/2026",
-                        is_active: true,
-                      })
-                    }
-                  >
+
+                <div style={{ padding: "15px 20px " }}>
+                  <Button className="w-100" onClick={handleContinue}>
                     Continue
-                    <span className="ms-1">
-                      <i class="bi bi-chevron-right"></i>
-                    </span>
-                  </Button> */}
+                  </Button>
+                  
                 </div>
+                
               </div>
             </div>
           </Col>
         </Row>
       </div>
-      <PaypalDialog ref={paypalDialogRef} paymentHandler={paymentHandler} />
+      <PaypalDialog ref={paypalDialogRef} />
     </div>
   );
 }

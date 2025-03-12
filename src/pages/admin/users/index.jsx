@@ -98,7 +98,7 @@ export default function Users() {
     const payload = {
       status: event.target.checked === true ? 1 : 0
     }
-    UserService.updateUser(user.id, payload)
+    UserService.blockUser(user.id, payload)
       .then((response) => {
         toast.success("User status updated");
         getUserList()

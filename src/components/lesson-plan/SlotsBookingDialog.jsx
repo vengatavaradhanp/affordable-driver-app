@@ -1,19 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import { AvailableSlots } from "../../utils/constant";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setSelectedSlots } from "../../features/slotBookingSlice";
- 
+import { addSlots } from "../../features/slotSlice";
+import { store } from "../../reducers/store";
+// import api from "./api";
+// import {createSubscription} from "../../services/subscription.service";
+
+
 const SlotsBookingDialog = React.forwardRef((props, ref) => {
   const [slots, setSlots] = React.useState([]);
   const [show, setShow] = React.useState(false);
   const [selectedDate, setSelectedDate] = React.useState(null);
   const [totalSelectedSlots, setTotalSelectedSlots] = React.useState(0); // Track total selected slots
   const dispatch = useDispatch();
- 
+  const [slotData, setSlotData] = React.useState([]);
+
+
   React.useImperativeHandle(ref, () => ({
     dialogHandler: (data, date) => {
       if (data[date]) {
@@ -22,6 +29,7 @@ const SlotsBookingDialog = React.forwardRef((props, ref) => {
           end_hour: element.end_hour,
           date: date,
           active: element.active,
+          id: element.id,
         }));
         setSlots(list);
         setShow(true);
@@ -29,40 +37,106 @@ const SlotsBookingDialog = React.forwardRef((props, ref) => {
       } else {
         setShow(false);
       }
+      console.log("props.slotLimit : ", props.slotLimit);
     },
   }));
- 
+
   const handleClose = () => {
     setShow(false);
   };
- 
+
   const handleSlotSubmit = (event) => {
     event.preventDefault();
+    console.log("DataISaved : ", slotData);
     setShow(false);
+    console.log("selectedSlots till now : ", slots);
     props.handleSlotSubmit(slots, selectedDate);
+    addSlotsDetails();
   };
- 
+
+  // const handleSlotSubmit = async (event) => {
+
+  //   event.preventDefault();
+  //   setShow(false);
+  //   console.log("selectedSlots till now : ", slots);
+  
+    // Prepare payload
+ /*    const payload = {
+      id: slotStoreData.id, // Sending selected slots
+      date: slotStoreData.date, // Include selected date if needed
+    }; */
+  
+    /* try {
+      // Send API request
+      const response = await subscriptionService.createSubscription(slotStoreData);
+      console.log("API Response:", response.data);
+  
+      // Call parent function if needed
+      props.handleSlotSubmit(slots, selectedDate);
+      
+      // Proceed with any other actions
+      addSlotsDetails();
+    } catch (error) {
+      console.error("Error submitting slots:", error);
+    } */
+  // };
+  
+
   const handleSlotSelect = (index) => {
     let selectedSlot = [...slots];
+    setSlotData((prev) => {
+      let newSlotData = [...prev];
+    
+      selectedSlot.forEach((item) => {
+        if (item.active) {
+          // Prevent duplicate (same id and same date)
+          const isAlreadyAdded = newSlotData.some(
+            (slot) => slot.id === item.id && slot.date === item.date
+          );
+    
+          if (!isAlreadyAdded) {
+            newSlotData.push(item);
+          }
+        }
+      });
+    
+      return newSlotData;
+    });
+
+
+
     const activeSlotCount = slots.filter((item) => item.active).length;
-   
+
     if (selectedSlot[index].active) {
       selectedSlot[index].active = false;
       setTotalSelectedSlots(totalSelectedSlots - 1);
     } else {
-      if (totalSelectedSlots < 3) {
+      if (totalSelectedSlots < props.slotLimit) {
+        // d=
         selectedSlot[index].active = true;
+        selectedSlot[index].id = slots[index].id;
         setTotalSelectedSlots(totalSelectedSlots + 1);
       } else {
-        toast.warn("You have reached the maximum limit of 3 slots.");
+        toast.warn(
+          `You have reached the maximum limit of ${props.slotLimit} slots.`
+        );
         return;
       }
     }
- 
+
+    console.log("selectedSlot before : ", selectedSlot);
     dispatch(setSelectedSlots({ ...selectedSlot[index] }));
     setSlots(selectedSlot);
   };
- 
+
+
+
+  const addSlotsDetails = () => {
+    dispatch(addSlots(slots));
+    console.log("Current Redux State:", store.getState());
+
+  };
+
   return (
     <Modal show={show} onHide={handleClose} centered backdrop="static">
       <Modal.Header style={{ justifyContent: "center" }}>
@@ -97,7 +171,10 @@ const SlotsBookingDialog = React.forwardRef((props, ref) => {
                 <div style={{ display: "flex" }}>
                   <div style={{ flex: 1 }}>
                     <span style={{ fontWeight: 600 }}>Slot {index + 1}</span>
-                    <i className="bi bi-arrow-right" style={{ padding: "0px 10px" }}></i>
+                    <i
+                      className="bi bi-arrow-right"
+                      style={{ padding: "0px 10px" }}
+                    ></i>
                     <span>
                       {item.start_hour} to {item.end_hour}
                     </span>
@@ -117,7 +194,11 @@ const SlotsBookingDialog = React.forwardRef((props, ref) => {
         </div>
       </Modal.Body>
       <Modal.Footer style={{ justifyContent: "center" }}>
-        <Button variant="secondary" onClick={handleClose} style={{ width: "100px" }}>
+        <Button
+          variant="secondary"
+          onClick={handleClose}
+          style={{ width: "100px" }}
+        >
           Cancel
         </Button>
         <Button
@@ -133,5 +214,5 @@ const SlotsBookingDialog = React.forwardRef((props, ref) => {
     </Modal>
   );
 });
- 
+
 export default SlotsBookingDialog;

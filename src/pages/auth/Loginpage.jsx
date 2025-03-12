@@ -214,17 +214,7 @@ const Login = () => {
                     >
                       LOGIN
                     </Button>
-
-
-
-                  </Form>
-                </div>
-              </div>
-            </Col>
-          </Row>
-        </div>
-
-        {/* {user ? (
+                    {user ? (
                   <>
                     <img src={user.photoURL} alt="Profile" className="rounded-circle mx-auto d-block mb-3" width="80" />
                     <h5 className="text-center">{user.displayName}</h5>
@@ -235,14 +225,25 @@ const Login = () => {
                   </>
                 ) : (
                   <>
-                    <Button variant="primary" className="w-100 mb-2" onClick={signInWithGoogle}>
+                    <Button variant="secondary " className="w-100 mb-2 mt-2 fw-bold" onClick={signInWithGoogle}>
                       Sign in with Google
                     </Button>
-                    <Button variant="info" className="w-100" onClick={signInWithFacebook}>
+                    <Button variant="info" className="w-100 fw-bold" onClick={signInWithFacebook}>
                       Sign in with Facebook
                     </Button>
                   </>
-                )} */}
+                )}
+
+
+
+                  </Form>
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </div>
+
+       
                 {/* <a href="http://datatechgenius.com/expert-driver/public/index.php/api/auth/google">Google</a> */}
 
       </div>

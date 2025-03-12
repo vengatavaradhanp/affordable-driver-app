@@ -104,7 +104,7 @@ const PurchaseSteps = () => {
 
   return (
     <Container class="container" style={{ width: "80%", marginTop: "30px" }}>
-      <h2 style={{ color: "#2b9348" }}> Purchase Steps {step}</h2>
+      <h2 style={{ color: "#2b9348" }}> Purchase Steps  {step}</h2>
       {step == 1 && (
         <div style={{ fontSize: "20px", fontWeight: 600, color: "#012a41" }}>
           {" "}

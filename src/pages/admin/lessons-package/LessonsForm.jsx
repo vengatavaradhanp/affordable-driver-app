@@ -17,12 +17,13 @@ export default function LessonsForm() {
   const [fields, setFields] = useState({
     id: location?.state?.id,
     title: "",
-    price: "",
+    amount: "",
     validity: "",
     minutes: "",
     description: "",
     status: 1,
-    image: null
+    count:5,
+    image: "",
   });
 
   const [errors, setErrors] = useState({}); // Track validation errors
@@ -65,13 +66,13 @@ export default function LessonsForm() {
   const validateFields = () => {
     let newErrors = {};
 
-    if (!fields.title.trim()) newErrors.title = "Title is required.";
-    if (!fields.amount.trim()) newErrors.amount = "Amount is required.";
-    if (!fields.expiry_date.trim())
-      newErrors.expiry_date = "Validity is required.";
-    if (!fields.minutes.trim()) newErrors.minutes = "Minutes is required.";
-    if (!fields.description.trim())
-      newErrors.description = "Description is required.";
+    // if (!fields.title.trim()) newErrors.title = "Title is required.";
+    // if (!fields.amount.trim()) newErrors.amount = "Amount is required.";
+    // if (!fields.expiry_date.trim())
+    //   newErrors.expiry_date = "Validity is required.";
+    // if (!fields.minutes.trim()) newErrors.minutes = "Minutes is required.";
+    // if (!fields.description.trim())
+    //   newErrors.description = "Description is required.";
     // if (!fields.image.trim()) newErrors.image = "Image is required.";
 
     setErrors(newErrors);
@@ -146,13 +147,13 @@ export default function LessonsForm() {
             <Form.Control
               type="text"
               placeholder="Amount"
-              name="price"
-              value={fields.price}
+              name="amount"
+              value={fields.amount}
               onChange={handleFieldChange}
-              isInvalid={!!errors.price}
+              isInvalid={!!errors.amount}
             />
             <Form.Control.Feedback type="invalid">
-              {errors.price}
+              {errors.amount}
             </Form.Control.Feedback>
           </Form.Group>
 
@@ -221,7 +222,7 @@ export default function LessonsForm() {
 
           {/* Image */}
           <Form.Group as={Col} md="4" className="mb-3">
-            <Form.Label>Duration</Form.Label>
+            <Form.Label>Image Upload</Form.Label>
             <Form.Control
               type="file"
               placeholder="Duration"

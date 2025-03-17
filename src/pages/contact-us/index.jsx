@@ -539,7 +539,7 @@
 //                           onChange={handleChange}
 //                         />
 //                         {errors.firstName && (
-//                           <div className="text-danger">{errors.firstName}</div>
+//                           <div className="text-danger mt-2 " style={{fontSize: '14px'}}>{errors.firstName}</div>
 //                         )}
 //                       </Form.Group>
 
@@ -552,7 +552,7 @@
 //                           onChange={handleChange}
 //                         />
 //                         {errors.lastName && (
-//                           <div className="text-danger">{errors.lastName}</div>
+//                           <div className="text-danger mt-2 " style={{fontSize: '14px'}}>{errors.lastName}</div>
 //                         )}
 //                       </Form.Group>
 
@@ -566,7 +566,7 @@
 //                           onChange={handleChange}
 //                         />
 //                         {errors.email && (
-//                           <div className="text-danger">{errors.email}</div>
+//                           <div className="text-danger mt-2 " style={{fontSize: '14px'}}>{errors.email}</div>
 //                         )}
 //                       </Form.Group>
 
@@ -579,7 +579,7 @@
 //                           onChange={handleChange}
 //                         />
 //                         {errors.contactNumber && (
-//                           <div className="text-danger">
+//                           <div className="text-danger mt-2 " style={{fontSize: '14px'}}>
 //                             {errors.contactNumber}
 //                           </div>
 //                         )}
@@ -600,7 +600,7 @@
 //                           <option value="other">Other</option>
 //                         </Form.Select>
 //                         {errors.inquiry && (
-//                           <div className="text-danger">{errors.inquiry}</div>
+//                           <div className="text-danger mt-2 " style={{fontSize: '14px'}}>{errors.inquiry}</div>
 //                         )}
 //                       </Form.Group>
 
@@ -615,7 +615,7 @@
 //                           onChange={handleChange}
 //                         />
 //                         {errors.message && (
-//                           <div className="text-danger">{errors.message}</div>
+//                           <div className="text-danger mt-2 " style={{fontSize: '14px'}}>{errors.message}</div>
 //                         )}
 //                       </Form.Group>
 //                       <div className="d-flex justify-content-center">
@@ -756,7 +756,7 @@ export default function ContactUs() {
                           onChange={handleChange}
                         />
                         {errors.firstName && (
-                          <div className="text-danger">{errors.firstName}</div>
+                          <div className="text-danger mt-2 " style={{fontSize: '14px'}}>{errors.firstName}</div>
                         )}
                       </Form.Group>
 
@@ -769,7 +769,7 @@ export default function ContactUs() {
                           onChange={handleChange}
                         />
                         {errors.lastName && (
-                          <div className="text-danger">{errors.lastName}</div>
+                          <div className="text-danger mt-2 " style={{fontSize: '14px'}}>{errors.lastName}</div>
                         )}
                       </Form.Group>
 
@@ -783,7 +783,7 @@ export default function ContactUs() {
                           onChange={handleChange}
                         />
                         {errors.email && (
-                          <div className="text-danger">{errors.email}</div>
+                          <div className="text-danger mt-2 " style={{fontSize: '14px'}}>{errors.email}</div>
                         )}
                       </Form.Group>
 
@@ -796,7 +796,7 @@ export default function ContactUs() {
                           onChange={handleChange}
                         />
                         {errors.contactNumber && (
-                          <div className="text-danger">
+                          <div className="text-danger mt-2 " style={{fontSize: '14px'}}>
                             {errors.contactNumber}
                           </div>
                         )}
@@ -817,7 +817,7 @@ export default function ContactUs() {
                           <option value="other">Other</option>
                         </Form.Select>
                         {errors.inquiry && (
-                          <div className="text-danger">{errors.inquiry}</div>
+                          <div className="text-danger mt-2   style={{fontSize: '14px'}}mt-2">{errors.inquiry}</div>
                         )}
                       </Form.Group>
 
@@ -832,20 +832,20 @@ export default function ContactUs() {
                           onChange={handleChange}
                         />
                         {errors.message && (
-                          <div className="text-danger">{errors.message}</div>
+                          <div className="text-danger mt-2 " style={{fontSize: '14px'}}>{errors.message}</div>
                         )}
                       </Form.Group>
-                      <div className="d-flex justify-content-center">
-                        <Button type="submit" variant="success">
+                      <div className="d-flex justify-content-center mt-2">
+                        <Button type="submit" variant="success" style={{width: "150px"}}>
                           Submit
                         </Button>
                       </div>
 
-                      {successMessage && (
+                      {/* {successMessage && (
                         <div className="alert alert-success mt-3">
                           {successMessage}
                         </div>
-                      )}
+                      )} */}
                     </Row>
                   </Form>
                 </div>

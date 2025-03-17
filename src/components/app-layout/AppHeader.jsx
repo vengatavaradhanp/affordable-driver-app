@@ -511,11 +511,12 @@ export default function AppHeader() {
             </div>
           </div>
           {isLoggedIn || user ? (
-            <Dropdown align="end">
+            <Dropdown align="end" >
               <Dropdown.Toggle
                 variant=""
                 id="dropdown-basic"
-                className="d-flex align-items-center me-4 navbar-text border-2 border-primary btn-sm"
+                className="d-flex align-items-center me-4 navbar-text  btn-sm"
+                style={{border: '0px'}}
               >
                 <Image
                   src={user?.photoURL || defaultProfilePic}
@@ -524,7 +525,7 @@ export default function AppHeader() {
                   height="40"
                   className="me-2"
                 />
-                <span>{userName || user?.displayName || user?.email}</span>
+                <span style={{textTransform: 'capitalize'}}>{userName || user?.displayName || user?.email}</span>
                 <style>
                   {`
                         .navbar-text:hover {

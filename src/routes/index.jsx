@@ -26,6 +26,8 @@ import FeedBack from "../pages/admin/feedback";
 import LessonsPackage from "../pages/admin/lessons-package";
 import LessonsForm from "../pages/admin/lessons-package/LessonsForm";
 import UserForm2 from "../pages/admin/users/UserForm2";
+import HomeBanner from "../pages/admin/homepagecarousel/index";
+import HomeBannerForm from "../pages/admin/homepagecarousel/homepageForm";
 
 // const HomepageComponent = React.lazy(() => import("../pages/homepage"));
 // const LessonPackagesComponent = React.lazy(() =>
@@ -65,6 +67,8 @@ export default function AppRoute() {
                 <Route path="/admin/settings" element={<Settings />} />
                 <Route path="/admin/lessons" element={<LessonsPackage />} />
                 <Route path="/admin/lessons/:type" element={<LessonsForm />} />
+                <Route path="/admin/homebanner" element={<HomeBanner />} />
+                <Route path="/admin/homebanner/:type" element={<HomeBannerForm />} />
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>

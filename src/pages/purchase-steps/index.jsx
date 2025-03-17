@@ -115,7 +115,7 @@ const PurchaseSteps = () => {
         <>
           <div style={{ fontSize: "20px", fontWeight: 600, color: "#012a41" }}>
             {" "}
-            Learner Registration
+            Learner Registration 
           </div>
           <span>Existing learner? <a href="/login/student">Log in</a></span>
         </>

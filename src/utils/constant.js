@@ -66,22 +66,6 @@ export const LessonsList = [
     validity_end: "01/01/2026",
     is_active: true,
   },
-  {
-    is_popular: 0,
-    count: "7",
-    time_per_lesson: "25",
-    title: "Big Savings & Our Most Requested Package",
-    validity_end: "01/06/2025",
-    is_active: true,
-  },
-  {
-    is_popular: 0,
-    count: "10",
-    time_per_lesson: "60",
-    title: "This is the Ultimate Lesson Package",
-    validity_end: "01/01/2026",
-    is_active: true,
-  },
 ];
 
 export const EventsList = [
@@ -247,44 +231,50 @@ export const MenuList = [
     name: "Dashboard",
     link: "/admin/dashboard",
     is_active: true,
-    icon: "bi-grid-fill"
+    icon: "bi-grid-fill",
   },
   {
     id: 2,
     name: "User Management",
     link: "/admin/users",
     is_active: true,
-    icon: "bi-person-fill"
+    icon: "bi-person-fill",
   },
   {
     id: 3,
     name: "Lessons Package",
     link: "/admin/lessons",
     is_active: true,
-    icon: "bi-car-front-fill"
+    icon: "bi-car-front-fill",
   },
   {
     id: 4,
+    name: "Homepage Carosel",
+    link: "/admin/homebanner",
+    is_active: true,
+    icon: "bi bi-house-add",
+  },
+  {
+    id: 5,
     name: "Feedback",
     link: "/admin/feedback",
     is_active: true,
-    icon: "bi bi-chat-left-text"
-    
+    icon: "bi bi-chat-left-text",
   },
   // {
-  //   id: 5,
+  //   id: 6,
   //   name: "Instructor",
   //   link: "/admin/instructor",
   //   is_active: true,
   //   icon: "bi-car-front-fill"
   // },
   {
-    id: 6,
+    id: 7,
     name: "Settings",
     link: "/admin/settings",
     is_active: true,
-    icon: "bi-gear-fill"
-  }
+    icon: "bi-gear-fill",
+  },
 ];
 
 export const StateList = [

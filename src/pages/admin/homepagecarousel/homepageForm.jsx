@@ -8,43 +8,43 @@ import {
 } from "../../../utils/constant";
 import { toast } from "react-toastify";
 import { useLocation, useNavigate } from "react-router-dom";
-import LessonPackageService from "../../../services/lesson-package.service";
+import HomeBannersService from "../../../services/home.service"
 
 export default function LessonsForm() {
   const location = useLocation();
   const navigate = useNavigate();
+
   const [fields, setFields] = useState({
     id: location?.state?.id,
     title: "",
-    amount: "",
-    validity: "",
-    minutes: "",
     description: "",
+    image: null,
+    link: "",
+    sort_order: "",
+    is_active: "",
     status: 1,
-    count:5,
-    image: "",
   });
 
   const [errors, setErrors] = useState({}); // Track validation errors
 
   useEffect(() => {
+    debugger;
     if (location?.state?.id) {
       getUserDetails();
     }
   }, []);
 
   const getUserDetails = () => {
-    LessonPackageService.getLessonsById(location?.state?.id)
+    HomeBannersService.getHomeBannersById(location?.state?.id)
       .then((response) => {
-
         setFields({
           id: response.data.id,
           title: response.data.title,
-          amount: response.data.amount,
-          expiry_date: response.data.expiry_date,
-          minutes: response.data.minutes,
-          description: response.data.description,
+          description: response.data.amount,
           image: response.data.image,
+          link: response.data.link,
+          sort_order: response.data.sort_order,
+          is_active: response.data.is_active,
           status: 1,
         });
       })
@@ -52,44 +52,24 @@ export default function LessonsForm() {
   };
 
   const handleFieldChange = (event) => {
-
-    
-  
-    const { name, value, type, checked,files } = event.target;
-
-    if (type === "file") {
-      if (files && files.length > 0) {
-        const file = files[0]; // Ensure a file is selected
-        setFields({
-          ...fields,
-          [name]: type === "radio" ? (fields.status ? 0 : 1) :type==='file'? URL.createObjectURL(file) : value,
-        });
-      }
-    }else{
-      setFields({
-        ...fields,
-        [name]: type === "radio" ? (fields.status ? 0 : 1) : value,
-      });
-    }
-      
-    
+    const { name, value, type, checked } = event.target;
+    setFields({
+      ...fields,
+      [name]: type === "radio" ? (fields.status ? 0 : 1) : value,
+    });
     if (value) {
       setErrors({ ...errors, [name]: false });
     }
   };
 
-
-
   const validateFields = () => {
     let newErrors = {};
 
-    // if (!fields.title.trim()) newErrors.title = "Title is required.";
-    // if (!fields.amount.trim()) newErrors.amount = "Amount is required.";
-    // if (!fields.expiry_date.trim())
-    //   newErrors.expiry_date = "Validity is required.";
-    // if (!fields.minutes.trim()) newErrors.minutes = "Minutes is required.";
-    // if (!fields.description.trim())
-    //   newErrors.description = "Description is required.";
+    if (!fields.title.trim()) newErrors.title = "Title is required.";
+    if (!fields.description.trim()) newErrors.description = "Description is required.";
+    if (!fields.link.trim()) newErrors.link = "Link is required.";
+    if (!fields.sort_order.trim())
+      newErrors.sort_order = "Sort Order is required.";
     // if (!fields.image.trim()) newErrors.image = "Image is required.";
 
     setErrors(newErrors);
@@ -105,10 +85,10 @@ export default function LessonsForm() {
     if (validateFields()) {
       const payload = { ...fields };
       if (fields.id) {
-        LessonPackageService.updateLesson(fields.id, payload)
+        HomeBannersService.updateHomeBanners(fields.id, payload)
           .then(() => {
-            toast.success("Lessons updated successfully!");
-            navigate("/admin/lessons");
+            toast.success("Banner updated successfully!");
+            navigate("/admin/homebanner");
           })
           .catch((error) => {
             let newErrors = {};
@@ -119,23 +99,17 @@ export default function LessonsForm() {
             setErrors(newErrors);
           });
       } else {
-        LessonPackageService.createLesson(payload)
+        HomeBannersService.createHomeBanners(payload)
           .then(() => {
             toast.success("Lessons created successfully!");
-            navigate("/admin/lessons");
+            navigate("/admin/homebanner");
           })
           .catch((error) => {
             let newErrors = {};
-            const errorData = error.response?.data;
-          
-            if (errorData?.errors) {
-              Object.entries(errorData.errors).forEach(([key, value]) => {
-                newErrors[key] = value[0];
-              });
-            } else {
-              toast.error("Something went wrong! Please try again.");
-            }
-          
+            const errorData = error.response.data;
+            Object.entries(errorData.errors).forEach(([key, value]) => {
+              newErrors[key] = value[0];
+            });
             setErrors(newErrors);
           });
       }
@@ -144,13 +118,13 @@ export default function LessonsForm() {
 
   return (
     <Container fluid>
-      <h4>Lessons Form</h4>
+      <h4>Home Banner Form</h4>
       <hr />
-      <Form noValidate onSubmit={handleSubmit} encType="multipart/form-data">
+      <Form noValidate onSubmit={handleSubmit}>
         <Row className="mb-3">
           {/* First Name */}
           <Form.Group as={Col} md="4" className="mb-3">
-            <Form.Label>First Name</Form.Label>
+            <Form.Label>Title</Form.Label>
             <Form.Control
               type="text"
               placeholder="Title"
@@ -164,51 +138,51 @@ export default function LessonsForm() {
             </Form.Control.Feedback>
           </Form.Group>
 
-          {/* Amount */}
+          {/* Image */}
           <Form.Group as={Col} md="4" className="mb-3">
-            <Form.Label>Amount</Form.Label>
+            <Form.Label>Banner Image Upload</Form.Label>
             <Form.Control
-              type="text"
-              placeholder="Amount"
-              name="amount"
-              value={fields.amount}
+              type="file"
+              placeholder="Banner image Upload"
+              name="image"
+              value={fields.image}
               onChange={handleFieldChange}
-              isInvalid={!!errors.amount}
+              isInvalid={!!errors.image}
             />
             <Form.Control.Feedback type="invalid">
-              {errors.amount}
+              {errors.image}
             </Form.Control.Feedback>
           </Form.Group>
 
-          {/* Validity Date */}
+          {/* Link */}
           <Form.Group as={Col} md="4" className="mb-3">
-            <Form.Label>Validity End Date</Form.Label>
+            <Form.Label>Link Address</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Validity End Date"
-              name="validity"
-              value={fields.validity}
+              placeholder="Link Address"
+              name="link"
+              value={fields.link}
               onChange={handleFieldChange}
-              isInvalid={!!errors.validity}
+              isInvalid={!!errors.link}
             />
             <Form.Control.Feedback type="invalid">
-              {errors.validity}
+              {errors.link}
             </Form.Control.Feedback>
           </Form.Group>
 
-          {/* Duration */}
+          {/* Sort Order */}
           <Form.Group as={Col} md="4" className="mb-3">
-            <Form.Label>Duration</Form.Label>
+            <Form.Label>Sort Order</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Duration"
-              name="minutes"
-              value={fields.minutes}
+              placeholder="Sort Order"
+              name="sort_order"
+              value={fields.sort_order}
               onChange={handleFieldChange}
-              isInvalid={!!errors.minutes}
+              isInvalid={!!errors.sort_order}
             />
             <Form.Control.Feedback type="invalid">
-              {errors.minutes}
+              {errors.sort_order}
             </Form.Control.Feedback>
           </Form.Group>
 
@@ -243,32 +217,7 @@ export default function LessonsForm() {
             {/* ))} */}
           </Form.Group>
 
-          {/* Image */}
-          <Form.Group as={Col} md="4" className="mb-3">
-            <Form.Label>Image Upload</Form.Label>
-            <Form.Control
-              type="file"
-              placeholder="Duration"
-              name="image"
-              onChange={handleFieldChange}
-              isInvalid={!!errors.image}
-            />
-              
-              {fields.image && (
-                <img
-                  src={fields.image}
-                  alt="Preview"
-                  className="mt-2 d-flex"
-                  style={{ width: "100px", height: "auto" }}
-                />
-              )}
-
-
-            <Form.Control.Feedback type="invalid">
-              {errors.image}
-            </Form.Control.Feedback>
-          </Form.Group>
-
+          {/* Description */}
           <Form.Group as={Col} md="8" className="mb-3">
             <Form.Label>Description</Form.Label>
             <Form.Control

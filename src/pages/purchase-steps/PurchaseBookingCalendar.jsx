@@ -27,17 +27,28 @@ export default function PurchaseBookingCalendar() {
       let slots = {};
       Object.keys(data).forEach((element) => {
         const date = [];
-        data[element].forEach((item) => {
+        // console.log('data : ',data)
+        // console.log("element : ", element);
+        let output =  data[element]
+        console.log("data[element].slots : ", output.slots);
+        let slotsArr = output.slots
+        console.log('slotsArr : ',slotsArr)
+        Object.keys(slotsArr).forEach((item) => {
+          // console.log('item : ',item)
           date.push({
-            date: item.date,
-            end_hour: item.end_hour,
-            id: item.id,
-            start_hour: item.start_hour,
+            // date: slotsArr[item].date,
+            end_hour: slotsArr[item].end_hour,
+            id: slotsArr[item].id,
+            start_hour: slotsArr[item].start_hour,
             active: false,
           });
+          console.log('item : ',slotsArr[item])
         });
+
         slots[element] = date;
       });
+
+      console.log('response slots 11111 : ',slots)
       setSlotList(slots);
     } catch (error) {
       console.error("Error fetching available slots", error);
@@ -62,11 +73,21 @@ export default function PurchaseBookingCalendar() {
   // Custom render function for day cells
   const renderDayCellContent = useCallback(
     (dayCellInfo) => {
-      const formattedDate = moment(dayCellInfo.date).format("YYYY-MM-DD");
+      // console.log("dayCellInfo : ",dayCellInfo)
+      // console.log("slotList : ",slotList)
+      const formattedDate = moment(dayCellInfo.date).format("DD");
+      // console.log('formattedDate : ',formattedDate)
+      console.log('slotList dddd:===================== ',slotList)
+      // debugger
       const slots = slotList[formattedDate]
         ? slotList[formattedDate].filter((item) => !item.active)
         : [];
 
+      // spread using slotLIst []
+      // add date key in that array and its value from dayCellInfo
+      // Reassign to setSlotsList()
+
+        // console.log('slots index 13: ',slotList[13])
       return (
         <div style={{ textAlign: "right", maxHeight: "70px", minHeight: "70px" }}>
           <div>{dayCellInfo.dayNumberText}</div>
@@ -91,9 +112,33 @@ export default function PurchaseBookingCalendar() {
   );
 
   const handleDateClick = (e) => {
-    console.log('slotList => ',slotList)
-    slotsBookingDialogRef.current.dialogHandler(slotList, e.startStr);
+    console.log("Before update - slotList:", slotList);
+  
+    const selectedDate = moment(e.startStr).format("DD");
+  
+    if (!slotList[selectedDate]) {
+      console.warn(`No slots available for date: ${selectedDate}`);
+      return;
+    }
+  
+    // Map slotList into an array and add the date key
+    const updatedSlots = slotList[selectedDate].map((slot) => ({
+      ...slot,
+      date: selectedDate, // ✅ Add date key
+    }));
+  
+    console.log("Updated slots with date:", updatedSlots);
+  
+    // ✅ Reassign to setSlotList()
+    setSlotList((prev) => ({
+      ...prev,
+      [selectedDate]: updatedSlots,
+    }));
+  
+    // ✅ Open the slot booking modal with updated data
+    slotsBookingDialogRef.current.dialogHandler(slotList, selectedDate);
   };
+  
 
   const handleEventClick = (info) => {
     const { title, start, end, extendedProps } = info.event;
@@ -140,7 +185,7 @@ export default function PurchaseBookingCalendar() {
               right: "dayGridMonth,timeGridWeek,timeGridDay",
             }}
             buttonText={{
-              today: "Today",
+              today: "Today ",
               month: "Month",
               week: "Week",
               day: "Day",

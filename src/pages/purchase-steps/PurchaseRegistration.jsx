@@ -70,7 +70,7 @@ export default function PurchaseRegistration() {
   }, []);
 
   const handleContinue = () => {
-    callPay();
+    // callPay();
     
     if (!profile.fname || !profile.email) {
       toast.error("Please complete all required fields.");

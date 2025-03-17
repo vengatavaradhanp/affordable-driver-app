@@ -28,7 +28,8 @@ const slotBookingService = {
       },
       
     });
-    return response.data;
+    console.log("response sent to client", response.data.data );  
+    return response.data.data ? response.data.data : [];
   },
 };
 

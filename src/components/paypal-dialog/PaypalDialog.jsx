@@ -8,6 +8,7 @@ import { PayPalButtons } from "@paypal/react-paypal-js";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import PaypalConfirmationDialog from "./PaypalResponseDialog";
+import subscriptionService from "../../services/subscription.service";
 
 const style = { layout: "vertical" };
 
@@ -24,9 +25,12 @@ const PaypalDialog = React.forwardRef((props, ref) => {
     },
   }));
 
+  const getToken = () => localStorage.getItem("token");
+
   const handleClose = () => setShow(false);
 
   const onCreateOrder = async (data, actions) => {
+    const token = getToken();
     try {
       let id = await actions.order.create({
         purchase_units: [
@@ -46,6 +50,7 @@ const PaypalDialog = React.forwardRef((props, ref) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json", // Set proper headers for JSON
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(payload),
         }
@@ -83,7 +88,18 @@ const PaypalDialog = React.forwardRef((props, ref) => {
       const result = await response.json();
       debugger;
       paypalResponseDialog.current.dialogHandler();
-      props.paymentHandler();
+
+      /// Service 2
+
+      subscriptionService.createSubscription({}).then((response) => {
+        debugger
+        props.paymentHandler();
+      })
+      .catch((error) => {
+      debugger
+      })
+
+     
       return orderApprove;
     } catch (error) {
       return error;

@@ -94,7 +94,7 @@ export default function HomePage() {
                     </Button>
                   </Carousel.Caption>
                 </Carousel.Item>
-                {/* <Carousel.Item>
+                <Carousel.Item>
                   <img
                    style={{height:"700px", objectFit:"cover"}}
                     className="d-block w-100"
@@ -117,7 +117,7 @@ export default function HomePage() {
                     src={homepage5}
                     alt="Fourth slide"
                   />
-                </Carousel.Item> */}
+                </Carousel.Item>
               </Carousel>
               {/* Header Carousel End */}
 

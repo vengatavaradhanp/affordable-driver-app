@@ -43,7 +43,7 @@ const LessonPackageService = {
   updateLesson: async (id, payload) => {
     const token = getToken();
 
-    const response = await api.put(`lesson-packages/${id}/block`, payload,{
+    const response = await api.put(`lesson-packages/${id}`, payload,{
       headers: {
         Authorization: `Bearer ${token}`,
       },

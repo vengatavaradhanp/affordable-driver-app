@@ -494,6 +494,8 @@ import {
 } from "../../pages/auth/firebaseconfig";
 import { useAuthState } from "react-firebase-hooks/auth";
 import AppLoader from "../../components/app-layout/AppLoader";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../../features/loginSlice";
 
 const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -506,7 +508,7 @@ const Login = () => {
   const location = useLocation();
   const { type } = useParams();
   const [user] = useAuthState(auth); // Tracks login state
-
+  const dispatch = useDispatch();
   // Toggle Password Visibility
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -521,6 +523,7 @@ const Login = () => {
     localStorage.setItem("userRole", response.data.user.role);
     localStorage.setItem("user", JSON.stringify(response.data.user));
     localStorage.setItem("token", response.data.token);
+    dispatch(loginSuccess(response.data));
     // Show success toast
     toast.success("Login successful!");
     // Redirect to the home page or previous page

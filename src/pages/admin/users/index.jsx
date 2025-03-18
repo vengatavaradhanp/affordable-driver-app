@@ -1,51 +1,65 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Table, Button, Modal, Form, Pagination, Container, Row, Col, InputGroup } from "react-bootstrap";
+import {
+  Table,
+  Button,
+  Modal,
+  Form,
+  Pagination,
+  Container,
+  Row,
+  Col,
+  InputGroup,
+} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { toast } from "react-toastify";
 import UserService from "../../../services/user.service";
 import ConfirmationModalComponent from "../../../components/confirmation-modal/ConfirmationModalComponent";
+import AppLoader from "../../../components/app-layout/AppLoader";
 
 export default function Users() {
   const navigate = useNavigate();
   const [userData, setUserData] = useState([]);
+  const [isLoading, setIsLoading]= useState(true);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [serachText, setSearchText] = useState("");
-
   const [showModal, setShowModal] = useState(false);
   const [editItem, setEditItem] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [toggleStates, setToggleStates] = useState({});
-
-  const confirmationModalRef = useRef(null)
-
+  const confirmationModalRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [userInfo, setUserInfo] = useState({});
 
   useEffect(() => {
-    getUserList()
-  }, []);
+    getUserList();
+  }, [currentPage, itemsPerPage]);
 
   const getUserList = () => {
     const queryString = {
-      pageNumber: 1,
-      perPage: 10,
-      search: serachText
-    }
+      pageNumber: currentPage,
+      perPage: itemsPerPage,
+      search: serachText,
+    };
     UserService.getAllUsers(queryString)
       .then((response) => {
-        const responseData = response.data;
-        setUserData(responseData);
+        const info = response.data.data;
+        setUserData(info.data);
+        setUserInfo(info);
+        setTotalRecords(info.total);
+        setIsLoading(false);
+        // const responseData = response.data;
+        // setUserData(responseData);
       })
       .catch((error) => {
         const errorData = error.response.data;
-        toast.error("Failed to retrive user data")
-      })
-  }
-
-
+        toast.error("Failed to retrive user data");
+        setIsLoading(false);
+      });
+  };
 
   const handleCreate = () => {
     setEditItem(null);
@@ -55,20 +69,11 @@ export default function Users() {
   };
 
   const handleEdit = (item) => {
-    navigate('/admin/users/edit', { state: item })
+    navigate("/admin/users/edit", { state: item });
   };
 
   const handleDelete = async (user) => {
-    // if (window.confirm("Are you sure you want to delete this user?")) {
-    //   try {
-    //     await axios.delete(`https://datatechgenius.com/expert-driver/public/index.php/api/users/${id}`);
-    //     setUserData(userData.filter((item) => item.id !== id));
-    //     toast.success("User deleted successfully!");
-    //   } catch (error) {
-    //     toast.error("Failed to delete user.");
-    //   }
-    // }
-    confirmationModalRef.current.open(user)
+    confirmationModalRef.current.open(user);
   };
 
   const handleToggle = (id) => {
@@ -77,52 +82,49 @@ export default function Users() {
       [id]: !prev[id],
     }));
   };
-
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-
-  // const filteredUsers = data.filter((user) =>
-  //   user.fname.toLowerCase().includes(serachText.toLowerCase()) ||
-  //   user.email.toLowerCase().includes(serachText.toLowerCase()) ||
-  //   user.phone.toLowerCase().includes(serachText.toLowerCase()) ||
-  //   user.suburbs.toLowerCase().includes(serachText.toLowerCase()) ||
-  //   user.state.toLowerCase().includes(serachText.toLowerCase())
-
-  // );
-
-  // const currentItems = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
-  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
+ 
 
   const handleSwitchChange = (event, user) => {
     event.preventDefault();
     const payload = {
-      status: event.target.checked === true ? 1 : 0
-    }
+      status: event.target.checked === true ? 1 : 0,
+    };
     UserService.blockUser(user.id, payload)
       .then((response) => {
         toast.success("User status updated");
-        getUserList()
+        getUserList();
       })
       .catch((error) => {
         toast.error("Failed to update user status");
-      })
-  }
+      });
+  };
 
   const handleSearch = () => {
-    getUserList()
-  }
+    getUserList();
+  };
 
   const handleDeleteUser = (id) => {
     UserService.deleteUser(id)
       .then((response) => {
         toast.success("User deleted successfully");
-        getUserList()
+        getUserList();
       })
       .catch((error) => {
         toast.error("Failed to delete user");
-      })
-  }
+      });
+  };
 
+  const handlePaginationChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  
+  const getPageItems = () => {
+    const pageItems = [];
+    for (let i = 1; i <= Math.ceil(totalRecords / itemsPerPage); i++) {
+      pageItems.push(i);
+    }
+    return pageItems;
+  };
   return (
     <Container fluid>
       <h4>Users List</h4>
@@ -154,7 +156,11 @@ export default function Users() {
         </Col>
       </Row>
 
-      <div className="mt-3">
+      {isLoading ? (
+        <AppLoader/>
+      ) : (
+        <>
+          <div className="mt-3">
         <Table responsive className="dataTable">
           <thead>
             <tr>
@@ -170,7 +176,7 @@ export default function Users() {
           <tbody>
             {userData.map((item, index) => (
               <tr key={item.id}>
-                <td>{indexOfFirstItem + index + 1}</td>
+                <td>{ userInfo.from + index}</td>
                 <td>{item.fname}</td>
                 <td>{item.email}</td>
                 <td>{item.phone}</td>
@@ -214,15 +220,27 @@ export default function Users() {
         </Table>
       </div>
 
-      <div className="d-flex justify-content-end mt-2">
+      <div className="d-flex justify-content-end mt-2 gap-2">
+        <strong>Page :</strong>
         <Pagination>
-          {/* {Array.from({ length: Math.ceil(filteredUsers.length / itemsPerPage) }, (_, i) => (
-            <Pagination.Item key={i + 1} active={i + 1 === currentPage} onClick={() => paginate(i + 1)}>
+          {getPageItems().map((number, i) => (
+            <Pagination.Item
+              key={i}
+              active={number === currentPage}
+              onClick={() => handlePaginationChange(number)}
+              variant="primary"
+            >
               {i + 1}
             </Pagination.Item>
-          ))} */}
+          ))}
         </Pagination>
       </div>
+
+        </>
+      )}
+
+
+
       <ConfirmationModalComponent
         ref={confirmationModalRef}
         handleDeleteUser={handleDeleteUser}
@@ -230,4 +248,3 @@ export default function Users() {
     </Container>
   );
 }
-

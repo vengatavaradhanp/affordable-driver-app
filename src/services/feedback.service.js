@@ -7,7 +7,7 @@ const FeebackService = {
     const token = getToken();
     console.log("Token", token);
 
-    const response = await api.get(`contacts`,{
+    const response = await api.get(`contacts?page=${query.pageNumber}&pageSize=${query.perPage}&search=${query.search}`,{
       headers: {
         Authorization: `Bearer ${token}`
       }

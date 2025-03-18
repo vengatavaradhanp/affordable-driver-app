@@ -14,17 +14,23 @@ import { toast } from "react-toastify";
 import ConfirmationModalComponent from "../../../components/confirmation-modal/ConfirmationModalComponent";
 import moment from "moment/moment";
 import FeebackService from "../../../services/feedback.service";
+// import { set } from "react-datepicker/dist/date_utils";
+import AppLoader from "../../../components/app-layout/AppLoader";
 
 export default function FeedbackList() {
   const navigate = useNavigate();
-  const [lessonData, setFeedbackData] = useState([]);
+  const [feedBackData, setFeedbackData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [feedBackInfo, setFeedBackInfo] = useState({});
+  const confirmationModalRef = useRef(null);
 
   useEffect(() => {
     getFeedbacks();
-  }, [currentPage, searchTerm]);
+  }, [currentPage, itemsPerPage]);
 
   const getFeedbacks = () => {
     const query = {
@@ -34,17 +40,36 @@ export default function FeedbackList() {
     };
     FeebackService.getAllFeedback(query)
       .then((response) => {
-        setFeedbackData(response.data);
-        console.log("#########", response.data);
+        const info = response.data.data;
+        setFeedbackData(info.data);
+        setFeedBackInfo(info);
+        setTotalRecords(info.total);
+        setIsLoading(false);
       })
+      //   setFeedbackData(response.data);
+      //   console.log("#########", response.data);
+      // })
       .catch((error) => {
         toast.error("Failed to retrieve feedback");
+        setIsLoading(false);
       });
   };
 
   const handleSearch = () => {
     setCurrentPage(1); // Reset to first page when searching
     getFeedbacks();
+  };
+
+  const handlePaginationChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const getPageItems = () => {
+    const pageItems = [];
+    for (let i = 1; i <= Math.ceil(totalRecords / itemsPerPage); i++) {
+      pageItems.push(i);
+    }
+    return pageItems;
   };
 
   return (
@@ -80,38 +105,61 @@ export default function FeedbackList() {
         </Col> */}
       </Row>
 
-      <div className="mt-3">
-        <Table responsive className="dataTable">
-          <thead>
-            <tr>
-              <th>S No</th>
-              <th>Full Name</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>Inquiry About</th>
-              <th>Created On</th>
-              {/* <th>Message</th> */}
-            </tr>
-          </thead>
-          <tbody>
-            {lessonData.map((item, index) => (
-              <tr key={item.id}>
-                <td>{index + 1}</td>
-                <td>{item.firstname + " " + item.lastname}</td>
-                <td>{item.emailaddress}</td>
-                <td>{item.contact_number}</td>
-                <td>{item.inquiring_about}</td>
-                <td>{moment(item.created_at).format("DD-MM-YYYY")}</td>
-                {/* <td>{item.message}</td> */}
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </div>
+      {isLoading ? (
+        <AppLoader />
+      ) : (
+        <>
+          <div className="mt-3">
+            <Table responsive className="dataTable">
+              <thead>
+                <tr>
+                  <th>S No</th>
+                  <th>Full Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Inquiry About</th>
+                  <th>Created On</th>
+                  {/* <th>Message</th> */}
+                </tr>
+              </thead>
+              <tbody>
+                
+                {feedBackData.map((item, index) => (
+                  <tr key={item.id}>
+                    <td>{feedBackInfo.from + index}</td>
+                    <td>{item.firstname + " " + item.lastname}</td>
+                    <td>{item.emailaddress}</td>
+                    <td>{item.contact_number}</td>
+                    <td>{item.inquiring_about}</td>
+                    <td>{moment(item.created_at).format("DD-MM-YYYY")}</td>
+                    {/* <td>{item.message}</td> */}
+                  </tr>
 
-      <div className="d-flex justify-content-end mt-2">
-        <Pagination>{/* Pagination items can be added here */}</Pagination>
-      </div>
+                ))}
+
+              </tbody>
+
+            </Table>
+
+          </div>
+
+          <div className="d-flex justify-content-end align-item-center m-2 gap-2">
+          <strong>Page :</strong>
+            <Pagination>
+              {getPageItems().map((number, i) => (
+                <Pagination.Item
+                  key={i}
+                  active={number === currentPage}
+                  onClick={() => handlePaginationChange(number)}
+                  variant="primary"
+                >
+                  {i + 1}
+                </Pagination.Item>
+              ))}
+            </Pagination>
+          </div>
+        </>
+      )}
     </Container>
   );
 }

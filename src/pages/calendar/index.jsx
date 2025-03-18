@@ -96,7 +96,7 @@ export default function Calendar() {
             right: "dayGridMonth,timeGridWeek,timeGridDay",
           }}
           initialView="dayGridMonth"
-          editable={true}
+          editable={false}
           events={eventsList}
           eventClick={handleEventClick} // Click event to open modal
           height={"90vh"}

@@ -11,63 +11,67 @@ import {
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import LessonPackageService from "../../../services/lesson-package.service";
+// import LessonPackageService from "../../../services/lesson-package.service";
+import HomeBannersService from "../../../services/home.service";
 import ConfirmationModalComponent from "../../../components/confirmation-modal/ConfirmationModalComponent";
 import moment from "moment/moment";
 import AppLoader from "../../../components/app-layout/AppLoader";
 
-export default function LessonPackageList() {
+export default function BannerList() {
   const navigate = useNavigate();
-  const [lessonData, setLessonData] = useState([]);
-  const [lessonInfo, setLessonInfo] = useState();
+  const [bannerData, setBannerData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [bannerInfo, setBannerInfo] = useState();
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [totalPages, setTotalPages] = useState(0);
   const confirmationModalRef = useRef(null);
 
   useEffect(() => {
-    getLessonPackage();
+    getHomeBannersPackage();
+    // eslint-disable-next-line
   }, [currentPage, itemsPerPage]);
 
-  const getLessonPackage = () => {
+  const getHomeBannersPackage = () => {
     const query = {
       pageNumber: currentPage,
       perPage: itemsPerPage,
       search: searchTerm,
     };
-    LessonPackageService.getAllLessons(query)
+    HomeBannersService.getAllHomeBanners(query)
       .then((response) => {
         const info = response.data.data;
-        setLessonData(info.data);
-        setLessonInfo(info);
+        setBannerData(info.data);
+        setBannerInfo(info);
         setTotalRecords(info.total);
         setIsLoading(false);
       })
       .catch((error) => {
-        setError("Failed to retrieve lesson packages");
-        toast.error("Failed to retrieve lesson packages");
+        setError("Failed to retrieve Banner packages");
+        toast.error("Failed to retrieve Banner packages");
         setIsLoading(false);
       });
   };
 
   const handleEdit = (item) => {
-    navigate("/admin/lessons/edit", { state: item });
+    navigate("/admin/banner/edit", { state: item });
   };
 
+  // Open confirmation modal with the lesson package ID
   const handleDelete = (id) => {
     console.log(id);
     confirmationModalRef.current.open(id);
   };
 
-  const handleDeleteLesson = (id) => {
-    setIsLoading(true)
-    LessonPackageService.deleteLesson(id)
+  const handleDeleteHomeBanner = (id) => {
+    setIsLoading(true);
+    HomeBannersService.deleteHomeBanners(id)
       .then(() => {
-        toast.success("Lesson package deleted successfully");
-        getLessonPackage();
+        toast.success("Home Banner deleted successfully");
+        getHomeBannersPackage();
       })
       .catch(() => {
         toast.error("Failed to delete lesson package");
@@ -77,7 +81,6 @@ export default function LessonPackageList() {
   const handlePaginationChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-
   const getPageItems = () => {
     const pageItems = [];
     for (let i = 1; i <= Math.ceil(totalRecords / itemsPerPage); i++) {
@@ -86,9 +89,18 @@ export default function LessonPackageList() {
     return pageItems;
   };
 
+  const handleSearch = () => {
+    setCurrentPage(1); // Reset to first page when searching
+    getHomeBannersPackage();
+  };
+
+  
+
+  // (Optional) Pagination rendering can be added here if needed
+
   return (
     <Container fluid>
-      <h4>Lessons List</h4>
+      <h4>Banner List</h4>
       <hr />
       <Row>
         <Col>
@@ -99,7 +111,7 @@ export default function LessonPackageList() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <Button variant="primary" onClick={getLessonPackage}>
+            <Button variant="primary" onClick={handleSearch}>
               <i className="bi bi-search"></i>
             </Button>
           </InputGroup>
@@ -109,7 +121,7 @@ export default function LessonPackageList() {
           <Button
             style={{ width: "100px" }}
             variant="primary"
-            onClick={() => navigate("/admin/lessons/create")}
+            onClick={() => navigate("/admin/banner/create")}
             // onClick={handleCreate}
             className="my-1"
           >
@@ -127,24 +139,20 @@ export default function LessonPackageList() {
               <thead>
                 <tr>
                   <th>S No</th>
-                  <th>Lesson Title</th>
-                  <th>Price</th>
-                  <th>Duration</th>
-                  <th>Lesson Type</th>
-                  <th>Created On</th>
+                  <th>Banner Title</th>
+                  <th> Order</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {lessonData.length > 0 ? (
-                  lessonData.map((item, index) => (
+                {bannerData && Array.isArray(bannerData) ? (
+                  bannerData.map((item, index) => (
                     <tr key={item.id}>
-                      <td>{lessonInfo.from + index}</td>
+                      <td>{index + 1}</td>
                       <td>{item.title}</td>
-                      <td>$ {item.amount}</td>
-                      <td>{item.minutes} mins</td>
-                      <td>{index % 4 !== 0 ? "Package" : "Single"}</td>
-                      <td>{moment(item.created_at).format("DD-MM-YYYY")}</td>
+                      <td>{item.sort_order}</td>
+                      {/* <td>{index % 4 !== 0 ? "Package" : "Single"}</td>
+                <td>{moment(item.created_at).format("DD-MM-YYYY")}</td> */}
                       <td>
                         <span
                           style={{ padding: "0px 5px", cursor: "pointer" }}
@@ -169,39 +177,36 @@ export default function LessonPackageList() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="7" className="text-center">
-                      No records found
-                    </td>
+                    <td colSpan="6">No data available</td>
                   </tr>
                 )}
               </tbody>
             </Table>
           </div>
 
-          {lessonData.length > 0 && (
-           <div className="d-flex justify-content-end align-items-center m-2 gap-2">
-           <strong>Page :</strong>
-           <Pagination className="mb-0">
-             {getPageItems().map((number, i) => (
-               <Pagination.Item
-                 key={i}
-                 active={number === currentPage}
-                 onClick={() => handlePaginationChange(number)}
-                 variant="primary"
-               >
-                 {number} {/* Ensure correct page number is displayed */}
-               </Pagination.Item>
-             ))}
-           </Pagination>
-         </div>
-         
+          {bannerData.length > 0 && (
+            <div className="d-flex justify-content-end align-items-center m-2 gap-2">
+              <strong>Page :</strong>
+              <Pagination className="mb-0">
+                {getPageItems().map((number, i) => (
+                  <Pagination.Item
+                    key={i}
+                    active={number === currentPage}
+                    onClick={() => handlePaginationChange(number)}
+                    variant="primary"
+                  >
+                    {number} {/* Ensure correct page number is displayed */}
+                  </Pagination.Item>
+                ))}
+              </Pagination>
+            </div>
           )}
         </>
       )}
 
       <ConfirmationModalComponent
         ref={confirmationModalRef}
-        handleDeleteUser={handleDeleteLesson}
+        handleDeleteUser={handleDeleteHomeBanner}
       />
     </Container>
   );

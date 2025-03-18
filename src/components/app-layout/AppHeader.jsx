@@ -494,7 +494,7 @@ export default function AppHeader() {
               >
                 CONTACT US
               </a>
-              {userRole === "admin" ? (
+              {/* {userRole === "admin" ? (
                 <a
                   href="/admin/dashboard"
                   className={
@@ -507,7 +507,7 @@ export default function AppHeader() {
                 </a>
               ) : (
                 <></>
-              )}
+              )} */}
             </div>
           </div>
           {isLoggedIn || user ? (
@@ -518,6 +518,9 @@ export default function AppHeader() {
                 className="d-flex align-items-center me-4 navbar-text  btn-sm"
                 style={{border: '0px'}}
               >
+             
+                <span style={{textTransform: 'capitalize', fontSize: '18px'}}>{userName || user?.displayName || user?.email}</span>
+                &nbsp;&nbsp;
                 <Image
                   src={user?.photoURL || defaultProfilePic}
                   roundedCircle
@@ -525,29 +528,27 @@ export default function AppHeader() {
                   height="40"
                   className="me-2"
                 />
-                <span style={{textTransform: 'capitalize'}}>{userName || user?.displayName || user?.email}</span>
-                <style>
-                  {`
-                        .navbar-text:hover {
-                            color: green; /* Change text color to green on hover */
-                        }
-                    `}
-                </style>
               </Dropdown.Toggle>
 
-              <Dropdown.Menu className="border-1 border-primary shadow">
-                <Dropdown.ItemText className="text-center navbar-text">
+              <Dropdown.Menu className="shadow">
+                {/* <Dropdown.ItemText className="text-center navbar-text">
                   <p className="mb-0">{userEmail || user?.email}</p>
                 </Dropdown.ItemText>
-                <Dropdown.Divider />
+                <Dropdown.Divider /> */}
+                {userRole === "admin"  && <Dropdown.Item
+                  className="navbar-text"
+                  onClick={() => navigate("/admin/dashboard")}
+                >
+                  Dashboard
+                </Dropdown.Item>}
                 <Dropdown.Item
                   className="navbar-text"
                   onClick={() => navigate("/profile")}
                 >
-                  <i className="fa fa-sign-out"></i> View Profile
+                 View Profile
                 </Dropdown.Item>
                 <Dropdown.Item className="navbar-text" onClick={handleLogout}>
-                  <i className="fa fa-sign-out"></i> Log Out
+                 Log Out
                 </Dropdown.Item>
                 {/* {loginMethod !== "google" && (
                   <Dropdown.Item className="navbar-text" onClick={googleLogin}>

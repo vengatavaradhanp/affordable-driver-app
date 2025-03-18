@@ -8,7 +8,7 @@ const LessonPackageService = {
     console.log("Token:" , token)
 
     const response = await api.get(
-      `lesson-packages?page=${query.pageNumber}&pageSize=${query.perPage}&search=${query.search}`,
+      `lesson-packages?page=${query.pageNumber}&pageSize=${query.perPage}&search=${query.search}&role=admin`,
       {
         headers:{
           Authorization: `Bearer ${token}`,
@@ -20,8 +20,9 @@ const LessonPackageService = {
 
   getLessonsById: async (id) => {
     const token = getToken();
+ 
 
-    const response = await api.get( `lesson-packages/${id}`,{
+    const response = await api.get( `lesson-packages/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -31,8 +32,9 @@ const LessonPackageService = {
 
   createLesson: async (payload) => {
     const token= getToken();
+     
 
-    const response = await api.post(`lesson-packages`, payload,{
+    const response = await api.post(`lesson-packages`,payload, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

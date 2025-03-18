@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // import React from "react";
 // import Col from "react-bootstrap/Col";
 // import Nav from "react-bootstrap/Nav";
@@ -7,7 +8,7 @@
 // import { ToggleButton, ToggleButtonGroup } from "react-bootstrap";
 
 // export default function MyProfile() {
-//   const [selected, setSelected] = React.useState("profile");
+//   const [selected, setSelected] = React.useState("fields");
 //   return (
 //     <>
 //       <>
@@ -46,7 +47,7 @@
 //                       value={selected}
 //                       onChange={setSelected}
 //                     >
-//                       <ToggleButton id="tbg-btn-1" value="profile" style={{ margin: '0px 5px', background: selected == 'profile' ? "#2b9348" : "#fff", color: selected == 'profile' ? "#ffff" : "#2b9348", width: '120px' }}>
+//                       <ToggleButton id="tbg-btn-1" value="fields" style={{ margin: '0px 5px', background: selected == 'fields' ? "#2b9348" : "#fff", color: selected == 'fields' ? "#ffff" : "#2b9348", width: '120px' }}>
 //                         My Info
 //                       </ToggleButton>
 //                       <ToggleButton id="tbg-btn-2" value="calendar" style={{ margin: '0px 5px', background: selected == 'calendar' ? "#2b9348" : "#fff", color: selected == 'calendar' ? "#ffff" : "#2b9348", width: '120px' }}>
@@ -54,7 +55,7 @@
 //                       </ToggleButton>
 //                     </ToggleButtonGroup>
 //                     <div className="mt-3">
-//                       {selected === "profile" ? <form>
+//                       {selected === "fields" ? <form>
 //                         <Row style={{ paddingBottom: "40px" }}>
 //                           <Col sm={6}>
 //                             <div
@@ -63,7 +64,6 @@
 //                             >
 //                               <input
 //                                 type="text"
-//                                 className="form-control border-0 bg-light"
 //                                 id="name"
 //                                 placeholder="First Name"
 //                               />
@@ -77,7 +77,6 @@
 //                             >
 //                               <input
 //                                 type="text"
-//                                 className="form-control border-0 bg-light"
 //                                 id="lastName"
 //                                 placeholder="Last Name"
 //                               />
@@ -93,7 +92,6 @@
 //                             >
 //                               <input
 //                                 type="email"
-//                                 className="form-control border-0 bg-light"
 //                                 id="email"
 //                                 placeholder="Email Address"
 //                               />
@@ -109,7 +107,6 @@
 //                             >
 //                               <input
 //                                 type="text"
-//                                 className="form-control border-0 bg-light"
 //                                 id="contactNumber"
 //                                 placeholder="Contact Number"
 //                               />
@@ -154,7 +151,6 @@
 //                               style={{ margin: "0px 15px" }}
 //                             >
 //                               <textarea
-//                                 className="form-control border-0 bg-light"
 //                                 placeholder="Message"
 //                                 id="message"
 //                                 style={{ height: 100 }}
@@ -229,7 +225,6 @@
 //                                     >
 //                                       <input
 //                                         type="text"
-//                                         className="form-control border-0 bg-light"
 //                                         id="name"
 //                                         placeholder="First Name"
 //                                       />
@@ -243,7 +238,6 @@
 //                                     >
 //                                       <input
 //                                         type="text"
-//                                         className="form-control border-0 bg-light"
 //                                         id="lastName"
 //                                         placeholder="Last Name"
 //                                       />
@@ -259,7 +253,6 @@
 //                                     >
 //                                       <input
 //                                         type="email"
-//                                         className="form-control border-0 bg-light"
 //                                         id="email"
 //                                         placeholder="Email Address"
 //                                       />
@@ -275,7 +268,6 @@
 //                                     >
 //                                       <input
 //                                         type="text"
-//                                         className="form-control border-0 bg-light"
 //                                         id="contactNumber"
 //                                         placeholder="Contact Number"
 //                                       />
@@ -320,7 +312,6 @@
 //                                       style={{ margin: "0px 15px" }}
 //                                     >
 //                                       <textarea
-//                                         className="form-control border-0 bg-light"
 //                                         placeholder="Message"
 //                                         id="message"
 //                                         style={{ height: 100 }}
@@ -392,90 +383,61 @@ import {
   ToggleButtonGroup,
 } from "react-bootstrap";
 import Calendar from "../calendar";
-import { FaCamera } from "react-icons/fa"; // ✅ Import FaCamera from react-icons
+import {
+  GenderList,
+  RoleList,
+  StateList,
+  SuburbList,
+} from "../../utils/constant";
+import userService from "../../services/user.service";
+import { toast } from "react-toastify";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+// import { FaCamera } from "react-icons/fa"; // ✅ Import FaCamera from react-icons
 
 export default function MyProfile() {
   const [image, setImage] = useState();
-  const [selected, setSelected] = useState("profile"); // Toggle between Profile & Calendar
-  const [profile, setProfile] = useState({
-    firstName: "",
-    lastName: "",
+  const [selected, setSelected] = useState("fields"); // Toggle between Profile & Calendar
+  const [fieldState, setFieldState] = useState(false);
+  const [fields, setFields] = useState({
+    id: 3,
+    fname: "",
+    lname: "",
     email: "",
-    contactNumber: "",
+    phone: "",
     suburbs: "",
     address: "",
+    state: "",
+    gender: "",
+    role: "user",
+    status: null,
   });
-
-  const getToken = () => localStorage.getItem("token");
+  const location = useLocation();
+  const navigate = useNavigate();
+  const loginSelector = useSelector((state) => state.login);
+ console.log('############', loginSelector)
+  const [errors, setErrors] = useState({}); // Track validation errors
 
   useEffect(() => {
-    // Fetch user data from API
-    fetch(
-      "https://datatechgenius.com/expert-driver/public/index.php/api/users/profile",
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // Assuming token is stored in localStorage
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setProfile({
-          fname: data.data.fname,
-          lname: data.data.lname,
-          email: data.data.email,
-          phone: data.data.phone,
-          suburbs: data.data.suburbs,
-          address: data.data.address,
-          state: data.data.state,
-          gender: data.data.gender,
-          role: data.data.role,
-          status: 0,
-          image: data.data.image,
-
-          // inquiry: data.data.inquiry,
-          // message: data.data.message
-        });
-      })
-      .catch((error) => console.error("Error fetching profile:", error));
-  }, []);
+    if(loginSelector.user !== null) {
+      const field = {...fields};
+      field["id"] = loginSelector.user?.id;
+      field["fname"] = loginSelector.user.fname;
+      field["lname"] = loginSelector.user.lname;
+      field["email"] = loginSelector.user.email;
+      field["phone"] = loginSelector.user.phone;
+      field["suburbs"] = loginSelector.user.suburbs;
+      field["address"] = loginSelector.user.address;
+      field["state"] = loginSelector.user.state;
+      field["status"] = loginSelector.user.status;
+      field["role"] = loginSelector.user.role;
+      field["gender"] = loginSelector.user.role;
+      setFields(field);
+    }
+  }, [loginSelector]);
 
   const handleChange = (e) => {
-    setProfile({ ...profile, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Updated Profile Data:", profile);
-    const token = getToken();
-    fetch(
-      "https://datatechgenius.com/expert-driver/public/index.php/api/users/update",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(profile),
-      }
-    )
-      // .then((response) => response.json())
-      // .then((data) => {
-      //   console.log("Profile Updated Successfully", data);
-      // })
-      // .catch((error) => console.error("Error updating profile:", error));
-      .then(async (response) => {
-        const data = await response.json();
-        console.log("API Response:", data);
-
-        if (response.ok) {
-          console.log("Profile Updated Successfully");
-        } else {
-          console.error("Update Failed:", data);
-        }
-      })
-      .catch((error) => console.error("Error updating profile:", error));
+    setFields({ ...fields, [e.target.name]: e.target.value });
   };
 
   const handleImageChange = (event) => {
@@ -486,6 +448,48 @@ export default function MyProfile() {
         setImage(reader.result);
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const validateFields = () => {
+    let newErrors = {};
+
+    if (!fields.fname.trim()) newErrors.fname = "First name is required.";
+    if (!fields.lname.trim()) newErrors.lname = "Last name is required.";
+    if (!fields.email.trim()) newErrors.email = "Email is required.";
+    if (!fields.phone.trim()) newErrors.phone = "Phone number is required.";
+    if (!fields.address.trim()) newErrors.address = "Address is required.";
+    if (!fields.gender.trim()) newErrors.gender = "Please select a gender.";
+    if (!fields.role.trim()) newErrors.role = "Please select a role.";
+    if (!fields.state.trim()) newErrors.state = "Please select a state.";
+    if (!fields.suburbs.trim()) newErrors.suburbs = "Please select a suburb.";
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0; // Returns true if no errors
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (validateFields()) {
+      const payload = { ...fields };
+      if (fields.id) {
+        userService
+          .updateUser(fields.id, payload)
+          .then(() => {
+            toast.success("User updated successfully!");
+            navigate("/admin/users");
+          })
+          .catch((error) => {
+            let newErrors = {};
+            const errorData = error.response.data;
+            Object.entries(errorData.errors).forEach(([key, value]) => {
+              newErrors[key] = value[0];
+            });
+            setErrors(newErrors);
+          });
+      }
     }
   };
 
@@ -517,11 +521,11 @@ export default function MyProfile() {
                   >
                     <ToggleButton
                       id="tbg-btn-1"
-                      value="profile"
+                      value="fields"
                       style={{
                         margin: "0px 5px",
-                        background: selected === "profile" ? "#2b9348" : "#fff",
-                        color: selected === "profile" ? "#fff" : "#2b9348",
+                        background: selected === "fields" ? "#2b9348" : "#fff",
+                        color: selected === "fields" ? "#fff" : "#2b9348",
                         width: "120px",
                       }}
                     >
@@ -544,36 +548,64 @@ export default function MyProfile() {
 
                   {/* Profile Form */}
                   <div className="mt-3">
-                    {selected === "profile" ? (
-                      <Form onSubmit={handleSubmit}>
+                    {selected === "fields" ? (
+                      <Form onSubmit={handleSubmit} noValidate>
                         <Row className="pb-4">
-                          <Col sm={6} className="text-center">
+                          <Col sm={4} className="text-left">
                             <div className="circle position-relative d-inline-block">
-                              <img
-                                className="profile-pic rounded-circle border shadow"
-                                src={
-                                  profile.image ||
-                                  "https://via.placeholder.com/100"
-                                }
-                                alt="Profile"
-                                width={100}
-                                height={100}
-                              />
-                              <div className="p-image position-absolute bottom-0 start-0">
+                              <Form.Group className=" m-2">
+                                <Form.Label> Profile Image</Form.Label>
+                                <br />
                                 <label className="upload-button">
-                                  <FaCamera
-                                    size={24}
-                                    className="text-primary cursor-pointer"
-                                  />
-                                  <input
-                                    type="file"
-                                    accept="image/*"
-                                    className="file-upload d-none"
-                                    onChange={handleImageChange}
-                                  />
+                                  <div
+                                    style={{
+                                      border: "1px solid #e4e5e7",
+                                      borderRadius: "10px",
+                                      padding: "5px",
+                                      width: "120px",
+                                      height: "100px",
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                      cursor: "pointer",
+                                    }}
+                                  >
+                                    <i
+                                      class="bi bi-person-circle"
+                                      style={{
+                                        fontSize: "52px",
+                                        color: "#e4e5e7",
+                                      }}
+                                    ></i>
+                                    <input
+                                      type="file"
+                                      accept="image/*"
+                                      className="file-upload d-none"
+                                      onChange={handleImageChange}
+                                      disabled={!fieldState}
+                                    />
+                                  </div>
                                 </label>
-                              </div>
+                              </Form.Group>
                             </div>
+                          </Col>
+                          <Col sm={4} className="text-center" />
+                          <Col sm={4} style={{ textAlign: "right" }}>
+                            <Button
+                              variant="light"
+                              style={{ padding: "10px 30px" }}
+                              onClick={() => setFieldState(!fieldState)}
+                            >
+                              Edit &nbsp;{" "}
+                              <i
+                                className="bi bi-pencil-square"
+                                style={{
+                                  color: "#000",
+                                  fontSize: "18px",
+                                  paddingX: "10px",
+                                }}
+                              ></i>
+                            </Button>
                           </Col>
                           <Col sm={6}>
                             <Form.Group className=" m-2">
@@ -581,11 +613,15 @@ export default function MyProfile() {
                               <Form.Control
                                 type="text"
                                 name="fname"
-                                value={profile.fname}
+                                value={fields.fname}
                                 onChange={handleChange}
-                                className="border-0 bg-light"
                                 placeholder="First Name"
+                                disabled={!fieldState}
+                                isInvalid={!!errors.fname}
                               />
+                              <Form.Control.Feedback type="invalid">
+                                {errors.fname}
+                              </Form.Control.Feedback>
                             </Form.Group>
                           </Col>
                           <Col sm={6}>
@@ -595,11 +631,37 @@ export default function MyProfile() {
                               <Form.Control
                                 type="text"
                                 name="lname"
-                                value={profile.lname}
+                                value={fields.lname}
                                 onChange={handleChange}
-                                className="border-0 bg-light"
                                 placeholder="Last Name"
+                                disabled={!fieldState}
+                                isInvalid={!!errors.lname}
                               />
+                              <Form.Control.Feedback type="invalid">
+                                {errors.lname}
+                              </Form.Control.Feedback>
+                            </Form.Group>
+                          </Col>
+                          <Col sm={6}>
+                            <Form.Group className="m-2">
+                              <Form.Label>Gender</Form.Label>
+                              <Form.Select
+                                name="gender"
+                                value={fields.gender}
+                                onChange={handleChange}
+                                disabled={!fieldState}
+                                isInvalid={!!errors.gender}
+                              >
+                                <option value="">Choose...</option>
+                                {GenderList.map((item, index) => (
+                                  <option key={index} value={item.value}>
+                                    {item.name}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                {errors.gender}
+                              </Form.Control.Feedback>
                             </Form.Group>
                           </Col>
                           <Col sm={6}>
@@ -608,11 +670,15 @@ export default function MyProfile() {
                               <Form.Control
                                 type="email"
                                 name="email"
-                                value={profile.email}
+                                value={fields.email}
                                 onChange={handleChange}
-                                className="border-0 bg-light"
                                 placeholder="Email Address"
+                                disabled={!fieldState}
+                                isInvalid={!!errors.email}
                               />
+                              <Form.Control.Feedback type="invalid">
+                                {errors.email}
+                              </Form.Control.Feedback>
                             </Form.Group>
                           </Col>
                           <Col sm={6}>
@@ -622,24 +688,86 @@ export default function MyProfile() {
                               <Form.Control
                                 type="text"
                                 name="phone"
-                                value={profile.phone}
+                                value={fields.phone}
                                 onChange={handleChange}
-                                className="border-0 bg-light"
                                 placeholder="Contact Number"
+                                disabled={!fieldState}
+                                isInvalid={!!errors.phone}
+                                maxLength={10}
                               />
+                              <Form.Control.Feedback type="invalid">
+                                {errors.phone}
+                              </Form.Control.Feedback>
                             </Form.Group>
                           </Col>
+
                           <Col sm={6}>
-                            <Form.Group className=" m-2">
-                              <Form.Label> suburbs</Form.Label>
-                              <Form.Control
-                                type="suburbs"
-                                name="suburbs"
-                                value={profile.suburbs}
+                            <Form.Group className="m-2">
+                              <Form.Label>Role</Form.Label>
+                              <Form.Select
+                                name="role"
+                                value={fields.role}
                                 onChange={handleChange}
-                                className="border-0 bg-light"
-                                placeholder="Suburbs"
-                              />
+                                isInvalid={!!errors.role}
+                                disabled
+                              >
+                                <option value="">Choose</option>
+                                {RoleList.map((item, index) => (
+                                  <option key={index} value={item.value}>
+                                    {item.name}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                {errors.role}
+                              </Form.Control.Feedback>
+                            </Form.Group>
+                          </Col>
+
+                          <Col sm={6}>
+                            <Form.Group className="m-2">
+                              <Form.Label>State</Form.Label>
+                              <Form.Select
+                                name="role"
+                                value={fields.role}
+                                onChange={handleChange}
+                                disabled={!fieldState}
+                                isInvalid={!!errors.state}
+                              >
+                                {/* <option value="">Select Role</option> */}
+                                <option value="">Choose</option>
+                                {StateList.map((item, index) => (
+                                  <option key={index} value={item.value}>
+                                    {item.name}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                {errors.state}
+                              </Form.Control.Feedback>
+                            </Form.Group>
+                          </Col>
+
+                          <Col sm={6}>
+                            <Form.Group className="m-2">
+                              <Form.Label>Suburbs</Form.Label>
+                              <Form.Select
+                                name="suburbs"
+                                value={fields.suburbs}
+                                onChange={handleChange}
+                                disabled={!fieldState}
+                                isInvalid={!!errors.suburbs}
+                              >
+                                <option value="">Choose</option>
+                                {SuburbList.map((item, index) => (
+                                  <option key={index} value={item.value}>
+                                    {item.name}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                              <Form.Control.Feedback type="invalid">
+                                {errors.suburbs}
+                              </Form.Control.Feedback>
                             </Form.Group>
                           </Col>
                           <Col sm={6}>
@@ -648,82 +776,54 @@ export default function MyProfile() {
 
                               <Form.Control
                                 type="address"
+                                rows={4}
+                                as="textarea"
                                 name="address"
-                                value={profile.address}
+                                value={fields.address}
                                 onChange={handleChange}
-                                className="border-0 bg-light"
-                                placeholder="address"
+                                placeholder="Address"
+                                disabled={!fieldState}
+                                isInvalid={!!errors.address}
                               />
+                              <Form.Control.Feedback type="invalid">
+                                {errors.address}
+                              </Form.Control.Feedback>
                             </Form.Group>
                           </Col>
                           <Col sm={6}>
                             <Form.Group className=" m-2">
-                              <Form.Label> State</Form.Label>
-                              <Form.Control
-                                type="state"
-                                name="state"
-                                value={profile.state}
-                                onChange={handleChange}
-                                className="border-0 bg-light"
-                                placeholder="State"
-                              />
+                              <Form.Label>Status</Form.Label>
+                              <div className="mt-2">
+                                <Form.Check
+                                  inline
+                                  label="Active"
+                                  name="status"
+                                  type="radio"
+                                  // id={inline - radio - 1}
+                                  checked={fields.status == 1}
+                                  onChange={handleChange}
+                                  disabled
+                                />
+                                <Form.Check
+                                  inline
+                                  label="Inactive"
+                                  name="status"
+                                  type="radio"
+                                  // id={inline - radio - 2}
+                                  checked={fields.status == 0}
+                                  onChange={handleChange}
+                                  disabled
+                                />
+                              </div>
                             </Form.Group>
                           </Col>
-                          <Col sm={6}>
-                            <Form.Group className=" m-2">
-                              <Form.Label>Gender</Form.Label>
-
-                              <Form.Control
-                                type="gender"
-                                name="address"
-                                value={profile.gender}
-                                onChange={handleChange}
-                                className="border-0 bg-light"
-                                placeholder="gender"
-                              />
-                            </Form.Group>
-                          </Col>
-                          <Col sm={6}>
-                            <Form.Group className=" m-2">
-                              <Form.Label> Role</Form.Label>
-                              <Form.Control
-                                type="role"
-                                name="role"
-                                value={profile.role}
-                                onChange={handleChange}
-                                className="border-0 bg-light"
-                                placeholder="role"
-                              />
-                            </Form.Group>
-                          </Col>
-
-                          {/* <Col sm={6}>
-                            <Form.Group className=" m-2">
-                              <Form.Label>Image Upload</Form.Label>
-                              <Form.Control
-                                type="file"
-                                placeholder="image upload"
-                                name="image"
-                                value={profile.image}
-                              />
-
-                              {/* <Form.Control
-                                type="image"
-                                name="image"
-                                value={profile.image}
-                                onChange={handleChange}
-                                className="border-0 bg-light"
-                                placeholder="image"
-                              /> */}
-                          {/* </Form.Group>
-                          </Col> */}
                         </Row>
 
                         <Row className="border-top pt-4">
                           <Col lg={3}>
                             <Button
                               type="submit"
-                              className="btn btn-primary py-3 px-5"
+                              className="btn btn-primary py-2 px-3"
                             >
                               Update Profile
                             </Button>

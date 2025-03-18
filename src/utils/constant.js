@@ -249,8 +249,8 @@ export const MenuList = [
   },
   {
     id: 4,
-    name: "Homepage Carosel",
-    link: "/admin/homebanner",
+    name: "Banner",
+    link: "/admin/banner",
     is_active: true,
     icon: "bi bi-house-add",
   },

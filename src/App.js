@@ -7,8 +7,9 @@ import HomePage from "./pages/homepage";
 import AppRoute from "./routes";
 import { ToastContainer } from "react-toastify";
 import { Provider } from "react-redux";
-import { store } from "./reducers/store";
+import { store, persistor } from "./reducers/store";
 import { LoginResponse } from "./utils/constant";
+import { PersistGate } from 'redux-persist/integration/react';
 
 function App() {
 
@@ -18,7 +19,7 @@ function App() {
   // }, [])
   return (
     <Provider store={store}>
-
+   {/* <PersistGate loading={null} persistor={persistor}> */}
       <AppRoute />
 
       <ToastContainer
@@ -32,6 +33,7 @@ function App() {
         draggable
         pauseOnHover
       />
+      {/* </PersistGate> */}
     </Provider>
   );
 }

@@ -19,15 +19,14 @@ import Dashboard from "../pages/admin/dashboard";
 import Users from "../pages/admin/users";
 import AdminRoute from "./AdminRoute";
 import NotFound from "../pages/not-found";
-import UserForm from "../pages/admin/users/UserForm";
 import Settings from "../pages/admin/settings";
 import Instructor from "../pages/admin/instructor";
 import FeedBack from "../pages/admin/feedback";
 import LessonsPackage from "../pages/admin/lessons-package";
 import LessonsForm from "../pages/admin/lessons-package/LessonsForm";
 import UserForm2 from "../pages/admin/users/UserForm2";
-import HomeBanner from "../pages/admin/homepagecarousel/index";
-import HomeBannerForm from "../pages/admin/homepagecarousel/homepageForm";
+import Banner from "../pages/admin/banner/index";
+import BannerForm from "../pages/admin/banner/BannerForm";
 
 // const HomepageComponent = React.lazy(() => import("../pages/homepage"));
 // const LessonPackagesComponent = React.lazy(() =>
@@ -67,8 +66,8 @@ export default function AppRoute() {
                 <Route path="/admin/settings" element={<Settings />} />
                 <Route path="/admin/lessons" element={<LessonsPackage />} />
                 <Route path="/admin/lessons/:type" element={<LessonsForm />} />
-                <Route path="/admin/homebanner" element={<HomeBanner />} />
-                <Route path="/admin/homebanner/:type" element={<HomeBannerForm />} />
+                <Route path="/admin/banner" element={<Banner />} />
+                <Route path="/admin/banner/:type" element={<BannerForm />} />
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>

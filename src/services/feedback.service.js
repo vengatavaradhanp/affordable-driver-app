@@ -1,15 +1,18 @@
 import api from "./api";
+import { store } from "../reducers/store";
 
-const getToken = () => localStorage.getItem("token");
+const getToken = () => store.getState().auth?.token;
+
+
+
 
 const FeebackService = {
   getAllFeedback: async (query) => {
-    const token = getToken();
-    console.log("Token", token);
+
 
     const response = await api.get(`contacts?page=${query.pageNumber}&pageSize=${query.perPage}&search=${query.search}`,{
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     });
     return response;

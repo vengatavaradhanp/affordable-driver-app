@@ -6,7 +6,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import moment from "moment/moment";
 import SlotsBookingDialog from "../../components/lesson-plan/SlotsBookingDialog";
-import slotBookingService from "../../services/slotBookingService";
+import slotBookingService from "../../services/slot-booking-service";
 import "../../App.css";
 import { useSelector } from "react-redux";
 

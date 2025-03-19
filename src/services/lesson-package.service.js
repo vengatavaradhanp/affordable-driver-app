@@ -1,17 +1,20 @@
 import api from "./api";
+import { store } from "../reducers/store";
 
-const getToken =() => localStorage.getItem("token");
+const getToken = () => store.getState().auth?.token;
+
+
 
 const LessonPackageService = {
   getAllLessons: async (query) => {
-    const token = getToken();
-    console.log("Token:" , token)
+    
+    console.log("Token:" , getToken())
 
     const response = await api.get(
       `lesson-packages?page=${query.pageNumber}&pageSize=${query.perPage}&search=${query.search}&role=admin`,
       {
         headers:{
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getToken()}`,
         }
       }
     );
@@ -19,46 +22,42 @@ const LessonPackageService = {
   },
 
   getLessonsById: async (id) => {
-    const token = getToken();
- 
-
+    
     const response = await api.get( `lesson-packages/${id}`, {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${getToken()}`
       }
     });
     return response;
   },
 
   createLesson: async (payload) => {
-    const token= getToken();
-     
+    
 
     const response = await api.post(`lesson-packages`,payload, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
       },
   });
     return response;
   },
 
   updateLesson: async (id, payload) => {
-    const token = getToken();
+
 
     const response = await api.put(`lesson-packages/${id}`, payload,{
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
       },
     });
     return response;
   },
 
   deleteLesson: async (id) => {
-    const token= getToken();
 
     const response = await api.delete(`lesson-packages/${id}`,{
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
       },
     });
     return response;

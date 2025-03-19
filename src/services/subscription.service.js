@@ -1,18 +1,18 @@
 import api from "./api";
+import { store } from "../reducers/store";
 
-const getToken = () => localStorage.getItem("token");
 
-const token = getToken();
+const getToken = () => store.getState().auth?.token;
 
 const subscriptionService = {
  getSubscriptionList: async (query) => {
-  console.log ("Token", token);
+
 
   const response = await api.get(
     `subscription/user`,
     {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
       },
     }
   );
@@ -23,7 +23,7 @@ const subscriptionService = {
     const response = await api.get("subscription/gettimeslots", {
       params: params,
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
       },
       
     });
@@ -34,52 +34,27 @@ const subscriptionService = {
     const response = await api.get("subscription/getremainingslots", {
       params: params,
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
       },
       
     });
     return response.data;
   },
 
-  // createSubscription: async (payload) => {
-  //   const pp = {
-  //     "transaction" : "ORD1111111",
-  //     "slots"        : [
-  //         {
-  //             "id" : 1,
-  //             "date" : "2025-03-18"
-  //         },
-  //         {
-  //             "id" : 1,
-  //             "date" : "2025-03-19"
-  //         }
-  //     ]
-  // }
-  //   console.log("payload", payload);
-  //   const token = getToken();
-
-  //   const response = await api.post(`subscription/add`, pp, {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //     },
-
-  //   });
-  //   return response;
-  // },
-
+  
   createSubscription: async (payload) => {
     console.log("Payload sent to API:", payload);
   
-    const token = getToken();
-    if (!token) {
-      console.error("No token found!");
+    
+    if (!getToken()) {
+      
       return;
     }
   
     try {
       const response = await api.post(`subscription/add`, payload, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getToken()}`,
           "Content-Type": "application/json", // Ensure correct content type
         },
       });
@@ -93,11 +68,11 @@ const subscriptionService = {
   },
   
   getRescheduledTimeSlot: async (id, payload) => {
-    const token = getToken();
+    
 
     const response = await api.put(`timeslot/reschedule/${id}`, payload, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
       },
     });
     return response;

@@ -61,16 +61,6 @@ const signInWithFacebook = async () => {
     console.error("Facebook Sign-In Error:", error);
   }
 };
-
-// Logout Function
-const logout = async () => {
-  try {
-    await signOut(auth);
-    console.log("User signed out successfully");
-  } catch (error) {
-    console.error("Logout Error:", error);
-  }
-};
-
+ 
 // Export Auth and Providers
-export { auth, googleProvider, facebookProvider, signInWithGoogle, signInWithFacebook, logout };
+export { auth, googleProvider, facebookProvider, signInWithGoogle, signInWithFacebook };

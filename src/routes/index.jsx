@@ -1,5 +1,5 @@
-import React, { Suspense } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import React, { Suspense, useEffect } from "react";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import LessonPackages from "../pages/lesson-packages";
 import Homepage from "../pages/homepage";
 import BookOnline from "../pages/book-online";
@@ -38,16 +38,18 @@ import BannerForm from "../pages/admin/banner/BannerForm";
 // const CalendarComponent = React.lazy(() => import("../pages/calendar"));
 
 export default function AppRoute() {
+ 
   return (
     <Suspense>
       <LoaderProvider>
         <AuthProvider>
           <BrowserRouter>
             <Routes>
-            <Route path="/api/authorize" element={<Navigate to="/" />} />
+             
               <Route element={<ProtectedRoute />}>
                 <Route path="/login/:type" element={<Loginpage />} />
                 <Route path="/" element={<HomePage />} />
+                {/* <Route path="/api/authorize" element={<Navigate to="/" />} /> */}
                 <Route path="/lessons" element={<LessonPackages />} />
                 <Route path="/instructors" element={<Instructors />} />
                 <Route path="/booking" element={<BookOnline />} />

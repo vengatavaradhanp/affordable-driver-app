@@ -393,11 +393,12 @@ import userService from "../../services/user.service";
 import { toast } from "react-toastify";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import FileUploadService from "../../services/file-upload.service";
 // import { FaCamera } from "react-icons/fa"; // ✅ Import FaCamera from react-icons
 
 export default function MyProfile() {
   const [image, setImage] = useState();
-  const [selected, setSelected] = useState("fields"); // Toggle between Profile & Calendar
+  const [selected, setSelected] = useState("profile"); // Toggle between Profile & Calendar
   const [fieldState, setFieldState] = useState(false);
   const [fields, setFields] = useState({
     id: 3,
@@ -414,13 +415,13 @@ export default function MyProfile() {
   });
   const location = useLocation();
   const navigate = useNavigate();
-  const loginSelector = useSelector((state) => state.login);
- console.log('############', loginSelector)
+  const loginSelector = useSelector((state) => state.auth);
+  console.log("############", loginSelector);
   const [errors, setErrors] = useState({}); // Track validation errors
 
   useEffect(() => {
-    if(loginSelector.user !== null) {
-      const field = {...fields};
+    if (loginSelector.user !== null) {
+      const field = { ...fields };
       field["id"] = loginSelector.user?.id;
       field["fname"] = loginSelector.user.fname;
       field["lname"] = loginSelector.user.lname;
@@ -431,7 +432,11 @@ export default function MyProfile() {
       field["state"] = loginSelector.user.state;
       field["status"] = loginSelector.user.status;
       field["role"] = loginSelector.user.role;
-      field["gender"] = loginSelector.user.role;
+      field["gender"] = loginSelector.user.gender;
+      field["image"] = null
+        // loginSelector.user.image == null
+        //   ? "https://www.w3schools.com/howto/img_avatar.png"
+        //   : loginSelector.user.image;
       setFields(field);
     }
   }, [loginSelector]);
@@ -443,11 +448,21 @@ export default function MyProfile() {
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+      const formData = new FormData();
+      formData.append("image", file);
+      formData.append("type", "profile");
+      FileUploadService.uploadFile()
+        .then((response) => {
+          debugger;
+        })
+        .catch((error) => {
+          debugger;
+        });
+      // const reader = new FileReader();
+      // reader.onloadend = () => {
+      //   setImage(reader.result);
+      // };
+      // reader.readAsDataURL(file);
     }
   };
 
@@ -478,8 +493,8 @@ export default function MyProfile() {
         userService
           .updateUser(fields.id, payload)
           .then(() => {
-            toast.success("User updated successfully!");
-            navigate("/admin/users");
+            toast.success("Profile updated successfully!");
+            navigate("/profile");
           })
           .catch((error) => {
             let newErrors = {};
@@ -521,11 +536,11 @@ export default function MyProfile() {
                   >
                     <ToggleButton
                       id="tbg-btn-1"
-                      value="fields"
+                      value="profile"
                       style={{
                         margin: "0px 5px",
-                        background: selected === "fields" ? "#2b9348" : "#fff",
-                        color: selected === "fields" ? "#fff" : "#2b9348",
+                        background: selected === "profile" ? "#2b9348" : "#fff",
+                        color: selected === "profile" ? "#fff" : "#2b9348",
                         width: "120px",
                       }}
                     >
@@ -548,7 +563,7 @@ export default function MyProfile() {
 
                   {/* Profile Form */}
                   <div className="mt-3">
-                    {selected === "fields" ? (
+                    {selected === "profile" ? (
                       <Form onSubmit={handleSubmit} noValidate>
                         <Row className="pb-4">
                           <Col sm={4} className="text-left">
@@ -556,7 +571,7 @@ export default function MyProfile() {
                               <Form.Group className=" m-2">
                                 <Form.Label> Profile Image</Form.Label>
                                 <br />
-                                <label className="upload-button">
+                                  <label className="upload-button">
                                   <div
                                     style={{
                                       border: "1px solid #e4e5e7",
@@ -586,6 +601,37 @@ export default function MyProfile() {
                                     />
                                   </div>
                                 </label>
+                                {/* <label className="upload-button">
+                                  <div
+                                    style={{
+                                      border: "1px solid #e4e5e7",
+                                      // borderRadius: "10px",
+                                      padding: "5px",
+                                      width: "150px",
+                                      height: "130px",
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                      cursor: "pointer",
+                                    }}
+                                  >
+                                   
+                                    <i
+                                        class="bi bi-person-circle"
+                                        style={{
+                                          fontSize: "52px",
+                                          color: "#e4e5e7",
+                                        }}
+                                      ></i>
+                                    <input
+                                      type="file"
+                                      accept="image/*"
+                                      className="file-upload d-none"
+                                      onChange={handleImageChange}
+                                      disabled={!fieldState}
+                                    />
+                                  </div>
+                                </label> */}
                               </Form.Group>
                             </div>
                           </Col>
@@ -824,6 +870,7 @@ export default function MyProfile() {
                             <Button
                               type="submit"
                               className="btn btn-primary py-2 px-3"
+                              disabled={!fieldState}
                             >
                               Update Profile
                             </Button>

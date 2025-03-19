@@ -1,10 +1,12 @@
 import api from "./api";
+import { store } from "../reducers/store";
 
-const getToken = () => localStorage.getItem("token")
+const getToken = () => store.getState().auth?.token;
+
 
 const ContactUsService = {
   submitContactForm: async (formData) => {
-    const token = getToken();
+   
     return await api.post("contacts", {
       firstname: formData.firstName,
       lastname: formData.lastName,
@@ -15,7 +17,7 @@ const ContactUsService = {
     },
     {
   headers : {
-    Authorization: `Bearer ${token}`
+    Authorization: `Bearer ${getToken()}`
   }
 }
 );

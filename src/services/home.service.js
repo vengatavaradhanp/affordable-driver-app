@@ -1,17 +1,17 @@
 import api from "./api";
+import { store } from "../reducers/store";
 
-const getToken = () => localStorage.getItem("token");
+const getToken = () => store.getState().auth?.token;
 
 const HomeBannersService = {
   getAllHomeBanners: async (query) => {
-    const token = getToken();
-    console.log("Token:", token);
+   
 
     const response = await api.get(
       `banners/list?page=${query.pageNumber}&pageSize=${query.perPage}&search=${query.search}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${getToken()}`,
         },
       }
     );
@@ -19,44 +19,44 @@ const HomeBannersService = {
   },
 
   getHomeBannersById: async (id) => {
-    const token = getToken();
+   
 
     const response = await api.get(`banners/${id}`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
       }, 
     });
     return response;
   },
 
   createHomeBanners: async (payload) => {
-    const token = getToken();
+    
 
     const response = await api.post(`banners/add`, payload, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
       },
     });
     return response;
   },
 
   updateHomeBanners: async (id, payload) => {
-    const token = getToken();
+    
 
     const response = await api.post(`banners/${id}`, payload, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
       },
     });
     return response;
   },
 
   deleteHomeBanners: async (id) => {
-    const token = getToken();
+ 
 
     const response = await api.delete(`api/banners/${id}`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
       },
     });
     return response;

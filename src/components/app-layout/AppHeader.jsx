@@ -68,7 +68,7 @@
 //               <a href="/gift-card" className={location === "/gift-card" ? "nav-item nav-link active" : "nav-item nav-link"}>GIFT CARD</a>
 //               <a href="/contact-us" className={location === "/contact-us" ? "nav-item nav-link active" : "nav-item nav-link"}>CONTACT US</a>
 //               <a href="/admin/dashboard" className={location === "/contact-us" ? "nav-item nav-link active" : "nav-item nav-link"}>DASHBOARD</a>
-              
+
 //               {/* <a href="/login" className={"nav-item nav-link"}>Log In</a> */}
 //               {/* {isLoggedIn ? (
 //                 <button className="btn btn-danger p-4 px-5 d-none d-lg-block" onClick={handleLogout}>
@@ -86,7 +86,6 @@
 //     </>
 //   );
 // }
-
 
 // import React, { useState, useEffect } from "react";
 // import { useNavigate } from "react-router-dom";
@@ -296,7 +295,6 @@
 //   );
 // }
 
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Image, Button, Dropdown } from "react-bootstrap";
@@ -305,10 +303,13 @@ import defaultProfilePic from "../../assets/images/default-profile.png";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
   auth,
-  logout,
   signInWithFacebook,
   signInWithGoogle,
 } from "../../pages/auth/firebaseconfig";
+import AuthService from "../../services/auth.service";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { logout } from "../../features/loginSlice";
 
 export default function AppHeader() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -316,42 +317,68 @@ export default function AppHeader() {
   const [userEmail, setUserEmail] = useState("");
   const [userRole, setUserRole] = useState("");
   const [loginMethod, setLoginMethod] = useState("");
+  const [userInfo, setUserInfo] = useState({});
   const location = window.location.pathname;
   const navigate = useNavigate();
   const [user] = useAuthState(auth);
+  const dispatch = useDispatch();
+  const loginSelector = useSelector((state) => state.auth);
+
+  console.log("#############################", loginSelector);
 
   useEffect(() => {
-    const loggedIn = localStorage.getItem("isLoggedIn") === "true";
-    setIsLoggedIn(loggedIn);
-    setUserName(localStorage.getItem("userName") || "");
-    setUserEmail(localStorage.getItem("userEmail") || "");
-    setLoginMethod(localStorage.getItem("loginMethod") || "");
-    setUserRole(localStorage.getItem("userRole") || "");
-  }, [setIsLoggedIn]); // Empty dependency array ensures this runs only once
+    if (loginSelector.token !== null) {
+      setIsLoggedIn(true);
+      setUserInfo(loginSelector);
+    }
+  }, [loginSelector]);
+
+  // useEffect(() => {
+  //   const loggedIn = localStorage.getItem("isLoggedIn") === "true";
+  //   setIsLoggedIn(loggedIn);
+  //   setUserName(localStorage.getItem("userName") || "");
+  //   setUserEmail(localStorage.getItem("userEmail") || "");
+  //   setLoginMethod(localStorage.getItem("loginMethod") || "");
+  //   setUserRole(localStorage.getItem("userRole") || "");
+  // }, [setIsLoggedIn]); // Empty dependency array ensures this runs only once
 
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    setUserName(localStorage.removeItem("userName"));
-    setUserEmail(localStorage.removeItem("userEmail"));
-    setUserRole(localStorage.removeItem("userRole"));
-    localStorage.removeItem("loginMethod");
-    localStorage.removeItem("token");
-    localStorage.removeItem("data");
-    logout();
-    setIsLoggedIn(false);
-    setLoginMethod("");
-    navigate("/");
+    const payload = {};
+    AuthService.logout(payload)
+      .then((response) => {
+        dispatch(logout());
+        localStorage.clear(); // Clear auth token from storage
+        navigate("/");
+        setIsLoggedIn(false);
+        toast.success("Logged out Successfully")
+      })
+      .catch((error) => {
+        dispatch(logout());
+        localStorage.clear(); // Clear auth token from storage
+        navigate("/");
+        setIsLoggedIn(false);
+        toast.success("Logged out Successfully")
+      });
+    // localStorage.removeItem("isLoggedIn");
+    // setUserName(localStorage.removeItem("userName"));
+    // setUserEmail(localStorage.removeItem("userEmail"));
+    // setUserRole(localStorage.removeItem("userRole"));
+    // localStorage.removeItem("loginMethod");
+    // localStorage.removeItem("token");
+    // localStorage.removeItem("data");
+    // logout();
+    // setIsLoggedIn(false);
+    // setLoginMethod("");
+    // navigate("/");
   };
 
   const googleLogin = () => {
-    handleLogout();
     signInWithGoogle();
     localStorage.setItem("loginMethod", "google");
     setLoginMethod("google");
   };
 
   const facebookLogin = () => {
-    handleLogout();
     signInWithFacebook();
     localStorage.setItem("loginMethod", "facebook");
     setLoginMethod("facebook");
@@ -359,6 +386,7 @@ export default function AppHeader() {
 
   return (
     <>
+      {/* ===={JSON.stringify(userInfo)} */}
       <nav className="navbar navbar-expand-lg bg-white navbar-light sticky-top p-2">
         <div className="container px-3">
           <div className="collapse navbar-collapse" id="navbarCollapse">
@@ -385,7 +413,7 @@ export default function AppHeader() {
                   Book Now
                 </button>
               </span>
-              {isLoggedIn || user ? (
+              {isLoggedIn ? (
                 <></>
               ) : (
                 <>
@@ -510,19 +538,21 @@ export default function AppHeader() {
               )} */}
             </div>
           </div>
-          {isLoggedIn || user ? (
-            <Dropdown align="end" >
+
+          {isLoggedIn && (
+            <Dropdown align="end">
               <Dropdown.Toggle
                 variant=""
                 id="dropdown-basic"
                 className="d-flex align-items-center me-4 navbar-text  btn-sm"
-                style={{border: '0px'}}
+                style={{ border: "0px" }}
               >
-             
-                <span style={{textTransform: 'capitalize', fontSize: '18px'}}>{userName || user?.displayName || user?.email}</span>
+                <span style={{ textTransform: "capitalize", fontSize: "18px" }}>
+                  {userInfo.user?.fname + " " + userInfo.user?.lname}
+                </span>
                 &nbsp;&nbsp;
                 <Image
-                  src={user?.photoURL || defaultProfilePic}
+                  src={userInfo.user?.image || defaultProfilePic}
                   roundedCircle
                   width="40"
                   height="40"
@@ -531,42 +561,25 @@ export default function AppHeader() {
               </Dropdown.Toggle>
 
               <Dropdown.Menu className="shadow">
-                {/* <Dropdown.ItemText className="text-center navbar-text">
-                  <p className="mb-0">{userEmail || user?.email}</p>
-                </Dropdown.ItemText>
-                <Dropdown.Divider /> */}
-                {userRole === "admin"  && <Dropdown.Item
-                  className="navbar-text"
-                  onClick={() => navigate("/admin/dashboard")}
-                >
-                  Dashboard
-                </Dropdown.Item>}
+                {userInfo.user?.role === "admin" && (
+                  <Dropdown.Item
+                    className="navbar-text"
+                    onClick={() => navigate("/admin/dashboard")}
+                  >
+                    Dashboard
+                  </Dropdown.Item>
+                )}
                 <Dropdown.Item
                   className="navbar-text"
                   onClick={() => navigate("/profile")}
                 >
-                 View Profile
+                  View Profile
                 </Dropdown.Item>
                 <Dropdown.Item className="navbar-text" onClick={handleLogout}>
-                 Log Out
+                  Log Out
                 </Dropdown.Item>
-                {/* {loginMethod !== "google" && (
-                  <Dropdown.Item className="navbar-text" onClick={googleLogin}>
-                    <i className="fa fa-sign-out"></i> Sign in with Google
-                  </Dropdown.Item>
-                )}
-                {loginMethod !== "facebook" && (
-                  <Dropdown.Item
-                    className="navbar-text"
-                    onClick={facebookLogin}
-                  >
-                    <i className="fa fa-sign-out"></i> Sign in with Facebook
-                  </Dropdown.Item>
-                )} */}
               </Dropdown.Menu>
             </Dropdown>
-          ) : (
-            <></>
           )}
         </div>
       </nav>

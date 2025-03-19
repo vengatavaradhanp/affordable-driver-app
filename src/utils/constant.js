@@ -73,36 +73,36 @@ export const EventsList = [
     id: 1,
     title: "Driving Class 1",
     description: "Test",
-    start: "2025-02-02T10:00:00",
-    end: "2025-02-02T12:00:00",
+    start: "2025-03-02T10:00:00",
+    end: "2025-03-02T12:00:00",
   },
   {
     id: 2,
     title: "Driving Class 2",
     description: "Test",
-    start: "2025-02-03T14:00:00",
-    end: "2025-02-03T16:00:00",
+    start: "2025-03-03T14:00:00",
+    end: "2025-03-03T16:00:00",
   },
   {
     id: 3,
     title: "Driving Class 3",
     description: "Test",
-    start: "2025-02-08T09:30:00",
-    end: "2025-02-08T11:00:00",
+    start: "2025-03-08T09:30:00",
+    end: "2025-03-08T11:00:00",
   },
   {
     id: 4,
     title: "Driving Class 4",
     description: "Test",
-    start: "2025-02-10T16:00:00",
-    end: "2025-02-10T17:30:00",
+    start: "2025-03-10T16:00:00",
+    end: "2025-03-10T17:30:00",
   },
   {
     id: 5,
     title: "Driving Class 5",
     description: "Test",
-    start: "2025-02-12T09:00:00",
-    end: "2025-02-12T15:00:00",
+    start: "2025-03-12T09:00:00",
+    end: "2025-03-12T15:00:00",
   },
 ];
 
@@ -349,7 +349,17 @@ export const GenderList = [
 export const RoleList = [
   {
     id: 1,
+    name: "Admin",
+    value: "admin"
+  },
+  {
+    id: 2,
+    name: "Instructor",
+    value: "instructor"
+  },
+  {
+    id: 3,
     name: "Student",
-    value: "user"
+    value: "student"
   }
 ]

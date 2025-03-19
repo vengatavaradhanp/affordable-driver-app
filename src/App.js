@@ -1,25 +1,16 @@
 import React from "react";
-import AppHeader from "./components/app-layout/AppHeader";
 import "./bootstrap.scss";
 import "./custom.scss";
-import AppFooter from "./components/app-layout/AppFooter";
-import HomePage from "./pages/homepage";
 import AppRoute from "./routes";
 import { ToastContainer } from "react-toastify";
 import { Provider } from "react-redux";
 import { store, persistor } from "./reducers/store";
-import { LoginResponse } from "./utils/constant";
 import { PersistGate } from 'redux-persist/integration/react';
 
 function App() {
-
-  // React.useEffect(() => {
-  //   localStorage.setItem("userInfo", JSON.stringify(LoginResponse));
-  //   localStorage.setItem("isLoggedIn", true);
-  // }, [])
   return (
     <Provider store={store}>
-   {/* <PersistGate loading={null} persistor={persistor}> */}
+   <PersistGate loading={null} persistor={persistor}>
       <AppRoute />
 
       <ToastContainer
@@ -33,7 +24,7 @@ function App() {
         draggable
         pauseOnHover
       />
-      {/* </PersistGate> */}
+      </PersistGate>
     </Provider>
   );
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import bgHome from "../../assets/images/bgHome.jpg";
 import homepage2 from "../../assets/images/homepage2.jpg";
 import homepage3 from "../../assets/images/homepage3.jpg";
@@ -11,7 +11,7 @@ import map from "../../assets/images/map.jpg";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 import AppLoader from "../../components/app-layout/AppLoader";
 import { useLoader } from "../../context/LoaderContext";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { Carousel, Button, Container, Row, Col } from "react-bootstrap";
 // import 'bootstrap/dist/css/bootstrap.min.css';
 

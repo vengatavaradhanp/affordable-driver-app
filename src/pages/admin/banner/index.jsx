@@ -20,7 +20,7 @@ import AppLoader from "../../../components/app-layout/AppLoader";
 export default function BannerList() {
   const navigate = useNavigate();
   const [bannerData, setBannerData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [bannerInfo, setBannerInfo] = useState();
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");

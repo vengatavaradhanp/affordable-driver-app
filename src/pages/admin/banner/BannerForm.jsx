@@ -14,9 +14,9 @@ export default function BannerForm() {
     id: location?.state?.id,
     title: "",
     description: "",
-    image: null,
-    link: "",
-    sort_order: "",
+    image: "",
+    // link: "",
+    // sort_order: "",
     is_active: "",
     status: 1,
   });
@@ -35,26 +35,32 @@ export default function BannerForm() {
         setFields({
           id: response.data.id,
           title: response.data.title,
-          // description: response.data.amount,
+          description: response.data.description,
           image: response.data.image,
-          link: response.data.link,
           sort_order: response.data.sort_order,
           is_active: response.data.is_active,
-          status: 1,
         });
       })
       .catch(() => toast.error("Failed to edit lesson"));
   };
 
+  // const handleFieldChange = (event) => {
+  //   const { name, value, type } = event.target;
+  //   setFields({
+  //     ...fields,
+  //     [name]: type === "radio" ? (fields.status ? 0 : 1) : value,
+  //   });
+  //   if (value) {
+  //     setErrors({ ...errors, [name]: false });
+  //   }
+  // };
   const handleFieldChange = (event) => {
     const { name, value, type } = event.target;
+
     setFields({
       ...fields,
-      [name]: type === "radio" ? (fields.status ? 0 : 1) : value,
+      [name]: type === "radio" ? value === "1" : value, // Ensures boolean conversion
     });
-    if (value) {
-      setErrors({ ...errors, [name]: false });
-    }
   };
 
   const handleDescriptionChange = (newContent) => {
@@ -64,12 +70,12 @@ export default function BannerForm() {
   const validateFields = () => {
     let newErrors = {};
 
-    if (!fields.title.trim()) newErrors.title = "Title is required.";
-    if (!fields.description.trim())
-      newErrors.description = "Description is required.";
-    if (!fields.link.trim()) newErrors.link = "Link is required.";
-    if (!fields.sort_order.trim())
-      newErrors.sort_order = "Sort Order is required.";
+    // if (!fields.title.trim()) newErrors.title = "Title is required.";
+    // if (!fields.description.trim())
+    //   newErrors.description = "Description is required.";
+    // if (!fields.link.trim()) newErrors.link = "Link is required.";
+    // if (!fields.sort_order.trim())
+    //   newErrors.sort_order = "Sort Order is required.";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Returns true if no errors
@@ -82,10 +88,11 @@ export default function BannerForm() {
     if (validateFields()) {
       const payload = { ...fields };
       if (fields.id) {
+        console.log("Updating Banner:", payload); // Debugging
         HomeBannersService.updateHomeBanners(fields.id, payload)
           .then(() => {
             toast.success("Banner updated successfully!");
-            navigate("/admin/homebanner");
+            navigate("/admin/banner");
           })
           .catch((error) => {
             let newErrors = {};
@@ -99,11 +106,11 @@ export default function BannerForm() {
         HomeBannersService.createHomeBanners(payload)
           .then(() => {
             toast.success("Lessons created successfully!");
-            navigate("/admin/homebanner");
+            navigate("/admin/banner");
           })
           .catch((error) => {
             let newErrors = {};
-            const errorData = error.response.data;
+            const errorData = error.response?.data;
             Object.entries(errorData.errors).forEach(([key, value]) => {
               newErrors[key] = value[0];
             });
@@ -113,13 +120,25 @@ export default function BannerForm() {
     }
   };
 
-  const config = useMemo(() => ({
-    readonly: false,
-    height: 300
-  }),
-  []
-);
-
+  const config = useMemo(
+    () => ({
+      readonly: false,
+      height: 300,
+    }),
+    []
+  );
+  // const handleFileChange = (event) => {
+  //   const { name, files } = event.target;
+  //   const fieldSet = { ...fields };
+  //   fieldSet[name] = URL.createObjectURL(files[0]);
+  //   setFields(fieldSet);
+  // };
+  const handleFileChange = (event) => {
+    const { name, files } = event.target;
+    const fieldSet = { ...fields };
+    fieldSet[name] = URL.createObjectURL(files[0]);
+    setFields(fieldSet);
+  };
   return (
     <Container fluid>
       <h4>Banner Form</h4>
@@ -141,28 +160,75 @@ export default function BannerForm() {
               {errors.title}
             </Form.Control.Feedback>
           </Form.Group>
+          <Form.Group as={Col} md="4" className="mb-3">
+            <Form.Label>Sort Order</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Sort Order"
+              name="sort_order"
+              value={fields.sort_order}
+              onChange={handleFieldChange}
+              isInvalid={!!errors.sort_order}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.sort_order}
+            </Form.Control.Feedback>
+          </Form.Group>
 
-           {/* Status */}
-           <Form.Group as={Col} md="4" className="mb-3">
+          {/* Status */}
+          <Form.Group as={Col} md="4" className="mb-3">
             <Form.Label>Status</Form.Label>
             <div className="mt-2">
               <Form.Check
                 inline
                 label="Active"
-                name="status"
+                name="is_active"
                 type="radio"
-                checked={fields.status == 1}
+                value="1"
+                checked={
+                  fields.is_active === "1" ||
+                  fields.is_active === 1 ||
+                  fields.is_active === true
+                }
                 onChange={handleFieldChange}
               />
               <Form.Check
                 inline
                 label="Inactive"
-                name="status"
+                name="is_active"
                 type="radio"
-                checked={fields.status == 0}
+                value="0"
+                checked={
+                  fields.is_active === "0" ||
+                  fields.is_active === 0 ||
+                  fields.is_active === false
+                }
                 onChange={handleFieldChange}
               />
             </div>
+          </Form.Group>
+          <Form.Group as={Col} md="4" className="mb-3">
+            <Form.Label>Image Upload</Form.Label>
+            <Form.Control
+              type="file"
+              placeholder="Image"
+              name="image"
+              onChange={handleFileChange}
+              isInvalid={!!errors.image}
+            />
+
+            {fields.image && (
+              <img
+                src={fields.image}
+                alt="Preview"
+                className="mt-2 d-flex"
+                style={{ width: "100px", height: "auto" }}
+              />
+            )}
+
+            <Form.Control.Feedback type="invalid">
+              {errors.image}
+            </Form.Control.Feedback>
           </Form.Group>
 
           {/* Jodit Editor for Description */}
@@ -178,8 +244,6 @@ export default function BannerForm() {
               <div className="text-danger">{errors.description}</div>
             )}
           </Form.Group>
-
-         
         </Row>
 
         <hr />
@@ -211,226 +275,6 @@ export default function BannerForm() {
     </Container>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import React, { useEffect, useState, useMemo, useRef } from "react";
 // import JoditEditor from "jodit-react";

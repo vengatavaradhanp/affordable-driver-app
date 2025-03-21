@@ -252,6 +252,7 @@ export default function Calendar() {
             date: element.slot_date,
             start: `${element.slot_date} ${element.slot.start_hour}`,
             end: `${element.slot_date} ${element.slot.end_hour}`,
+            extendedProps: element.lessons_package
           });
         });
         setEventsList(data);
@@ -268,12 +269,13 @@ export default function Calendar() {
     const eventData = {
       id: info.event.id,
       title: info.event.title,
-      description: info.event.extendedProps.description || "",
-      start: info.event.start.toISOString().slice(0, 16),
-      end: info.event.end ? info.event.end.toISOString().slice(0, 16) : "",
+      description: info.event.extendedProps.description,
+      start: info.event.start,
+      end: info.event.end,
     };
     setSelectedEvent(eventData);
-    lessonsDetailRef.current.dialogHandler()
+    debugger
+    lessonsDetailRef.current.dialogHandler(eventData)
     // setShowModal(true);
   };
 

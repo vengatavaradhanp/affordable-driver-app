@@ -120,11 +120,11 @@ const PurchaseSteps = () => {
           <span>Existing learner? <a href="/login/student">Log in</a></span>
         </>
       )}
-      <ProgressBar
+      {/* <ProgressBar
         now={progress}
         label={`${Math.round(progress)}%`}
         className="my-4"
-      />
+      /> */}
       <div className="step-content mb-4" style={{ minHeight: "400px" }}>
         {renderStepContent()}
       </div>

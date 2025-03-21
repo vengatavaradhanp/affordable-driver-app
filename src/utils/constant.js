@@ -216,7 +216,7 @@ export const LoginResponse = {
     is_verified: true,
     password: "12345678"
   },
-  selectedSlot:{
+  selectedSlot: {
     id: 1,
     start_hour: "08:00 AM",
     end_hour: "09:00 AM",
@@ -360,6 +360,21 @@ export const RoleList = [
   {
     id: 3,
     name: "Student",
-    value: "student"
+    value: "user"
+  }
+]
+
+export const PackageSizeList = [
+  {
+    id: 1,
+    value: "1"
+  },
+  {
+    id: 2,
+    value: "2"
+  },
+  {
+    id: 3,
+    value: "3"
   }
 ]

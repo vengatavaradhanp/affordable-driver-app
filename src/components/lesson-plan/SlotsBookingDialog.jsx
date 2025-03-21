@@ -223,11 +223,15 @@ import React from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
+import {  Col, Form } from "react-bootstrap";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedSlots } from "../../features/slotBookingSlice";
 import { addSlots } from "../../features/slotSlice";
 import { store } from "../../reducers/store";
+import moment from "moment/moment";
 
 const SlotsBookingDialog = React.forwardRef((props, ref) => {
   const [slots, setSlots] = React.useState([]);
@@ -236,34 +240,31 @@ const SlotsBookingDialog = React.forwardRef((props, ref) => {
   const [totalSelectedSlots, setTotalSelectedSlots] = React.useState(0); 
   const dispatch = useDispatch();
   const [slotData, setSlotData] = React.useState([]);
+  const [errors, setErrors] = React.useState({}); 
+  const [fields, setFields] = React.useState({
+    select_date: "",
+  });
 
   React.useImperativeHandle(ref, () => ({
     dialogHandler: (data, date) => {
       console.log("Received Data:", data);
       console.log("Selected Date:", date);
-       
+      
+      // const list = data[date]?.map((element) => ({
+      //   start_hour: element.start_hour,
+      //   end_hour: element.end_hour,
+      //   date: date,
+      //   active: element.active || false,
+      //   id: element.id,
+      // }));
 
-      // if (!data || !data[date] || data[date].length === 0) {
-      //   toast.warn("No slots available for this date.");
-      //   return;
-      // }
+      // console.log("Mapped Slots:", list);
 
-      // Map slots properly
-      debugger
-      const list = data[date].map((element) => ({
-        start_hour: element.start_hour,
-        end_hour: element.end_hour,
-        date: date,
-        active: element.active || false,
-        id: element.id,
-      }));
-
-      console.log("Mapped Slots:", list);
-
-      setSlots([...list]);
+      // list?.length > 0 && setSlots([...list]);
       setSelectedDate(date);
-      setTotalSelectedSlots(list.filter((slot) => slot.active).length);
+      // setTotalSelectedSlots(list?.filter((slot) => slot.active).length);
       setShow(true); // Open modal when slots exist
+      setFields({...fields, select_date: date})
     },
   }));
 
@@ -328,6 +329,28 @@ const SlotsBookingDialog = React.forwardRef((props, ref) => {
         <Modal.Title>Select your preferred time slot</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        <div>
+        <Form.Group as={Col} md="12" className="d-flex flex-column mb-3">
+              <Form.Label >Select Date</Form.Label>
+              <DatePicker
+                selected={fields.select_date}
+                onChange={(date) =>
+                  setFields({
+                    ...fields,
+                    select_date: moment(date).format("YYYY-MM-DD"),
+                  })
+                }
+                className="form-control"
+                dateFormat="yyyy-MM-dd"
+                placeholderText="Select Date"
+              />
+              {errors.select_date && (
+                <div className="invalid-feedback d-block">
+                  {errors.select_date}
+                </div>
+              )}
+            </Form.Group>
+        </div>
         <div
           style={{
             textAlign: "center",

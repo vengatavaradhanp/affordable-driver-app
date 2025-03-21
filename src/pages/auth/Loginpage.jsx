@@ -127,7 +127,7 @@ const Login = () => {
                 style={{ textTransform: "capitalize" }}
                 color="red"
               >
-                {type} Login
+                User Login
               </h3>
             </div>
           </div>
@@ -208,10 +208,15 @@ const Login = () => {
                 </Form>
               </div>
               {/* <div style={{, padding: '10px 0px'}} /> */}
-              <div className="mt-2 text-center">
+              <div style={{ display: "flex", alignItems: "center", width: "100%", maxWidth: "600px", padding: '10px' }}>
+                <div style={{ flexGrow: 1, height: "1px", backgroundColor: "grey" }}></div>
+                <div style={{ margin: "0 15px", fontSize: "18px", fontWeight: "bold", color: "#000" }}>OR</div>
+                <div style={{ flexGrow: 1, height: "1px", backgroundColor: "grey" }}></div>
+              </div>
+              {/* <div className="mt-2 text-center">
                 {" "}
                 ---------------- OR ------------------
-              </div>
+              </div> */}
               <Container>
                 <Row>
                   <Col>
@@ -224,7 +229,7 @@ const Login = () => {
                         marginTop: "20px",
                       }}
                     >
-                     <i class="bi bi-google" style={{color: "#2b9348"}}></i> &nbsp; Sign in with Google
+                      <i class="bi bi-google" style={{ color: "#2b9348" }}></i> &nbsp; Sign in with Google
                     </Button>
                   </Col>
                   <Col>
@@ -238,7 +243,7 @@ const Login = () => {
                         marginTop: "20px",
                       }}
                     >
-                      <i class="bi bi-meta" style={{color: "#2b9348"}}></i> &nbsp; Sign in with Facebook
+                      <i class="bi bi-meta" style={{ color: "#2b9348" }}></i> &nbsp; Sign in with Facebook
                     </Button>
                   </Col>
                 </Row>

@@ -393,7 +393,7 @@ export default function AppHeader() {
             <div className="navbar-nav ms-auto p-4 p-lg-0">
               <a
                 href="tel:0418858111"
-                className="navbar-text mt-1 fw-bold"
+                className="navbar-text mt-2 fw-bold"
                 style={{
                   color: "#2b9348",
                   fontSize: "16px",
@@ -407,7 +407,7 @@ export default function AppHeader() {
               <span className="navbar-text">
                 <button
                   type="button"
-                  className="btn btn-sm btn-outline-danger mx-2"
+                  className="btn btn-md btn-outline-danger mx-2"
                   onClick={() => navigate("/booking")}
                 >
                   Book Now
@@ -417,7 +417,7 @@ export default function AppHeader() {
                 <></>
               ) : (
                 <>
-                  <span className="navbar-text">
+                  {/* <span className="navbar-text">
                     <button
                       type="button"
                       className="btn btn-sm btn-outline-dark mx-2"
@@ -434,14 +434,15 @@ export default function AppHeader() {
                     >
                       Instructor Login
                     </button>
-                  </span>
+                  </span> */}
                   <span className="navbar-text">
                     <button
                       type="button"
-                      className="btn btn-sm btn-danger mx-2"
-                      onClick={() => navigate("/login/admin")}
+                      className="btn btn-md btn-warning mx-2"
+                      onClick={() => navigate("/login")}
+                      style={{width: "100px"}}
                     >
-                      Admin Login
+                      Login
                     </button>
                   </span>
                 </>

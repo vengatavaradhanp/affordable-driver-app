@@ -20,7 +20,6 @@ export default function Users() {
   const navigate = useNavigate();
   const [userData, setUserData] = useState([]);
   const [isLoading, setIsLoading]= useState(true);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [serachText, setSearchText] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -86,12 +85,14 @@ export default function Users() {
 
   const handleSwitchChange = (event, user) => {
     event.preventDefault();
+    setIsLoading(true);
     const payload = {
       status: event.target.checked === true ? 1 : 0,
     };
     UserService.blockUser(user.id, payload)
       .then((response) => {
-        toast.success("User status updated");
+        event.target.checked === true ? toast.error("User Inactivated") : toast.success("User Activated");
+        
         getUserList();
       })
       .catch((error) => {
@@ -206,7 +207,7 @@ export default function Users() {
                       <Form.Check
                         type="switch"
                         id="custom-switch"
-                        style={{ fontSize: "18px" }}
+                        style={{ fontSize: "18px", cursor: "pointer" }}
                         value={item.status}
                         checked={item.status === 1 ? true : false}
                         onChange={(event) => handleSwitchChange(event, item)}

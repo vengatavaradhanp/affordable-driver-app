@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Row, Col, Form, Button, Container, InputGroup } from "react-bootstrap";
 import {
   GenderList,
+  PackageSizeList,
   RoleList,
   StateList,
   SuburbList,
@@ -29,6 +30,7 @@ export default function LessonsForm() {
     image: "",
     type: "single",
     favourite: 1,
+    package_size: "1"
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -54,6 +56,7 @@ export default function LessonsForm() {
           image: response.data.image,
           type: response.data.type,
           status: response.data.status,
+          package_size: response.data.package_size,
         });
         setIsLoading(false);
       })
@@ -128,15 +131,17 @@ export default function LessonsForm() {
 
   const validateFields = () => {
     let newErrors = {};
-
-    // if (!fields.title.trim()) newErrors.title = "Title is required.";
-    // if (!fields.amount.trim()) newErrors.amount = "Amount is required.";
-    // if (!fields.expiry_date.trim())
-    //   newErrors.expiry_date = "Validity is required.";
-    // if (!fields.minutes.trim()) newErrors.minutes = "Minutes is required.";
-    // if (!fields.description.trim())
-    //   newErrors.description = "Description is required.";
-    // if (!fields.image.trim()) newErrors.image = "Image is required.";
+    debugger
+    if (!fields.title.trim()) newErrors.title = "Title is required.";
+    if (!fields.amount.trim()) newErrors.amount = "Amount is required.";
+    if (!fields.expiry_date.trim())
+      newErrors.expiry_date = "Validity is required.";
+    if (!fields.minutes.trim()) newErrors.minutes = "Minutes is required.";
+    if (!fields.description.trim())
+      newErrors.description = "Description is required.";
+    if (!fields.image.trim()) newErrors.image = "Image is required.";
+    if (!fields.package_size.trim()) newErrors.package_size = "Package size is required.";
+    if (!fields.type.trim()) newErrors.type = "Package type is required.";
 
     setErrors(newErrors);
 
@@ -146,8 +151,9 @@ export default function LessonsForm() {
   const handleSubmit = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    setIsLoading(true);
+
     if (validateFields()) {
+      setIsLoading(true);
       const payload = { ...fields };
       if (fields.id) {
         LessonPackageService.updateLesson(fields.id, payload)
@@ -195,7 +201,7 @@ export default function LessonsForm() {
       {isLoading ? (
         <AppLoader />
       ) : (
-        <Form noValidate onSubmit={handleSubmit} encType="multipart/form-data">
+        <Form noValidate onSubmit={handleSubmit}  >
           <Row className="mb-3">
             {/* First Name */}
 
@@ -245,6 +251,26 @@ export default function LessonsForm() {
                 {errors.type}
               </Form.Control.Feedback>
             </Form.Group>
+            {fields.type === "package" && <Form.Group as={Col} md="4" className="mb-3">
+              <Form.Label>Package Size</Form.Label>
+              <Form.Select
+                name="package_size"
+                value={fields.package_size}
+                onChange={handleFieldChange}
+                isInvalid={!!errors.package_size}
+
+              >
+                <option value="">Choose</option>
+                {PackageSizeList.map((item, index) => (
+                  <option key={index} value={item.value}>
+                    {item.value}
+                  </option>
+                ))}
+              </Form.Select>
+              <Form.Control.Feedback type="invalid">
+                {errors.package_size}
+              </Form.Control.Feedback>
+            </Form.Group>}
 
             {/* Amount */}
             <Form.Group as={Col} md="4" className="mb-3">

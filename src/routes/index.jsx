@@ -47,7 +47,7 @@ export default function AppRoute() {
             <Routes>
              
               <Route element={<ProtectedRoute />}>
-                <Route path="/login/:type" element={<Loginpage />} />
+                <Route path="/login" element={<Loginpage />} />
                 <Route path="/" element={<HomePage />} />
                 {/* <Route path="/api/authorize" element={<Navigate to="/" />} /> */}
                 <Route path="/lessons" element={<LessonPackages />} />

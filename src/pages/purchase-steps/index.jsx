@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   Container,
   ProgressBar,
@@ -8,7 +8,7 @@ import {
   Col,
 } from "react-bootstrap";
 import Instructor from "../instructors";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import PurchaseAmount from "./PurchaseAmount";
 import PurchaseLessons from "./PurchaseLessons";
 import PurchaseRegistration from "./PurchaseRegistration";
@@ -16,19 +16,35 @@ import PaypalDialog from "../../components/paypal-dialog/PaypalDialog";
 import PurchaseBookingCalendar from "./PurchaseBookingCalendar";
 import { LoginResponse } from "../../utils/constant";
 import { toast } from "react-toastify";
+import { login } from "../../features/loginSlice";
+import { useSelector } from "react-redux";
+import SlotsPreviewDialog from "../../components/lesson-plan/SlotsPreviewDialog";
+// import SlotsPreview from "./SlotsPreview";
+// import SlotsBookingDialog from "../../components/lesson-plan/SlotsBookingDialog";
 
 const PurchaseSteps = () => {
   const [step, setStep] = useState(1);
-
+  const loginSelector = useSelector((state) => state.auth);
+  const location = useLocation();
+  console.log('@@@@@@@@@123123S@', location)
   const paypalDialogRef = React.useRef(null);
-  const [isLoading, setIsLoading] = React.useState(true);
+  // const [isLoading, setIsLoading] = React.useState(true);
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const slotsPreviewDialogRef = useRef(null)
 
   React.useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 200);
-  }, []);
+    if (loginSelector.token !== null) {
+      setIsLoggedIn(true);
+    }
+  }, [loginSelector]);
+
+  React.useEffect(() => {
+    if (location.state?.data == "step2") {
+      setStep(2);
+    }
+  }, [location.state]);
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -40,7 +56,12 @@ const PurchaseSteps = () => {
   const progress = (step / steps.length) * 100;
 
   const handleNext = () => {
-    if (step < steps.length) setStep(step + 1);
+    if (step === 1) {
+      slotsPreviewDialogRef.current.dialogHandler()
+      // if (step < steps.length) setStep(step + 1);
+    }
+    else
+      if (step < steps.length) setStep(step + 1);
   };
 
   const handleBack = () => {
@@ -58,25 +79,20 @@ const PurchaseSteps = () => {
 
   const renderStepContent = () => {
     switch (step) {
-      // case 1:
-      //   return <PurchaseAmount />;
-      // case 2:
-      //   return <PurchaseLessons />;
-      // case 3:
-      //   return <PurchaseRegistration />;
+
       case 1:
         return <PurchaseBookingCalendar handleNext={handleNext} />;
       case 2:
-        return <PurchaseRegistration />;
+        return <PurchaseRegistration isLoggedIn={isLoggedIn} />;
       default:
         return null;
     }
   };
 
   const paymentHandler = () => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
+    // setTimeout(() => {
+    //   setIsLoading(false);
+    // }, 2000);
   };
 
   // const handleContinue = () => {
@@ -88,7 +104,7 @@ const PurchaseSteps = () => {
   //       toast.error("Please complete all required fields.");
   //       return;
   //     }
-    
+
   //     // Proceed to payment if everything is valid
   //     paypalDialogRef.current.dialogHandler({
   //       is_popular: 1,
@@ -99,8 +115,34 @@ const PurchaseSteps = () => {
   //       is_active: true,
   //     });
   //   };
-    
-    
+
+  const handleContinuePayement = () => {
+    if (loginSelector.token === null) {
+      toast.error("Please login to continue");
+    } else {
+      paypalDialogRef.current.dialogHandler()
+
+    }
+    // if (!LoginResponse.selectedSlot) {
+    //   toast.error("Please select a lesson slot before proceeding.");
+    //   return;
+    // }
+    // if (!LoginResponse.userDetails.firstName || !LoginResponse.userDetails.email) {
+    //   toast.error("Please complete all required fields.");
+    //   return;
+    // }
+
+    // // Proceed to payment if everything is valid
+    // paypalDialogRef.current.dialogHandler({
+    //   is_popular: 1,
+    //   count: LoginResponse.lessonPackage.count,
+    //   time_per_lesson: LoginResponse.lessonPackage.timePerLesson,
+    //   title: LoginResponse.lessonPackage.title,
+    //   validity_end: "01/01/2026",
+    //   is_active: true,
+    // });
+  }
+
 
   return (
     <Container class="container" style={{ width: "80%", marginTop: "30px" }}>
@@ -115,7 +157,16 @@ const PurchaseSteps = () => {
         <>
           <div style={{ fontSize: "20px", fontWeight: 600, color: "#012a41" }}>
             {" "}
-            Learner Registration 
+            Slots Preview
+          </div>
+          <span>Existing learner? <a href="/login/student">Log in</a></span>
+        </>
+      )}
+      {step == 3 && (
+        <>
+          <div style={{ fontSize: "20px", fontWeight: 600, color: "#012a41" }}>
+            {" "}
+            Learner Registration
           </div>
           <span>Existing learner? <a href="/login/student">Log in</a></span>
         </>
@@ -151,24 +202,16 @@ const PurchaseSteps = () => {
           ) : (
             <Button
               variant="success"
-              onClick={() =>
-                paypalDialogRef.current.dialogHandler({
-                  is_popular: 1,
-                  count: "3",
-                  time_per_lesson: "60",
-                  title: "An Affordable and Practical Start",
-                  validity_end: "01/01/2026",
-                  is_active: true,
-                })
-              }
+              onClick={() => handleContinuePayement()}
             >
               Continue to Payment
             </Button>
-          //  <Button  onClick={handleContinue}>Continue to Payment</Button>
-            
+            //  <Button  onClick={handleContinue}>Continue to Payment</Button>
+
           )}
         </Col>
       </Row>
+      <SlotsPreviewDialog ref={slotsPreviewDialogRef} handleNext={handleNext} />
       <PaypalDialog ref={paypalDialogRef} paymentHandler={paymentHandler} />
     </Container>
   );

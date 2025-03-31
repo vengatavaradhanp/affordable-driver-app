@@ -247,6 +247,8 @@ import axios from "axios";
 import { CommonService } from "../../services/common.service";
 import LessonPackageService from "../../services/lesson-package.service";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { selectedLesson } from "../../features/selectedLessonSlice";
 
 export default function LessonPackages() {
   const paypalDialogRef = React.useRef(null);
@@ -257,6 +259,7 @@ export default function LessonPackages() {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const dispatch = useDispatch()
 
   useEffect(() => {
     getLessonPackage();
@@ -268,7 +271,7 @@ export default function LessonPackages() {
       perPage: itemsPerPage,
       search: searchTerm,
     };
-    LessonPackageService.getAllLessons(query)
+    LessonPackageService.getAllLessonsMarketplace(query)
       .then((response) => {
         const info = response.data.data;
         setLessonsList(info.data);
@@ -352,7 +355,7 @@ export default function LessonPackages() {
                             <h1 className="mb-3">
                               {item.count * item.minutes}
                             </h1>
-                            <p style={{textTransform: 'capitalize'}}>{item.title}</p>
+                            <p style={{ textTransform: 'capitalize' }}>{item.title}</p>
                             <small>
                               Valid for{" "}
                               {CommonService.getRemainingDaysOrMonthsOrYears(
@@ -363,10 +366,10 @@ export default function LessonPackages() {
                               className="mt-4"
                               data-toggle="modal"
                               data-target="#exampleModalCenter"
-                              onClick={() =>
-                                navigate("/purchase-steps", {
-                                  state: { ...item },
-                                })
+                              onClick={() => {
+                                dispatch(selectedLesson(item))
+                                navigate("/purchase")
+                              }
                               }
                             >
                               <span className="btn btn-primary border-2 w-100">

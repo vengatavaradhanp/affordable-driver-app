@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  slots: [],
+  data: [],
 };
 
 const slotSlice = createSlice({
@@ -9,18 +9,18 @@ const slotSlice = createSlice({
   initialState,
   reducers: {
     addSlots: (state, action) => {
-      const newSlots = action.payload;
-
-      newSlots.forEach((item) => {
-        if (item.active) {
-        const exists = state.slots.some(
-          (slot) => slot.id === item.id && slot.date === item.date
-        );
-        if (!exists) {
-            state.slots.push({ id: item.id, date: item.date }); 
-        }
-    }
-      });
+      // const newSlots = action.payload;
+      state.data = action.payload;
+      // newSlots.forEach((item) => {
+      //   if (item.active) {
+      //     const exists = state.slots.some(
+      //       (slot) => slot.id === item.id && slot.date === item.date
+      //     );
+      //     if (!exists) {
+      //       state.slots.push({ id: item.id, date: item.date });
+      //     }
+      //   }
+      // });
     },
   },
 });

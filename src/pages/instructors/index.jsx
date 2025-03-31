@@ -186,7 +186,7 @@ export default function Instructor() {
                     <button
                       type="button"
                       class="btn btn-primary btn-sm"
-                      onClick={() => navigate("/purchase-steps")}
+                      onClick={() => navigate("/purchase")}
                     >
                       Book Online
                     </button>

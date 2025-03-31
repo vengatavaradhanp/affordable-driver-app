@@ -67,10 +67,10 @@ const subscriptionService = {
     }
   },
   
-  getRescheduledTimeSlot: async (id, payload) => {
+  rescheduledTimeSlot: async (id, payload) => {
     
 
-    const response = await api.put(`timeslot/reschedule/${id}`, payload, {
+    const response = await api.put(`timeslots/reschedule/${id}`, payload, {
       headers: {
         Authorization: `Bearer ${getToken()}`,
       },
@@ -78,6 +78,23 @@ const subscriptionService = {
     return response;
   },
 
+  createOrder: async (payload) => {
+    const response = await api.post(`paypal/create-order`, payload, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
+    return response;
+  },
+
+  confirmationEmail: async (payload) => {
+    const response = await api.post(`paypal/payment-confirm-email`, payload, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
+    return response;
+  },
   
 };
 

@@ -56,7 +56,7 @@ const PaypalResponseDialog = React.forwardRef((props, ref) => {
                 padding: "0px 0px",
               }}
             >
-              $ 8.99
+              $ 64.99
               <div style={{ fontSize: "12px" }}>One Year Validity</div>
             </div>
             <div style={{ textAlign: "center", marginTop: "80px" }}>

@@ -1,25 +1,28 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-// import slotBookingReducer from '../features/slotBookingSlice';
-// import slotSliceReducer from '../features/slotSlice';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 import loginSliceReducer from '../features/loginSlice';
-import { persistStore, persistReducer } from 'redux-persist'; 
-import storage from "redux-persist/lib/storage"; 
+import tokenSliceReducer from '../features/tokenSlice';
+import slotBookingReducer from '../features/slotBookingSlice';
+import selectedLessonReducer from '../features/selectedLessonSlice';
 
-const persistConfig = {
-  key: "root",
+// Reusable persist config generator
+const createPersistConfig = (key) => ({
+  key,
   storage,
-};
+});
 
 const rootReducer = combineReducers({
-  auth: persistReducer(persistConfig, loginSliceReducer)
+  auth: persistReducer(createPersistConfig('auth'), loginSliceReducer),
+  token: persistReducer(createPersistConfig('token'), tokenSliceReducer),
+  slotsBooking: persistReducer(createPersistConfig('slotsBooking'), slotBookingReducer),
+  selectedLesson: persistReducer(createPersistConfig('selectedLesson'), selectedLessonReducer),
 });
 
 const store = configureStore({
   reducer: rootReducer,
-  // middleware: (getDefaultMiddleware) =>
-  //   getDefaultMiddleware({
-  //     serializableCheck: false
-  //   }),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }),
 });
 
 const persistor = persistStore(store);

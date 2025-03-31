@@ -9,12 +9,14 @@ import Form from "react-bootstrap/Form";
 import DatePicker from 'react-datepicker';
 import moment from "moment/moment";
 import SlotsBookingDialog from "./SlotsBookingDialog";
+import SlotsRescheduleDialog from "./SlotsRescheduleDialog";
 // import { Controller } from 'react-hook-form';
 
 const LessonPlanDialog = React.forwardRef((props, ref) => {
   const [show, setShow] = React.useState(false);
   const [selectedDate, setSelectedDate] = React.useState(null);
   const [activeReschedule, setActiveReschedule] = React.useState(false);
+  const [eventsList, setEventsList] = React.useState([]);
   const [eventExist, setEventExist] = React.useState(false);
   const [fields, setFields] = React.useState({
     title: "",
@@ -26,19 +28,22 @@ const LessonPlanDialog = React.forwardRef((props, ref) => {
   const navigate = useNavigate();
   const [errors, setErrors] = useState({}); // Track validation errors
   const slotsBookingDialogRef = React.useRef();
+  const slotsRescheduleDialogRef = React.useRef();
 
   React.useImperativeHandle(ref, () => ({
-    dialogHandler: (info) => {
+    dialogHandler: (info, list) => {
       if (info) {
         const data = { ...fields };
-        data["id"] = info.id;
+        // data["id"] = info.id;
         data["title"] = info.title;
         data["description"] = info.description;
         data["start"] = info.start;
         data["end"] = info.end;
+        data["slot_id"] = info.extendedProps.slot_id;
         setEventExist(true);
         setFields(data);
-        setSelectedDate(info.start)
+        setSelectedDate(info.start);
+        setEventsList(list)
       }
       setShow(true);
     },
@@ -58,12 +63,6 @@ const LessonPlanDialog = React.forwardRef((props, ref) => {
       start: null,
       end: null,
     });
-  };
-
-  const handleInputChange = (event) => {
-    const data = { ...fields };
-    data[event.target.name] = event.target.value;
-    setFields(data);
   };
 
   const handleAddEvents = (event) => {
@@ -89,10 +88,15 @@ const LessonPlanDialog = React.forwardRef((props, ref) => {
   }
 
   const handleReschedule = () => {
-    slotsBookingDialogRef.current.dialogHandler(fields, new Date(selectedDate));
+    slotsRescheduleDialogRef.current.dialogHandler(new Date(selectedDate), fields);
     setShow(false);
     setActiveReschedule(false);
   }
+
+  const handleUpdateReschedule = (response) => {
+    props.updateReschedule(response)
+  }
+
 
   return (
     <>
@@ -183,7 +187,8 @@ const LessonPlanDialog = React.forwardRef((props, ref) => {
 
         </Modal.Footer>
       </Modal>
-      <SlotsBookingDialog ref={slotsBookingDialogRef}  />
+      <SlotsBookingDialog ref={slotsBookingDialogRef} />
+      <SlotsRescheduleDialog ref={slotsRescheduleDialogRef} updateReschedule={handleUpdateReschedule} />
     </>
   );
 });

@@ -4,6 +4,19 @@ import api from "./api";
 const getToken = () => store.getState().auth?.token;
 
 const userService = {
+
+  getProfile: async () => {
+    const response = await api.get(
+      `users/profile`,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      }
+    );
+    return response;
+  },
+
   getAllUsers: async (query) => {
     
     const response = await api.get(

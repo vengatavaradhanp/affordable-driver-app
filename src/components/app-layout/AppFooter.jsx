@@ -9,7 +9,7 @@ export default function AppFooter() {
     <>
       {/* Footer Start */}
       <div
-        className="container-fluid bg-dark text-light footer mb-0 py-3 wow fadeIn"
+        className="container-fluid bg-dark text-light footer mb-0 py-3 wow fadeIn mt-4"
         data-wow-delay="0.1s"
       >
         <div className="container">

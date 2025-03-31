@@ -6,6 +6,15 @@ const getToken = () => store.getState().auth?.token;
 
 
 const LessonPackageService = {
+
+  getAllLessonsMarketplace: async (query) => {
+
+    const response = await api.get(
+      `lesson-packages?page=${query.pageNumber}&pageSize=${query.perPage}&search=${query.search}&role=admin`
+    );
+    return response;
+  },
+
   getAllLessons: async (query) => {
     
     console.log("Token:" , getToken())

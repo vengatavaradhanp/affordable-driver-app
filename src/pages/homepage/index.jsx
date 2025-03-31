@@ -13,6 +13,7 @@ import AppLoader from "../../components/app-layout/AppLoader";
 import { useLoader } from "../../context/LoaderContext";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { Carousel, Button, Container, Row, Col } from "react-bootstrap";
+import { useSelector } from "react-redux";
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
 const mapContainerStyle = {
@@ -32,6 +33,10 @@ export default function HomePage() {
   });
   const [isLoading, setIsLoading] = React.useState(true);
   const [map, setMap] = React.useState(null);
+
+  const dd = useSelector((state) => state);
+
+  console.log('DDDD', dd)
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -96,12 +101,12 @@ export default function HomePage() {
                 </Carousel.Item>
                 <Carousel.Item>
                   <img
-                   style={{height:"700px", objectFit:"cover"}}
+                    style={{ height: "700px", objectFit: "cover" }}
                     className="d-block w-100"
                     src={homepage3}
                     alt="Second slide"
                   />
-                </Carousel.Item> 
+                </Carousel.Item>
                 <Carousel.Item>
                   <img
                     style={{ height: "700px", objectFit: "cover" }}

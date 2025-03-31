@@ -9,180 +9,177 @@ import SlotsBookingDialog from "../../components/lesson-plan/SlotsBookingDialog"
 import slotBookingService from "../../services/slot-booking-service";
 import "../../App.css";
 import { useSelector } from "react-redux";
+import { Col, Row } from "react-bootstrap";
 
 export default function PurchaseBookingCalendar() {
   const [eventsList, setEventsList] = useState([]);
+  const [activeMonth, setActiveMonth] = useState({
+    month: moment().month() + 1,
+    year: moment().year(),
+  });
+  const [activeMonthString, setActiveMonthString] = useState(moment().format("MMMM YYYY"));
   const [slotList, setSlotList] = useState({});
   const location = useLocation();
   const slotsBookingDialogRef = useRef(null);
   const slotsSelector = useSelector(state => state.slots);
   const [selectedSlots, setSelectedSlots] = useState({});
   const navigate = useNavigate(); // ✅ Correct way to navigate
+  const calendarRef = useRef(null);
 
-  // Function to fetch available slots for the current month
-  const fetchAvailableSlots = useCallback(async (year, month) => {
+
+  useEffect(() => {
+    getAvailableSlots();
+  }, [activeMonth]);
+
+  const getAvailableSlots = async () => {
+    // debugger
     try {
-      const payload = { year, month };
+      const payload = { year: activeMonth.year, month: activeMonth.month };
       const data = await slotBookingService.getAvailableMonthlySlots(payload);
       let slots = {};
       Object.keys(data).forEach((element) => {
         const date = [];
-        // console.log('data : ',data)
-        // console.log("element : ", element);
-        let output =  data[element]
-        console.log("data[element].slots : ", output.slots);
+        let output = data[element];
         let slotsArr = output.slots
-        console.log('slotsArr : ',slotsArr)
         Object.keys(slotsArr).forEach((item) => {
-          // console.log('item : ',item)
           date.push({
-            // date: slotsArr[item].date,
             end_hour: slotsArr[item].end_hour,
             id: slotsArr[item].id,
             start_hour: slotsArr[item].start_hour,
             active: false,
           });
-          console.log('item : ',slotsArr[item])
         });
-
         slots[element] = date;
-      });
-
-      console.log('response slots 11111 : ',slots)
+      }
+      );
       setSlotList(slots);
     } catch (error) {
       console.error("Error fetching available slots", error);
     }
-  }, []);
+  }
 
-  // Call fetchAvailableSlots initially
-  useEffect(() => {
-    const currentMonth = moment().month() + 1;
-    const currentYear = moment().year();
-    fetchAvailableSlots(currentYear, currentMonth);
-  }, [fetchAvailableSlots]);
 
-  // Handle the datesSet event when navigating between months
-  const handleDatesSet = (dateInfo) => {
-    const { currentStart } = dateInfo.view;
-    const year = currentStart.getFullYear();
-    const month = currentStart.getMonth(); // Get the month number (0-11)
-    fetchAvailableSlots(year, month + 1);
-  };
 
-  // Custom render function for day cells
-  const renderDayCellContent = useCallback(
-    (dayCellInfo) => {
-      // console.log("dayCellInfo : ",dayCellInfo)
-      // console.log("slotList : ",slotList)
-      const formattedDate = moment(dayCellInfo.date).format("DD");
-      // console.log('formattedDate : ',formattedDate)
-      console.log('slotList dddd:===================== ',slotList)
-      // debugger
-      const slots = slotList[formattedDate]
-        ? slotList[formattedDate].filter((item) => !item.active)
-        : [];
-
-      // spread using slotLIst []
-      // add date key in that array and its value from dayCellInfo
-      // Reassign to setSlotsList()
-
-        // console.log('slots index 13: ',slotList[13])
-      return (
-        <div style={{ textAlign: "right", maxHeight: "70px", minHeight: "70px" }}>
-          <div>{dayCellInfo.dayNumberText}</div>
-          {slots.length > 0 && (
+  const renderDayCellContent = (dayCellInfo) => {
+    const formattedDate = moment(dayCellInfo.date).format("DD");
+    const formattedMonth = moment(dayCellInfo.date).format("MM");
+    const slots = slotList[formattedDate]
+      ? slotList[formattedDate].filter((item) => !item.active)
+      : [];
+    return (
+      <div >
+        <div style={{ position: 'relative' }}>{formattedDate}</div>
+        {slots.length > 0 && activeMonth.month == formattedMonth && (
+          <>
             <div
               style={{
                 fontSize: "12px",
-                fontWeight: 600,
-                color: slots.length < slotsSelector.item ? "#d22f25" : "#2c3e50",
-                position: "relative",
-                top: "65px",
-                whiteSpace: "nowrap",
+                fontWeight: 500,
+                position: 'absolute',
+                top: '100%',
+                right: '5px',
+                whiteSpace: 'nowrap',
+                background: '#2b9348',
+                color: '#fff',
+                padding: '2px 15px',
+                borderRadius: '5px',
               }}
             >
-              {slots.length} Slot{slots.length > 1 ? "s" : ""} Available
+              Available Slots &nbsp; &bull; &nbsp;
+              {slots.length}
             </div>
-          )}
-        </div>
-      );
-    },
-    [slotList, slotsSelector] // ✅ Added slotsSelector as dependency
-  );
 
-  const handleDateClick = (e) => {
-    console.log("Before update - slotList:", slotList);
-  
-    const selectedDate = moment(e.startStr).format("DD");
-  
-    if (!slotList[selectedDate]) {
-      console.warn(`No slots available for date: ${selectedDate}`);
-      return;
-    }
-  
-    // Map slotList into an array and add the date key
-    const updatedSlots = slotList[selectedDate].map((slot) => ({
-      ...slot,
-      date: selectedDate, // ✅ Add date key
-    }));
-  
-    console.log("Updated slots with date:", updatedSlots);
-  
-    // ✅ Reassign to setSlotList()
-    setSlotList((prev) => ({
-      ...prev,
-      [selectedDate]: updatedSlots,
-    }));
-  
-    // ✅ Open the slot booking modal with updated data
-    slotsBookingDialogRef.current.dialogHandler(slotList, selectedDate);
+          </>
+        )}
+      </div>
+    );
   };
-  
 
-  const handleEventClick = (info) => {
-    const { title, start, end, extendedProps } = info.event;
-    slotsBookingDialogRef.current.dialogHandler({
-      id: info.event.id,
-      title,
-      description: extendedProps.description,
-      start,
-      end,
+  const handleDateClick = (event) => {
+    const activeDate = moment(event.start).format("DD");
+    const slotsList = []
+    slotList[activeDate].forEach((slot) => {
+      slotsList.push({
+        id: slot.id,
+        start_hour: slot.start_hour,
+        end_hour: slot.end_hour,
+        active: slot.active,
+        date: event.start
+      });
     });
+    slotsBookingDialogRef.current.dialogHandler(slotsList, event.start, "schedule");
   };
 
-  // ✅ FIXED: Use `navigate()` directly, instead of `props.navigate`
   const handleSlotSubmit = (data, date) => {
     const list = { ...slotList };
     list[date] = data;
     setSlotList(list);
 
-    // Store the selected slots count
     const selectedSlotCount = Object.values(list)
       .flat()
       .filter(slot => slot.active).length;
 
-    navigate("/purchase-steps", {
+    navigate("/purchase", {
       state: {
         count: location.state?.count || 0,
         amount: location.state?.amount || 0,
         selectedSlots: selectedSlotCount,
-        totalSelectedSlots : selectedSlots // ✅ Pass selected slot count
+        totalSelectedSlots: selectedSlots
       },
     });
   };
 
   return (
     <>
-      <div className="container-fluid my-4 custom-calendar">
+      <div className="container-fluid my-2 custom-calendar">
         <div style={{ margin: "0px 0px" }}>
+
           <FullCalendar
+            ref={calendarRef}
             height="100vh"
+            customButtons={{
+              customPrev: {
+                text: "",
+                click: () => {
+
+                  const calendarApi = calendarRef.current.getApi();
+                  calendarApi.prev();
+
+                  const currentStart = calendarApi.view.currentStart;
+                  const year = currentStart.getFullYear();
+                  const month = currentStart.getMonth() + 1;
+
+                  setActiveMonth({ year, month });
+                  setActiveMonthString(moment(currentStart).format("MMMM YYYY"));
+
+                  // getAvailableSlots();
+                },
+                icon: "bi bi-chevron-left",
+              },
+              customNext: {
+                text: "",
+                click: () => {
+
+                  const calendarApi = calendarRef.current.getApi();
+                  calendarApi.next();
+
+                  const currentStart = calendarApi.view.currentStart;
+                  const year = currentStart.getFullYear();
+                  const month = currentStart.getMonth() + 1;
+
+                  setActiveMonth({ year, month });
+                  setActiveMonthString(moment(currentStart).format("MMMM YYYY"));
+
+                  // getAvailableSlots();
+                },
+                icon: "bi bi-chevron-right",
+              },
+            }}
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
             headerToolbar={{
-              left: "prev,next today",
+              left: "",
               center: "title",
-              right: "dayGridMonth,timeGridWeek,timeGridDay",
+              right: "customPrev,customNext",
             }}
             buttonText={{
               today: "Today ",
@@ -190,15 +187,19 @@ export default function PurchaseBookingCalendar() {
               week: "Week",
               day: "Day",
             }}
+            // eventChange={handleEventClick}
             initialView="dayGridMonth"
             selectable
             editable
             events={eventsList}
             select={(e) => handleDateClick(e)}
-            eventClick={(e) => handleEventClick(e)}
+            // eventClick={(e) => handleEventClick(e)}
             dayHeaderFormat={{ weekday: "long" }}
             dayCellContent={renderDayCellContent}
-            datesSet={handleDatesSet}
+            // datesSet={handleDatesSet}
+            validRange={{
+              start: new Date(), // Disables past dates
+            }}
           />
         </div>
       </div>

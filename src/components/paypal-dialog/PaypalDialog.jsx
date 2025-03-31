@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import paypal from "../../assets/images/paypal1.png";
@@ -9,54 +9,47 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import PaypalConfirmationDialog from "./PaypalResponseDialog";
 import subscriptionService from "../../services/subscription.service";
+import { useSelector } from "react-redux";
 
 const style = { layout: "vertical" };
 
 const PaypalDialog = React.forwardRef((props, ref) => {
   const [show, setShow] = React.useState(false);
   const paypalResponseDialog = React.useRef(null);
-  const [paymentData, setPaymentData] = React.useState({});
+  const selectedLessonSelector = useSelector((state) => state.selectedLesson?.data)
+  const [activeLesson, setActiveLesson] = useState({})
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    if (selectedLessonSelector?.id) {
+      setActiveLesson(selectedLessonSelector)
+    }
+  }, [selectedLessonSelector])
+
   React.useImperativeHandle(ref, () => ({
-    dialogHandler: (data) => {
+    dialogHandler: () => {
       setShow(true);
-      setPaymentData(data);
+      // setPaymentData(data);
     },
   }));
-
-  const getToken = () => localStorage.getItem("token");
 
   const handleClose = () => setShow(false);
 
   const onCreateOrder = async (data, actions) => {
-    const token = getToken();
     try {
       let id = await actions.order.create({
         purchase_units: [
           {
             amount: {
-              value: "8.99",
+              value: "64.99",
             },
           },
         ],
       });
       const payload = {
-        amount: "8.99",
+        amount: "64.99",
       };
-      const response = await fetch(
-        EnvironmentEndpoint + "paypal/create-order",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json", // Set proper headers for JSON
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(payload),
-        }
-      );
-      const result = await response.json();
-      id = result.order_id;
+      const response = await subscriptionService.createOrder(payload);
+      id = response.data.order_id;
       return id;
     } catch (error) {
       return error;
@@ -75,31 +68,21 @@ const PaypalDialog = React.forwardRef((props, ref) => {
         email: "ganapathydtg@gmail.com",
       };
 
-      const response = await fetch(
-        EnvironmentEndpoint + "paypal/payment-confirm-email",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json", // Set proper headers for JSON
-          },
-          body: JSON.stringify(payload),
-        }
-      );
-      const result = await response.json();
-      debugger;
-      paypalResponseDialog.current.dialogHandler();
+      const response = await subscriptionService.confirmationEmail(payload)
 
-      /// Service 2
+      paypalResponseDialog.current.dialogHandler(response);
 
-      subscriptionService.createSubscription({}).then((response) => {
-        debugger
-        props.paymentHandler();
-      })
-      .catch((error) => {
-      debugger
-      })
+      // /// Service 2
 
-     
+      // subscriptionService.createSubscription({}).then((response) => {
+      //   debugger
+      //   props.paymentHandler();
+      // })
+      //   .catch((error) => {
+      //     debugger
+      //   })
+
+
       return orderApprove;
     } catch (error) {
       return error;
@@ -109,13 +92,14 @@ const PaypalDialog = React.forwardRef((props, ref) => {
   return (
     <>
       <PayPalScriptProvider options={PaymentOptions}>
-        <div id="payment-dialog-modal">
+        <div id="payment-dialog-modal" >
           <Modal
             show={show}
             onHide={handleClose}
             // aria-labelledby="contained-modal-title-vcenter"
             centered
             style={{ borderRadius: "10px" }}
+            size="md"
           >
             <Modal.Body>
               <div style={{ padding: "20px" }}>
@@ -147,8 +131,8 @@ const PaypalDialog = React.forwardRef((props, ref) => {
                       padding: "10px 0px",
                     }}
                   >
-                    {paymentData.count}x Lessons = $
-                    {paymentData.count * paymentData.time_per_lesson}
+                    {activeLesson.count}x Lessons = $
+                    64.99
                   </div>
                 </div>
 

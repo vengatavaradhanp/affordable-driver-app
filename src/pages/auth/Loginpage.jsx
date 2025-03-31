@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Form,
   Button,
@@ -26,6 +26,8 @@ import AppLoader from "../../components/app-layout/AppLoader";
 import { useDispatch } from "react-redux";
 import { login } from "../../features/loginSlice";
 import AuthService from "../../services/auth.service";
+import google from "../../assets/images/google.svg";
+import meta from "../../assets/images/meta.svg";
 
 const Login = () => {
   const [fields, setFields] = useState({
@@ -37,10 +39,18 @@ const Login = () => {
 
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false); // State for loading
+  const [previousPath, setPreviousPath] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { type } = useParams();
+
+  useEffect(() => {
+    if (location.state) {
+      setPreviousPath(location.state.from);
+    }
+  }, [])
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -66,9 +76,11 @@ const Login = () => {
 
       AuthService.login(payload)
         .then((response) => {
+          console.log("response", response.data);
           dispatch(login(response.data));
           toast.success("Login successfully");
-          navigate("/");
+          console.log("previousPath", previousPath);
+          previousPath === null ? navigate("/") : navigate(previousPath, {state: {data: "step2"}});
         })
         .catch((error) => {
           toast.error("Failed to login");
@@ -106,7 +118,7 @@ const Login = () => {
   };
 
   return (
-    <div className="vh-100" style={{ backgroundColor: "#f8f9fa" }}>
+    <div style={{ backgroundColor: "#f8f9fa" }}>
       <div
         className="container-fluid page-header p-0 mt-0 wow fadeIn"
         data-wow-delay="0.1s"
@@ -208,9 +220,9 @@ const Login = () => {
                 </Form>
               </div>
               {/* <div style={{, padding: '10px 0px'}} /> */}
-              <div style={{ display: "flex", alignItems: "center", width: "100%", maxWidth: "600px", padding: '10px' }}>
+              <div style={{ display: "flex", alignItems: "center", width: "100%", maxWidth: "600px", padding: '15px 10px' }}>
                 <div style={{ flexGrow: 1, height: "1px", backgroundColor: "grey" }}></div>
-                <div style={{ margin: "0 15px", fontSize: "18px", fontWeight: "bold", color: "#000" }}>OR</div>
+                <div style={{ margin: "0 15px", fontSize: "14px", fontWeight: 500, color: "#000" }}>OR</div>
                 <div style={{ flexGrow: 1, height: "1px", backgroundColor: "grey" }}></div>
               </div>
               {/* <div className="mt-2 text-center">
@@ -219,31 +231,42 @@ const Login = () => {
               </div> */}
               <Container>
                 <Row>
-                  <Col>
+                  <Col md="12">
                     <Button
                       variant="light"
-                      className="mt-2"
+                      // className="mt-2"
                       onClick={() => handleSocialLogin("google")}
                       style={{
                         width: "100%",
-                        marginTop: "20px",
+                        fontWeight: 500,
+                        backgroundColor: "#fff",
+                        color: "#000",
+                        border: '2px solid rgb(236, 239, 236)',
+                        borderRadius: '5px',
+                        height: '42px'
+
                       }}
                     >
-                      <i class="bi bi-google" style={{ color: "#2b9348" }}></i> &nbsp; Sign in with Google
+                      <img src={google} style={{width: '18px', height: '18px'}} alt="no_image" /> &nbsp; Sign in with Google
                     </Button>
                   </Col>
                   <Col>
                     {" "}
                     <Button
                       variant="light"
-                      className="mt-2"
+                      className="mt-3"
                       onClick={() => handleSocialLogin("facebook")}
                       style={{
                         width: "100%",
-                        marginTop: "20px",
+                        fontWeight: 500,
+                        backgroundColor: "#1877f2",
+                        color: "#fff",
+                        border: '1px solid #1877f2',
+                        borderRadius: '5px',
+                        height: '42px'
                       }}
                     >
-                      <i class="bi bi-meta" style={{ color: "#2b9348" }}></i> &nbsp; Sign in with Facebook
+                       <img src={meta} style={{width: '17px', height: '17px'}} alt="no_image" />  &nbsp; Sign in with Facebook
                     </Button>
                   </Col>
                 </Row>
